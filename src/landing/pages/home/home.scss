@@ -1,0 +1,61 @@
+@import './../../../styles/variables';
+.home__banner{
+    background: url('./../../../assets/home/home-banner.jpg') no-repeat center;
+    background-size: cover;
+    height: 120vh;
+    width: 100%;
+
+    color: black;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: end;
+    align-items: start;
+    padding: 50px 50px 30vh 50px;
+}
+
+.home__banner h1 {
+    border-radius: 10px;    
+    text-align: left;
+    font-size: $heading-font-size;
+    line-height: 100px;
+    margin: 0px;
+}
+
+.home__banner h1 span {
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.home__floating-cards-container{
+    position: relative;
+    bottom: 100px;
+    z-index: 1;
+}
+
+.home__cards-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: $large-box-spacig;
+    
+    padding-left: $large-box-spacig;
+    padding-right: $large-box-spacig;
+}
+
+.home__card-icon {
+    color: $primary-color;
+}
+
+@media (width <= 650px) {
+    .home__banner h1 {
+        text-align: left;
+        font-size: $small-heading-font-size;
+        line-height: 70px;
+    }
+    .home__banner p{
+        display: none;
+    }
+}

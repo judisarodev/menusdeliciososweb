@@ -1,0 +1,63 @@
+@import './../../../styles/variables';
+.login__main-container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 50px;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    gap: $large-spacing;
+}
+.login__main-container img {
+    width: 130px;
+    border-radius: 100%;
+    border: 5px solid $light-border-color;
+}
+.login__container{
+    display: flex;
+    flex-direction: column;
+    background-color: $secondary-background-color;
+    border: solid 1px $light-border-color;
+    padding: $large-spacing;
+    gap: $large-spacing;
+    min-width: 255px;
+    border-radius: 12px;
+}
+.login__container form{
+    display: flex;
+    flex-direction: column;
+    gap: $large-spacing;
+}
+.login__input-item{
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+}
+.login__input-item label{
+    color: $secondary-text-color;
+    font-size: $small-font-size;
+}
+#login__register-form{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $large-spacing;
+}
+.login__terms{
+    font-size: $super-small-font-size;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: $small-box-spacig;
+    margin-top: $large-box-spacig;
+}
+.login__terms p{
+    margin: 0px;
+}
+.login__terms span{
+    text-decoration: underline;
+    color: $secondary-color;
+}
+.login__terms span:hover{
+    cursor: pointer;
+}

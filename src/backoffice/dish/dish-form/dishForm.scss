@@ -1,0 +1,45 @@
+@import './../../../styles/variables';
+
+.dish-form__container{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    gap: $base-box-spacig;
+    background-color: white;
+    padding: $large-box-spacig;
+    margin: $small-box-spacig;
+    border-radius: $standard-border-raius;
+    text-align: start;
+}
+.dish-form__input-container{
+    display: flex;
+    flex-direction: column;
+    gap: $small-box-spacig;
+}
+.dish-form__input-container label{
+    font-size: $small-font-size;
+    color: $secondary-text-color;
+}
+.dish-form__input-container input{
+    width: 100%;
+}
+.dish-form__title{
+    color: $primary-text-color;
+    font-size: $title-font-size;
+    margin: 0px;
+}
+.dish-form__input__group{
+    display: grid;
+    grid-template-columns: 1fr 50px;
+    gap: $small-box-spacig;
+}
+.dish-form__input__group button{
+    display: flex;
+    justify-content: center;
+    height: 48px;
+    width: 48px;
+}
+.dish-form__input__group--icon{
+    display: flex;
+    justify-content: center;   
+}

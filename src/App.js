@@ -1,24 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import { PrimeReactProvider } from 'primereact/api';
+import 'primereact/resources/themes/saga-blue/theme.css';  // Importa el tema de PrimeReact
+import 'primereact/resources/primereact.min.css';         // Importa los estilos de PrimeReact
+import 'primeicons/primeicons.css';                       // Importa los estilos de PrimeIcons
+import { Home } from './landing/pages/home/Home';
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Login } from './backoffice/pages/login/Login';
+import { Panel } from './backoffice/pages/panel/Panel';
+import { TokenContextProvider } from './backoffice/context/token/TokenContextProvider';
+        
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <TokenContextProvider>
+      <PrimeReactProvider>
+        <div className="App">
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={<Home />}/>
+              <Route path='/login' element={<Login />}/>
+              <Route path='/terms' element={'Términos'}/>
+              <Route path='/panel' element={<Panel />}/>
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </PrimeReactProvider>
+    </TokenContextProvider>
   );
 }
 

@@ -1,0 +1,29 @@
+@import './../../../styles/variables';
+
+.card__container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    
+    max-width: 400px;
+    padding: $large-box-spacig;
+    
+    border: 1px $light-border-color solid;
+    background-color: $light-color;
+    border-radius: 12px;
+
+}
+
+.card__title {
+    font-size: $title-font-size; 
+    font-weight: 600;
+}
+
+.card__text {
+    font-size: $base-font-size;
+    color: $secondary-text-color;
+}
+.card__button button{
+    width: 100%;
+}

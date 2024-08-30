@@ -1,0 +1,25 @@
+@import './../../../styles/variables';  
+.bhome__container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+}
+.bhome__container > div {
+    background-color: $secondary-background-color;
+}
+.bhome__manager-container{
+    height: 100vh;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    padding: $small-box-spacig;
+}
+.bhome__menu-sample{
+    height: 100vh;
+    grid-column: 2/3;
+    grid-row: 1/2;
+    padding: $small-box-spacig;
+}
+.bhome__table{
+    grid-column: 1/3;
+    grid-row: 2/3;
+}

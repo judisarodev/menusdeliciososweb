@@ -1,0 +1,11 @@
+@import './../../../styles/variables';
+.backoffice-menu {
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+.backoffice-menu .p-menu  {
+    min-height: 100vh;
+}
+.backoffice-menu .p-menuitem-text{
+    margin: 12px;
+}

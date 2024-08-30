@@ -1,0 +1,47 @@
+@import './../../../styles/variables';
+.prices__container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    background-color: $primary-background-color;
+    padding: $large-box-spacig;
+    min-height: 80vh;
+    margin-top: 100px;
+}
+.plan__title{
+    font-weight: 600;
+    text-transform: uppercase;
+
+}
+.prices__plans{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+.plan__amount{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: $title-font-size;
+}
+.plan__amount-currency-fag{
+    width: 50px;
+}
+.plan__container{
+    background-color: $secondary-background-color;
+    border-radius: 12px;
+    padding: $large-box-spacig;
+}
+.plan__services{
+    text-align: start;
+    font-size: $small-font-size;
+}
+.plan__button{
+    position: relative;
+    top: 5%;
+    width: 100%;
+}

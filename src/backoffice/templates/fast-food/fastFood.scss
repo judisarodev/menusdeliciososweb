@@ -1,0 +1,148 @@
+@import './../../../styles/variables';
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Rubik+Dirt&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Great+Vibes&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+$primary-background-color: #030302;
+$secondary-background-color: #333333;
+$primary-color: #ffac00;
+$primary-text-color: white; 
+$gap: 6px;
+$big-gap: 34px;
+
+$font-size-title: 2.3rem;
+$font-size-subtitle: 1.2rem;
+$font-size-text: 0.9rem;
+$font-size-small-text: 0.7rem;
+
+// Fast Food
+
+.fast-food__container p, .fast-food__container h1 {
+    font-family: "Rubik Dirt", system-ui !important;
+    font-weight: 400;
+    font-style: normal;
+}
+.fast-food__container{
+    max-height: 100vh;
+    overflow: scroll;
+    padding: 40px;
+    background: linear-gradient(to bottom, $primary-background-color, $secondary-background-color);
+}
+.fast-food__container h1 {
+    font-size: $font-size-title;
+    color: $primary-color;
+    margin: 0px;
+}
+.fast-food__container h2 {
+    font-size: $font-size-title;
+    color: $primary-text-color;
+    margin: 0px;
+    font-family: "Great Vibes", cursive !important;
+    font-weight: 400;
+    font-style: normal;
+}
+.fast-food__container p {
+    color: $primary-text-color;
+    font-size: $font-size-text;
+}
+
+// Fast Food Category
+
+.fast-food-category__container{
+    display: flex;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $big-gap;
+    margin-top: $big-gap;;
+}
+.fast-food-category__info{
+    width: 100%;
+    align-self: center;
+}
+.fast-food-category__image{
+    position: relative;
+    width: 100%;
+}
+.fast-food-category__image img{
+    width: 100%;
+    border-radius: 50%;
+}
+.fast-food-category__image--editable:hover {
+    cursor: pointer;
+}
+.fast-food-category__image--editable:hover img{
+    opacity: 0.3;
+}
+.overlay{
+    position: absolute;
+    top: 35%;
+    color: $primary-text-color;
+    width: 100%;
+    margin: 0px;
+    opacity: 0;
+    text-align: center;
+    color: $primary-text-color;
+}
+.fast-food-category__image--editable:hover .overlay {
+    opacity: 1;
+}
+.fast-food-category__title {
+    display: flex;
+    font-size: $font-size-subtitle;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.fast-food-cateogry__dishes{
+    display: flex;
+    flex-direction: column;
+    gap: $gap;
+}
+
+// Fast Food Item
+
+.fast-food-item__container{
+    display: flex;
+    flex-direction: column;
+}
+.fast-food-item__summary{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    gap: $gap;
+}
+.fast-food-item__container p{
+    margin: 0px;
+}
+.fast-food-item__divider{
+    width: 100%;
+    border-bottom: 3px dotted $primary-text-color;
+    position: relative;
+    bottom: $gap;
+}
+.fast-food-category__name p{
+    font-size: $font-size-subtitle;
+    color: $primary-color;
+}
+.fast-food-category__icon{
+    color: $primary-color;
+}
+.fast-food-item__name{
+    text-align: start;
+    text-wrap: nowrap;
+}
+.fast-food-item__price{
+    text-align: end;
+}
+.fast-food-item__description p{
+    text-align: start;
+    font-weight: 100;
+    font-size: $font-size-small-text;
+    font-family: "Rubik", sans-serif !important;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+}
+.hide{
+    display: none; 
+}
