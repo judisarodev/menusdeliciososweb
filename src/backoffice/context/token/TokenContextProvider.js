@@ -6,7 +6,7 @@ function TokenContextProvider ({ children }) {
     
     useEffect(() => {
         // Recupera el token de localStorage
-        const storedToken = localStorage.getItem('jwt');
+        const storedToken = sessionStorage.getItem('token');
         setToken(storedToken);
     }, []);
     

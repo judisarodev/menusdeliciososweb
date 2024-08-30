@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { TokenContext } from "../../context/token/TokenContextProvider";
 import { Messages } from 'primereact/messages';
 
-
 const Login = ({ loginPage = true }) => {
     // Data
     const pages = ['Ingresar', 'Registrarse'];
@@ -59,8 +58,7 @@ const Login = ({ loginPage = true }) => {
                 }
             }).then((data) => {
                 if(data.isVerified && data.jwt){
-                    localStorage.setItem('jwt', data.token);
-                    setToken(data.jwt);
+                    sessionStorage.setItem('token', data.jwt);
                     navigate('/panel');
                 }
             }).catch((error) => {
