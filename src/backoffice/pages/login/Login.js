@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import './login.scss';
 import { SelectButton } from 'primereact/selectbutton';
 import { Button } from 'primereact/button';
@@ -7,6 +7,8 @@ import { Password } from 'primereact/password';
 import logo from './../../../assets/logo/white.png';
 import { Checkbox } from 'primereact/checkbox';
 import { useNavigate } from "react-router-dom";
+import { TokenContext } from "../../context/token/TokenContextProvider";
+import { Messages } from 'primereact/messages';
 
 
 const Login = ({ loginPage = true }) => {
@@ -21,39 +23,49 @@ const Login = ({ loginPage = true }) => {
     const [address, setAddress] = useState('');
     const [checked, setChecked] = useState(false);
     const navigate = useNavigate();
+    const tokenContext = useContext(TokenContext);
+    const { setToken } = tokenContext;
+    const message = useRef(null);
     const BASE_URL = process.env.REACT_APP_URL;
 
     const loginRequeset = () => {
-        fetch(BASE_URL + '/restaurant/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json' // Especifica que el contenido es JSON
-            },
-            body: JSON.stringify({
-                email: username,
-                password
+        if(username && password){
+            fetch(BASE_URL + '/restaurant/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Especifica que el contenido es JSON
+                },
+                body: JSON.stringify({
+                    email: username,
+                    password
+                })
             })
-        })
-        .then((response) => {
-            const statusCode = response.status;
-            if(response.ok){
-                return response.json();
-            }
-            if(statusCode === 401){
-                throw new Error('No autorizado');
-            }
-        }).then((data) => {
-            if(data.isVerified){
-                navigate('/panel');
-            }
-        }).catch((error) => {
-            console.error(error.message);
-        });
+            .then((response) => {
+                const statusCode = response.status;
+                if(response.ok){
+                    return response.json();
+                }
+                if(statusCode === 401){
+                    throw new Error('No autorizado');
+                }
+            }).then((data) => {
+                if(data.isVerified && data.jwt){
+                    setToken(data.jwt);
+                    navigate('/panel');
+                }
+            }).catch((error) => {
+                message.current.show({severity: 'warn', summary: 'Credenciales incorrectas'});
+                console.error(error.message);
+            });
+        }else{
+            message.current.show({severity: 'warn', summary: 'Ingresa tu usuario y contraseña'});
+        }
     }
 
 
     return(<div className="login__main-container">
         <img src={logo} alt="logo"/>
+        <Messages ref={message} />
         <div className="login__container">
             <SelectButton value={page} onChange={(e) =>setPage(e.value)} options={pages} />
             {page === pages[0] ?

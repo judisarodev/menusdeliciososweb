@@ -4,8 +4,7 @@ import { DishForm } from "../../dish/dish-form/DishForm";
 import { Table } from "../../dish/dishes-table/Table";
 import { Emulator } from "./../../components/emulator/Emulator";
 
-const Home = () => {
-    
+const Home = () => {    
     return(<>
         <div className="bhome__container">
             <div className="bhome__manager-container">

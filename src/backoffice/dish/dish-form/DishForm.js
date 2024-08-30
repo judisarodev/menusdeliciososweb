@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
-import { Divider } from 'primereact/divider';
 import { Messages } from 'primereact/messages';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { IoAddOutline } from "react-icons/io5";
@@ -12,6 +11,7 @@ import { Tooltip } from 'primereact/tooltip';
 import { FileUpload } from 'primereact/fileupload';
 import { Toast } from 'primereact/toast';
 import './dishForm.scss';
+import { TokenContext } from "../../context/token/TokenContextProvider";
 
 const useCategory = () => {
     // Fake categories, they will be replaced with categories from the data base
@@ -69,6 +69,8 @@ const DishForm = () => {
     const message = useRef(null);
     const createCategoryForm = useRef(null); 
     const toast = useRef(null);
+    const tokenContext = useContext(TokenContext);
+    const { token } = tokenContext;
 
     const showErrorMessage = () => {
         message.current.show({severity: 'error', summary: 'Ingresa todos los campos del formulario'});
