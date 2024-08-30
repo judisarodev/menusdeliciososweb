@@ -12,7 +12,15 @@ import { Messages } from 'primereact/messages';
 
 
 const Login = ({ loginPage = true }) => {
+    // Data
     const pages = ['Ingresar', 'Registrarse'];
+    const BASE_URL = process.env.REACT_APP_URL;
+
+    // Context
+    const tokenContext = useContext(TokenContext);
+    const { setToken } = tokenContext;
+
+    // States
     const [page, setPage] = useState(loginPage ? pages[0] : pages[1]);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -22,18 +30,19 @@ const Login = ({ loginPage = true }) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
     const [checked, setChecked] = useState(false);
+    
+    // Navigation
     const navigate = useNavigate();
-    const tokenContext = useContext(TokenContext);
-    const { setToken } = tokenContext;
+
+    // References 
     const message = useRef(null);
-    const BASE_URL = process.env.REACT_APP_URL;
 
     const loginRequeset = () => {
         if(username && password){
             fetch(BASE_URL + '/restaurant/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json' // Especifica que el contenido es JSON
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     email: username,
@@ -50,6 +59,7 @@ const Login = ({ loginPage = true }) => {
                 }
             }).then((data) => {
                 if(data.isVerified && data.jwt){
+                    localStorage.setItem('jwt', data.token);
                     setToken(data.jwt);
                     navigate('/panel');
                 }

@@ -61,14 +61,19 @@ const useCategory = () => {
 }
 
 const DishForm = () => {
+    // States
     const [name, setName] = useState(null);
     const [description, setDescription] = useState(null); 
     const [price, setPrice] = useState(null);
     const [newCategory, setNewCategory] = useState(null);
     const { category, categories, changeCategory, addCategory } = useCategory();
+    
+    // References 
+    const toast = useRef(null);
     const message = useRef(null);
     const createCategoryForm = useRef(null); 
-    const toast = useRef(null);
+
+    // Contexto
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
 
