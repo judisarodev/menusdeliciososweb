@@ -21,21 +21,33 @@ const Login = ({ loginPage = true }) => {
     const [address, setAddress] = useState('');
     const [checked, setChecked] = useState(false);
     const navigate = useNavigate();
+    const BASE_URL = process.env.REACT_APP_URL;
 
     const loginRequeset = () => {
-        fetch(process.env.API_URL, {
+        fetch(BASE_URL + '/restaurant/login', {
             method: 'POST',
-            body: {
-                email,
+            headers: {
+                'Content-Type': 'application/json' // Especifica que el contenido es JSON
+            },
+            body: JSON.stringify({
+                email: username,
                 password
-            }
+            })
         })
         .then((response) => {
+            const statusCode = response.status;
             if(response.ok){
                 return response.json();
             }
+            if(statusCode === 401){
+                throw new Error('No autorizado');
+            }
         }).then((data) => {
-            console.log(data);
+            if(data.isVerified){
+                navigate('/panel');
+            }
+        }).catch((error) => {
+            console.error(error.message);
         });
     }
 
@@ -47,7 +59,7 @@ const Login = ({ loginPage = true }) => {
             {page === pages[0] ?
             <form>
                 <div className="login__input-item">
-                    <label htmlFor="username">Correo electrónico o Celular</label>
+                    <label htmlFor="username">Correo electrónico</label>
                     <InputText value={username} onChange={(e) => setUsername(e.target.value)}/>
                 </div>
                 <div className="login__input-item">
@@ -107,7 +119,7 @@ const Login = ({ loginPage = true }) => {
                     <p>Acepto los <span onClick={() => navigate('/terms')}>términos y condiciones</span> para el tratamiento de datos personales.</p>
                 </div>
             </div>}
-            <Button label="Siguiente" severity="primary" onClick={() => navigate('/panel')} />    
+            <Button label="Siguiente" severity="primary" onClick={loginRequeset} />    
         </div>
     </div>);
 }

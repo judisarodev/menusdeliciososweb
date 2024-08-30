@@ -9,7 +9,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Login } from './backoffice/pages/login/Login';
 import { Panel } from './backoffice/pages/panel/Panel';
 import { TokenContextProvider } from './backoffice/context/token/TokenContextProvider';
-        
+
 
 function App() {
 
