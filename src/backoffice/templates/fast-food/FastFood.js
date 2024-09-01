@@ -56,7 +56,7 @@ const FastFoodItem = ({ dish }) => {
             <div className="fast-food-item__divider"></div>
 
             <div className="fast-food-item__price">
-                <p>{ price }</p>
+                <p>${ formatCurrency(price) }</p>
             </div>
         </div>
         <div className="fast-food-item__description">

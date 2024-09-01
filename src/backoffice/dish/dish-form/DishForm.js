@@ -14,6 +14,7 @@ import './dishForm.scss';
 import { TokenContext } from "../../context/token/TokenContextProvider";
 import { CategoriesContext } from "../../context/restaurant/CategoriesContext";
 import { ProductsContext } from "../../context/restaurant/ProductsContext";
+import { formatCurrency } from "../../../utils/currency/formatCurrency";
 
 // React hook for categories management
 const useCategory = () => {

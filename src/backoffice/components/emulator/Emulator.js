@@ -29,7 +29,6 @@ const Emulator = () => {
                 }
                 for(const product of products){
                     if(product.category.categoryId === category.categoryId){
-                        console.log(product.price);
                         item.dishes.push({
                             name: product.name,
                             price: product.price,
@@ -41,11 +40,10 @@ const Emulator = () => {
                     arr.push(item); 
                 }
             }
-            console.log('arr', arr); 
             setGroupedDishes(arr); 
         }
 
-        if(products && products.length > 0 && categories && categories.length > 0){
+        if(products && categories){
             getGroupedDishes();
         }
     }, [products, categories]);
