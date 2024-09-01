@@ -79,10 +79,10 @@ const DishForm = () => {
         fetch(BASE_URL + '/dish/create', {
             method: 'POST', 
             body: JSON.stringify({
-                categoryId: 1,
-                name: '',
-                price: 1,
-                description: '',
+                categoryId: category.categoryId,
+                name,
+                price,
+                description,
                 image: 'image',
             }),
             headers: {
@@ -139,12 +139,7 @@ const DishForm = () => {
             });
         }
 
-        console.log('Estamos haciendo el useState', token);
-        if(token){
-            console.log('Estamos haciendo la consulta de categorías');
-
-            getCategories();
-        }
+        getCategories();
     }, [token]);
  
     return(<>    
