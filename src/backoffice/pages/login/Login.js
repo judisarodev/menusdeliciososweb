@@ -58,6 +58,7 @@ const Login = ({ loginPage = true }) => {
                 }
             }).then((data) => {
                 if(data.isVerified && data.jwt){
+                    setToken(data.jwt);
                     sessionStorage.setItem('token', data.jwt);
                     navigate('/panel');
                 }
