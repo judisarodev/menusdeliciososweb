@@ -15,29 +15,13 @@ import { TokenContext } from "../../context/token/TokenContextProvider";
 
 const useCategory = () => {
     // Fake categories, they will be replaced with categories from the data base
-    const allCategories = [{
-        id: 1,
-        name: 'Entradas'
-    },{
-        id: 2,
-        name: 'Platos fuertes'
-    },{
-        id: 3,
-        name: 'Bebidas'
-    },{
-        id: 4,
-        name: 'Menú infantil'
-    },{
-        id: 5,
-        name: 'Bebidas alcohólicas'
-    },{
-        id: 6,
-        name: 'Postres'
-    },];
-
-
-    const [categories, setCategories] = useState(allCategories);
+    
+    const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState(null);
+
+    const setAllCategories = (categoriesList) => {
+        setCategories(categoriesList);
+    }
 
     const changeCategory = (category) => {
         setCategory(category);
@@ -57,6 +41,7 @@ const useCategory = () => {
         categories, 
         changeCategory, 
         addCategory,
+        setAllCategories
     }
 }
 
@@ -66,7 +51,7 @@ const DishForm = () => {
     const [description, setDescription] = useState(null); 
     const [price, setPrice] = useState(null);
     const [newCategory, setNewCategory] = useState(null);
-    const { category, categories, changeCategory, addCategory } = useCategory();
+    const { setAllCategories, category, categories, changeCategory, addCategory } = useCategory();
     
     // References 
     const toast = useRef(null);
@@ -76,6 +61,9 @@ const DishForm = () => {
     // Contexto
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
+
+    // Env
+    const BASE_URL = process.env.REACT_APP_URL;
 
     const showErrorMessage = () => {
         message.current.show({severity: 'error', summary: 'Ingresa todos los campos del formulario'});
@@ -88,7 +76,31 @@ const DishForm = () => {
         }
 
         // Tarea: Agregar un servicio que permita la creación de platos 
+        fetch(BASE_URL + '/dish/create', {
+            method: 'POST', 
+            body: JSON.stringify({
+                categoryId: 1,
+                name: '',
+                price: 1,
+                description: '',
+                image: 'image',
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer ' + token,
+            }
+        }).then((response) => {
+            if(!response.ok){
+                throw new Error('Error al crear producto');
+            }
+            return response.json();
+        }).then((data) => {
+            console.log(data);
+        }).catch((error) => {
+            console.error(error);
+        });
     }
+    
 
     const createCategory = (e) => {
         e.preventDefault(); 
@@ -105,6 +117,35 @@ const DishForm = () => {
     const onUpload = () => {
         
     }
+
+    useState(() => {
+        function getCategories(){
+            fetch(BASE_URL + '/category/get-all', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': 'Bearer ' + token,
+                }
+            }).then((response) => {
+                if(!response.ok){
+                    throw new Error('No fue posible consultar las categorías.')
+                }
+                return response.json();
+            }).then((data) => {
+                console.log('data', data); 
+                setAllCategories(data);
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+
+        console.log('Estamos haciendo el useState', token);
+        if(token){
+            console.log('Estamos haciendo la consulta de categorías');
+
+            getCategories();
+        }
+    }, [token]);
  
     return(<>    
         <Tooltip target=".tooltip-target" />
