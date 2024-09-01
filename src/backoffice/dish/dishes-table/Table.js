@@ -28,32 +28,48 @@ const Table = () => {
                     return response.json();
                 }
             }).then((data) => {
-                console.log(data);
+                // Se agrega formato a los precios
                 data.forEach((dish) => {
                     if(dish && dish.price){
                         dish.price = '$ ' + formatCurrency(dish.price);
                     }
                 });
-                setProducts(data);
+                
+                // Se clasifican los platos según categoría
+                const sortedProducts = data.reduce((sortedDishes, dish) => {
+                    const categoryId = dish.category.categoryId;
+                    const categoryName = dish.category.name;
+                    if(!sortedDishes[categoryId]){
+                        sortedDishes[categoryId] = {
+                            categoryName, 
+                            dishes: []
+                        };
+                    }
+                    sortedDishes[categoryId].dishes = [ ...sortedDishes[categoryId].dishes, dish];
+                    return sortedDishes;
+                }, []);
+
+                console.log('sortedProducts', sortedProducts);
+
+                setProducts(sortedProducts);
             }).catch((error) => {
                 console.error(error); 
             });
         }
 
-        getDishes();
-    }, [BASE_URL, token]);
-
-    const header = (
-        <p className="table__title">Productos</p>
-    );
+        if(token){
+            getDishes();
+        }
+    }, [token]);
 
     return(<div className="table__container">
-        <DataTable value={products} header={header} showGridlines  tableStyle={{ minWidth: '50rem' }}  stripedRows >
-            <Column field="name" header="Nombre"></Column>
-            <Column field="price" header="Precio"></Column>
-            <Column field="category.name" header="Categoría"></Column>
-            <Column field="description" header="Descripción"></Column>
-        </DataTable>
+        {products && products.length > 0 && products.map((p) => {
+            return <DataTable value={p.dishes} header={p.categoryName} tableStyle={{ minWidth: '50rem' }} >
+                <Column style={{ width: '25%' }} field="name" header="Nombre"></Column>
+                <Column style={{ width: '25%' }} field="price" header="Precio"></Column>
+                <Column field="description" header="Descripción"></Column>
+            </DataTable>
+        })}
     </div>);
 }
 export { Table }; 
