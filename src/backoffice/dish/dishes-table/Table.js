@@ -7,6 +7,7 @@ import { formatCurrency } from '../../../utils/currency/formatCurrency';
 import { ProductsContext } from "../../context/restaurant/ProductsContext";
 import { Button } from 'primereact/button';
 import { MdOutlineEdit } from "react-icons/md";
+import { InputText } from "primereact/inputtext";
 
 const Table = () => {
 
@@ -78,7 +79,9 @@ const Table = () => {
     }, [token]);
 
     const buttonTemplate = () => {
-        return <Button label={<MdOutlineEdit size={20}/>} severity="primary" tooltip="Editar" tooltipOptions={{ position: 'left'}}/>;
+        return (
+            
+            <Button label={<MdOutlineEdit size={20}/>} severity="primary" tooltip="Editar" tooltipOptions={{ position: 'left'}}/>);
     }
 
     return(<div className="table__container">
