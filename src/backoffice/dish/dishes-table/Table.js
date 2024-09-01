@@ -78,7 +78,7 @@ const Table = () => {
     }, [token]);
 
     const buttonTemplate = () => {
-        return <Button label={<MdOutlineEdit  size={20}/>} />;
+        return <Button label={<MdOutlineEdit size={20}/>} severity="primary" tooltip="Editar" tooltipOptions={{ position: 'left'}}/>;
     }
 
     return(<div className="table__container">
