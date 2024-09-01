@@ -79,16 +79,18 @@ const Table = () => {
     }, [token]);
 
     const buttonTemplate = () => {
-        return (
-            
-            <Button label={<MdOutlineEdit size={20}/>} severity="primary" tooltip="Editar" tooltipOptions={{ position: 'left'}}/>);
+        return <Button label={<MdOutlineEdit size={20}/>} severity="primary" tooltip="Editar" tooltipOptions={{ position: 'left'}}/>;
+    }
+
+    const tableTitleTemplate = (text) => {
+        return <h2>{text }</h2>
     }
 
     return(<div className="table__container">
         {dishes && dishes.length > 0 && dishes.map((p) => {    
             return(
                 <div key={p.category}>
-                    <DataTable value={p.dishes} header={p.categoryName} tableStyle={{ minWidth: '50rem' }} >
+                    <DataTable value={p.dishes} header={tableTitleTemplate(p.categoryName)} tableStyle={{ minWidth: '50rem' }} >
                         <Column style={{ width: '10%' }} body={buttonTemplate} header="Nombre"></Column>
                         <Column style={{ width: '25%' }} field="name" header="Nombre"></Column>
                         <Column style={{ width: '25%' }} field="price" header="Precio"></Column>
