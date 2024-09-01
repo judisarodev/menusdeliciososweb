@@ -1,13 +1,56 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import './emulator.scss';
 import { FastFood } from "../../templates/fast-food/FastFood";
 import { FaHamburger } from "react-icons/fa";
 import hamburguerImage from '../../../assets/fastfood/hamburguer.jpg';
-import pizzaImage from '../../../assets/fastfood/pizza.jpg';
-import hotdogImage from '../../../assets/fastfood/hotdog.png';
+import { CategoriesContext } from "../../context/restaurant/CategoriesContext";
+import { ProductsContext } from "../../context/restaurant/ProductsContext";
 
 const Emulator = () => {
 
+    const categoriesContext = useContext(CategoriesContext);
+    const { categories } =  categoriesContext; 
+
+    const productsContext = useContext(ProductsContext);
+    const { products } = productsContext;
+
+    // Satates
+    const [groupedDishes, setGroupedDishes] = useState([]);
+
+    useEffect(() => {
+        const getGroupedDishes = () => {
+            const arr = [];
+            for(const category of categories){
+                const item = {
+                    categoryName: category.name,
+                    categoryIcon: <FaHamburger />, // category.icon;
+                    categoryPicture: hamburguerImage, // category.image;
+                    dishes: [],
+                }
+                for(const product of products){
+                    if(product.category.categoryId === category.categoryId){
+                        console.log(product.price);
+                        item.dishes.push({
+                            name: product.name,
+                            price: product.price,
+                            description: product.description
+                        });
+                    }
+                }
+                if(item.dishes.length > 0){
+                    arr.push(item); 
+                }
+            }
+            console.log('arr', arr); 
+            setGroupedDishes(arr); 
+        }
+
+        if(products && products.length > 0 && categories && categories.length > 0){
+            getGroupedDishes();
+        }
+    }, [products, categories]);
+
+    /*
     const groupedDishes = [{
         categoryName: 'Hamburguesas',
         categoryIcon: <FaHamburger />,
@@ -46,6 +89,7 @@ const Emulator = () => {
             price: 20000
         }]
     },];
+    */
 
     return (
         <div className="emulator__container">

@@ -4,6 +4,7 @@ import { Column } from 'primereact/column';
 import './table.scss'; 
 import { TokenContext } from "../../context/token/TokenContextProvider";
 import { formatCurrency } from '../../../utils/currency/formatCurrency';
+import { ProductsContext } from "../../context/restaurant/ProductsContext";
 const Table = () => {
 
     // Data
@@ -12,8 +13,10 @@ const Table = () => {
     // Context
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
+    const productsContext = useContext(ProductsContext);
+    const { setProducts } =  productsContext; 
 
-    const [products, setProducts] = useState([]);
+    const [dishes, setDishes] = useState([]);
 
     useEffect(() => {
         function getDishes(){
@@ -28,10 +31,12 @@ const Table = () => {
                     return response.json();
                 }
             }).then((data) => {
+                setProducts(data);
+
                 // Se agrega formato a los precios
                 data.forEach((dish) => {
                     if(dish && dish.price){
-                        dish.price = '$ ' + formatCurrency(dish.price);
+                        dish.price = '$' + formatCurrency(dish.price);
                     }
                 });
                 
@@ -48,10 +53,7 @@ const Table = () => {
                     sortedDishes[categoryId].dishes = [ ...sortedDishes[categoryId].dishes, dish];
                     return sortedDishes;
                 }, []);
-
-                console.log('sortedProducts', sortedProducts);
-
-                setProducts(sortedProducts);
+                setDishes(sortedProducts);
             }).catch((error) => {
                 console.error(error); 
             });
@@ -63,13 +65,16 @@ const Table = () => {
     }, [token]);
 
     return(<div className="table__container">
-        {products && products.length > 0 && products.map((p) => {
-            return <DataTable value={p.dishes} header={p.categoryName} tableStyle={{ minWidth: '50rem' }} >
-                <Column style={{ width: '25%' }} field="name" header="Nombre"></Column>
-                <Column style={{ width: '25%' }} field="price" header="Precio"></Column>
-                <Column field="description" header="Descripción"></Column>
-            </DataTable>
-        })}
+        {dishes && dishes.length > 0 && dishes.map((p) => {    
+            return(
+                <div key={p.category}>
+                    <DataTable value={p.dishes} header={p.categoryName} tableStyle={{ minWidth: '50rem' }} >
+                        <Column style={{ width: '25%' }} field="name" header="Nombre"></Column>
+                        <Column style={{ width: '25%' }} field="price" header="Precio"></Column>
+                        <Column field="description" header="Descripción"></Column>
+                    </DataTable>
+                </div>
+        )})}
     </div>);
 }
 export { Table }; 

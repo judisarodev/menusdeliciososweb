@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
@@ -12,13 +12,16 @@ import { FileUpload } from 'primereact/fileupload';
 import { Toast } from 'primereact/toast';
 import './dishForm.scss';
 import { TokenContext } from "../../context/token/TokenContextProvider";
+import { CategoriesContext } from "../../context/restaurant/CategoriesContext";
 
+// React hook for categories management
 const useCategory = () => {
-    // Fake categories, they will be replaced with categories from the data base
-    
+
+    // States
     const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState(null);
 
+    // Functions
     const setAllCategories = (categoriesList) => {
         setCategories(categoriesList);
     }
@@ -33,6 +36,7 @@ const useCategory = () => {
             name
         };
         setCategories([...categories, newCategory]);
+
         changeCategory(newCategory); 
     };
 
@@ -58,9 +62,11 @@ const DishForm = () => {
     const message = useRef(null);
     const createCategoryForm = useRef(null); 
 
-    // Contexto
+    // Context
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
+    const categoriesContext = useContext(CategoriesContext);
+
 
     // Env
     const BASE_URL = process.env.REACT_APP_URL;
@@ -118,7 +124,7 @@ const DishForm = () => {
         
     }
 
-    useState(() => {
+    useEffect(() => {
         function getCategories(){
             fetch(BASE_URL + '/category/get-all', {
                 method: 'GET',
@@ -132,14 +138,15 @@ const DishForm = () => {
                 }
                 return response.json();
             }).then((data) => {
-                console.log('data', data); 
                 setAllCategories(data);
+                categoriesContext.setCategories(data);
             }).catch((error) => {
                 console.error(error);
             });
         }
-
-        getCategories();
+        if(token){
+            getCategories();
+        }
     }, [token]);
  
     return(<>    
@@ -214,7 +221,7 @@ const DishForm = () => {
             <div className="dish-form__input-container">
                 <label>Agregar imagen (opcional)</label>
                 <Toast ref={toast}></Toast>
-                <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*" maxFileSize={1000000} onUpload={onUpload} auto chooseLabel="Buscar" />
+                <FileUpload value={''} mode="basic" name="demo[]" url="/api/upload" accept="image/*" maxFileSize={1000000} onUpload={onUpload} auto chooseLabel="Buscar" />
             </div>
          
             <Button label="CREAR" onClick={createDish}/>
