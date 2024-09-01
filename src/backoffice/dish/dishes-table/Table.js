@@ -14,7 +14,7 @@ const Table = () => {
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
     const productsContext = useContext(ProductsContext);
-    const { setProducts } =  productsContext; 
+    const { setProducts, products } =  productsContext; 
 
     const [dishes, setDishes] = useState([]);
 
@@ -62,7 +62,7 @@ const Table = () => {
         if(token){
             getDishes();
         }
-    }, [token]);
+    }, [token, products]);
 
     return(<div className="table__container">
         {dishes && dishes.length > 0 && dishes.map((p) => {    

@@ -13,6 +13,7 @@ import { Toast } from 'primereact/toast';
 import './dishForm.scss';
 import { TokenContext } from "../../context/token/TokenContextProvider";
 import { CategoriesContext } from "../../context/restaurant/CategoriesContext";
+import { ProductsContext } from "../../context/restaurant/ProductsContext";
 
 // React hook for categories management
 const useCategory = () => {
@@ -66,6 +67,7 @@ const DishForm = () => {
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
     const categoriesContext = useContext(CategoriesContext);
+    const productsContext = useContext(ProductsContext);
 
 
     // Env
@@ -101,7 +103,7 @@ const DishForm = () => {
             }
             return response.json();
         }).then((data) => {
-            console.log(data);
+            productsContext.setProducts([...productsContext.products, data]);
         }).catch((error) => {
             console.error(error);
         });
