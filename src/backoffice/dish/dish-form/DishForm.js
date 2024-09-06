@@ -4,7 +4,6 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
-import { Messages } from 'primereact/messages';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { IoAddOutline } from "react-icons/io5";
 import { Tooltip } from 'primereact/tooltip';
@@ -13,8 +12,6 @@ import { Toast } from 'primereact/toast';
 import './dishForm.scss';
 import { TokenContext } from "../../context/token/TokenContextProvider";
 import { CategoriesContext } from "../../context/restaurant/CategoriesContext";
-import { ProductsContext } from "../../context/restaurant/ProductsContext";
-import { formatCurrency } from "../../../utils/currency/formatCurrency";
 
 // React hook for categories management
 const useCategory = () => {
@@ -51,65 +48,37 @@ const useCategory = () => {
     }
 }
 
-const DishForm = () => {
+const DishForm = ({
+    buttonText, 
+    action, 
+    showTitile = true, 
+    showAddCategoryButton = true,
+    givenName = '', 
+    givenCategory = null, 
+    givenPrice = 0, 
+    givenDescription = '' 
+}) => {
     // States
-    const [name, setName] = useState(null);
-    const [description, setDescription] = useState(null); 
-    const [price, setPrice] = useState(null);
-    const [newCategory, setNewCategory] = useState(null);
+    const [name, setName] = useState(givenName);
+    const [description, setDescription] = useState(givenDescription); 
+    const [price, setPrice] = useState(givenPrice);
+    const [newCategory, setNewCategory] = useState();
     const { setAllCategories, category, categories, changeCategory, addCategory } = useCategory();
     
     // References 
     const toast = useRef(null);
-    const message = useRef(null);
+    
     const createCategoryForm = useRef(null); 
 
     // Context
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
     const categoriesContext = useContext(CategoriesContext);
-    const productsContext = useContext(ProductsContext);
+    //const productsContext = useContext(ProductsContext);
 
 
     // Env
     const BASE_URL = process.env.REACT_APP_URL;
-
-    const showErrorMessage = () => {
-        message.current.show({severity: 'error', summary: 'Ingresa todos los campos del formulario'});
-    }
-
-    const createDish = (e) => {
-        e.preventDefault(); 
-        if(!name || !price || !category){
-            showErrorMessage();
-        }
-
-        // Tarea: Agregar un servicio que permita la creación de platos 
-        fetch(BASE_URL + '/dish/create', {
-            method: 'POST', 
-            body: JSON.stringify({
-                categoryId: category.categoryId,
-                name,
-                price,
-                description,
-                image: 'image',
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': 'Bearer ' + token,
-            }
-        }).then((response) => {
-            if(!response.ok){
-                throw new Error('Error al crear producto');
-            }
-            return response.json();
-        }).then((data) => {
-            productsContext.setProducts([...productsContext.products, data]);
-        }).catch((error) => {
-            console.error(error);
-        });
-    }
-    
 
     const createCategory = (e) => {
         e.preventDefault(); 
@@ -147,34 +116,45 @@ const DishForm = () => {
                 console.error(error);
             });
         }
-        if(token){
+
+        if(givenCategory){
+            changeCategory(givenCategory);
+        }
+
+        if(token && !categoriesContext.categories){
             getCategories();
+        }else {
+            setAllCategories(categoriesContext.categories);
+            console.log(categoriesContext.categories); 
         }
     }, [token]);
  
     return(<>    
         <Tooltip target=".tooltip-target" />
-        <Messages ref={message} />
+        
         <form className="dish-form__container">
-            <div>
+            {showTitile && <div>
                 <p className="dish-form__title">Crear producto</p>
-            </div>
+            </div>}
             <div className="dish-form__input-container">
                 <label>Categoría *</label>
-                <div className="dish-form__input__group">
+                <div className={showAddCategoryButton ? 'dish-form__input__group' : 'dish-form__input-container'}>
                     <Dropdown 
                     value={category} 
                     onChange={(e) => changeCategory(e.value)}
                     options={categories}
                     optionLabel="name"
                     placeholder="Selecciona una categoría"/>
-                    <Button onClick={showCreateCategoryForm} 
-                    label={<IoAddOutline 
-                    className="dish-form__input__group--icon tooltip-target"
-                    size={25} color="white"/>}
-                    tooltip="Crear categoría"
-                    tooltipOptions={{ position: 'top' }}
-                    />
+                    {
+                        showAddCategoryButton &&
+                        <Button onClick={showCreateCategoryForm} 
+                        label={<IoAddOutline 
+                        className="dish-form__input__group--icon tooltip-target"
+                        size={25} color="white"/>}
+                        tooltip="Crear categoría"
+                        tooltipOptions={{ position: 'top' }}
+                        />
+                    }
                     <OverlayPanel ref={createCategoryForm}>
                         <form>
                             <div className="dish-form__input-container">
@@ -190,6 +170,7 @@ const DishForm = () => {
                             </div>
                         </form>
                     </OverlayPanel>
+                    
                 </div>
             </div>
 
@@ -227,7 +208,14 @@ const DishForm = () => {
                 <FileUpload value={''} mode="basic" name="demo[]" url="/api/upload" accept="image/*" maxFileSize={1000000} onUpload={onUpload} auto chooseLabel="Buscar" />
             </div>
          
-            <Button label="CREAR" onClick={createDish}/>
+            <Button 
+                label={ buttonText }
+                onClick={(event) => {
+                    event.preventDefault(); 
+                    action(name, price, category, description)
+                }
+            }
+            />
         </form>
     </>);
 };

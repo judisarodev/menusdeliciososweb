@@ -9,12 +9,16 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Login } from './backoffice/pages/login/Login';
 import { Panel } from './backoffice/pages/panel/Panel';
 import { TokenContextProvider } from './backoffice/context/token/TokenContextProvider';
+import { CategoriesContextProvider } from './backoffice/context/restaurant/CategoriesContext';
+import { ProductsContextProvider } from './backoffice/context/restaurant/ProductsContext';
 
 
 function App() {
 
   return (
     <TokenContextProvider>
+      <CategoriesContextProvider>
+      <ProductsContextProvider>
       <PrimeReactProvider>
         <div className="App">
           <BrowserRouter>
@@ -27,6 +31,8 @@ function App() {
           </BrowserRouter>
         </div>
       </PrimeReactProvider>
+      </ProductsContextProvider>
+      </CategoriesContextProvider>
     </TokenContextProvider>
   );
 }
