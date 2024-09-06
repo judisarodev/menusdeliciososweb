@@ -23,6 +23,9 @@ const UpdateDishPanel = ({ visibility, setVisibility, dishId }) => {
     // State
     const [dish, setDish] = useState(null);
 
+    const productsContext = useContext(ProductsContext);
+    const { setProducts } =  productsContext; 
+
     useEffect(() => {
         function getDish(){
             fetch(BASE_URL + '/dish/get/' + dishId, {
@@ -50,8 +53,73 @@ const UpdateDishPanel = ({ visibility, setVisibility, dishId }) => {
         }
     }, [dishId, token]);
 
-    const updateDish = (name, category, price, description) => {
+    const updateDish = (name, price, category, description, image = 'image') => {
+        const data = {};
+        if(name){
+            data.name = name;
+        }
 
+        if(price){
+            data.price = price;
+        }
+
+        if(category && category.categoryId){
+            data.categoryId = category.categoryId;
+        }
+
+        if(description){
+            data.description = description;
+        }
+
+        if(image){
+            data.image = image;
+        }
+
+        fetch(BASE_URL + '/dish/update', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                data, 
+                dishId
+            }),
+        }).then((response) => {
+            if(!response.ok){
+                throw new Error('No fue posible consultar el producto.')
+            }
+            return response.json();
+        }).then((data) => {
+            console.log('data', data);
+            getDishes();
+            setVisibility(false);
+        }).catch((error) => {
+            console.error(error);
+        });
+
+        function getDishes(){
+            fetch(BASE_URL + '/dish/get-all', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': 'Bearer ' + token
+                },
+            }).then((response) => {
+                if(response.ok){
+                    return response.json();
+                }
+            }).then((data) => {
+                data.forEach((product) => {
+                    if(product && !product.description){
+                        product.description = 'Sin descripción'; 
+                    }
+                });
+                setProducts(data);
+            }).catch((error) => {
+                console.error(error); 
+            });
+        }
     }
 
     return(
@@ -157,7 +225,7 @@ const Table = () => {
         if(token){
             getDishes();
         }
-    }, [token]);
+    }, [token, ]);
 
     const showUpdateDishPanel = (dishId) => {
         setDishId(dishId);

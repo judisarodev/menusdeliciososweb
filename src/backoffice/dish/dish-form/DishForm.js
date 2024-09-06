@@ -63,6 +63,7 @@ const DishForm = ({
     const [description, setDescription] = useState(givenDescription); 
     const [price, setPrice] = useState(givenPrice);
     const [newCategory, setNewCategory] = useState();
+    const [image, setImage] = useState();
     const { setAllCategories, category, categories, changeCategory, addCategory } = useCategory();
     
     // References 
@@ -212,7 +213,7 @@ const DishForm = ({
                 label={ buttonText }
                 onClick={(event) => {
                     event.preventDefault(); 
-                    action(name, price, category, description)
+                    action(name, price, category, description, image)
                 }
             }
             />
