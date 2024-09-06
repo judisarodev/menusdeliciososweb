@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import './table.scss'; 
@@ -9,7 +9,9 @@ import { Button } from 'primereact/button';
 import { MdOutlineEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { Dialog } from "primereact/dialog";
+import { ConfirmDialog, confirmDialog  } from 'primereact/confirmdialog';
 import { DishForm } from "../dish-form/DishForm";
+import { Toast } from "primereact/toast";
 
 
 const Table = () => {
@@ -27,7 +29,11 @@ const Table = () => {
     const [updateDishPanelVisibility, setUpdateDishPanelVisibility] = useState(false);
     const [dishes, setDishes] = useState([]);
     const [dish, setDish] = useState();
+    const [dishIdToDelete, setDishIdToDelete] = useState(null);
     const [dishId, setDishId] = useState(null);
+    
+    // Reference
+    const toast = useRef(null);
 
     // Functions 
 
@@ -158,16 +164,41 @@ const Table = () => {
         setDishId(dishId);
     }
 
+    const showDeleteDishPanel = (dishId) => {
+        setDishIdToDelete(dishId);
+        confirm();
+    }
+
     const buttonTemplate = (rowData) => {
         return <Button onClick={() => showUpdateDishPanel(rowData.dishId)} label={<MdOutlineEdit size={20}/>} severity="primary" tooltip="Editar" tooltipOptions={{ position: 'top'}}/>;
     }
 
     const deleteButtonTemplate = (rowData) => {
-        return <Button label={<MdDelete size={20}/>} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top'}}/>;;
+        return <Button onClick={() => showDeleteDishPanel(rowData.dishId)} label={<MdDelete size={20}/>} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top'}}/>;;
     }
 
     const tableTitleTemplate = (text) => {
         return <h2>{text }</h2>
+    }
+
+    const accept = () => {
+        toast.current.show({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+    }
+
+    const reject = () => {
+        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+    }
+
+    const confirm = () => {
+        confirmDialog({
+            message: '¿Estás seguro de que deseas borrar el producto?',
+            header: 'Confirmacion',
+            defaultFocus: 'accept',
+            acceptLabel: 'Sí',
+            rejectLabel: 'No',
+            accept,
+            reject
+        });
     }
 
     return(<div className="table__container">
@@ -175,7 +206,6 @@ const Table = () => {
         {dishes && dishes.length > 0 && dishes.map((p) => {    
             return(
                 <div key={p.category}>
-                    { updateDishPanelVisibility ? 'sip': 'nop'}
                     <DataTable value={p.dishes} header={tableTitleTemplate(p.categoryName)} tableStyle={{ minWidth: '50rem' }} >
                         <Column style={{ width: '5%' }} body={buttonTemplate} header="Editar"></Column>
                         <Column style={{ width: '5%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
@@ -183,6 +213,9 @@ const Table = () => {
                         <Column style={{ width: '25%' }} field="price" header="Precio"></Column>
                         <Column style={{ width: '40%' }} field="description" header="Descripción"></Column>
                     </DataTable>
+
+                    <Toast ref={toast} />
+                    <ConfirmDialog />
 
                     {
                         dish && dish.category &&  
