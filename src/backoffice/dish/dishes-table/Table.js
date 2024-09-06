@@ -56,7 +56,7 @@ const UpdateDishPanel = ({ visibility, setVisibility, dishId }) => {
 
     return(
         <>
-        {   dish && 
+        {   dish && dish.category && 
             <Dialog 
                 header="Actualizar producto" 
                 visible={visibility} 

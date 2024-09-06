@@ -117,16 +117,16 @@ const DishForm = ({
             });
         }
 
-        if(givenCategory){
-            changeCategory(givenCategory);
-        }
-
+        
         if(token && !categoriesContext.categories){
             getCategories();
         }else {
             setAllCategories(categoriesContext.categories);
             console.log(categoriesContext.categories); 
-        }
+        }   
+        
+        console.log('given category', givenCategory);
+        changeCategory(givenCategory);
     }, [token]);
  
     return(<>    
