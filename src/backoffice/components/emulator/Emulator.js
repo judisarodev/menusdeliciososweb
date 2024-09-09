@@ -26,7 +26,7 @@ const Emulator = () => {
                 const item = {
                     categoryName: category.name,
                     categoryIcon: <FaHamburger />, // category.icon;
-                    categoryPicture: BASE_URL + '/category/get-image/' + category.image,
+                    categoryPicture: category.image ? BASE_URL + '/category/get-image/' + category.image: hamburguerImage,
                     dishes: [],
                 }
                 for(const product of products){

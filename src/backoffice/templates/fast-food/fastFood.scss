@@ -50,9 +50,8 @@ $font-size-small-text: 0.7rem;
 
 .fast-food-category__container{
     display: flex;
-    grid-template-columns: repeat(2, 1fr);
-    gap: $big-gap;
-    margin-top: $big-gap;;
+    flex-direction: column;
+    margin-top: $big-gap;
 }
 .fast-food-category__info{
     width: 100%;
@@ -62,14 +61,16 @@ $font-size-small-text: 0.7rem;
     position: relative;
     width: 100%;
 }
-.fast-food-category__image img{
-    width: 100%;
+.fast-food-category__image .img{
+    margin: 35px;
+    width: 70%;
     border-radius: 50%;
 }
 .fast-food-category__image--editable:hover {
+    border-radius: 50%;
     cursor: pointer;
 }
-.fast-food-category__image--editable:hover img{
+.fast-food-category__image--editable:hover .img{
     opacity: 0.3;
 }
 .overlay{

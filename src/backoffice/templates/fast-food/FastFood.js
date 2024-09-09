@@ -2,6 +2,7 @@ import React from "react";
 import './fastFood.scss';
 import { formatCurrency } from './../../../utils/currency/formatCurrency';
 import { MdOutlineFileUpload } from "react-icons/md";
+import { Skeleton } from "primereact/skeleton";
 
 const FastFood = ({ title, subtitle, groupedDishes, editable = false }) => {
     return(<div className="fast-food__container">
@@ -34,7 +35,7 @@ const FastFoodCategoryContainer = ({ group, editable }) => {
             </div>
         </div>
         <div className={ editable ? 'fast-food-category__image fast-food-category__image--editable' : 'fast-food-category__image' }>
-            <img src={ categoryPicture } alt="Comida rápida"/>
+            <img className="img" src={ categoryPicture } alt="Comida rápida"/>
             <div className="overlay">
                 <div>
                     <MdOutlineFileUpload color="white" size={30}/>
