@@ -203,12 +203,12 @@ const DishForm = ({
                 rows={3}/>
             </div>
 
-            <div className="dish-form__input-container">
+            {/*<div className="dish-form__input-container">
                 <label>Agregar imagen (opcional)</label>
                 <Toast ref={toast}></Toast>
                 <FileUpload value={''} mode="basic" name="demo[]" url="/api/upload" accept="image/*" maxFileSize={1000000} onUpload={onUpload} auto chooseLabel="Buscar" />
-            </div>
-         
+            </div>*/}
+
             <Button 
                 label={ buttonText }
                 onClick={(event) => {
