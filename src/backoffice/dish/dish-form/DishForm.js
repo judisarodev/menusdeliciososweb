@@ -93,9 +93,11 @@ const DishForm = ({
         createCategoryForm.current.toggle(e);
     }
 
+    /*
     const onUpload = () => {
         
     }
+    */
 
     useEffect(() => {
         function getCategories(){
@@ -117,7 +119,6 @@ const DishForm = ({
                 console.error(error);
             });
         }
-
         
         if(token && !categoriesContext.categories){
             getCategories();

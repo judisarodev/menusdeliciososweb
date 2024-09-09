@@ -17,6 +17,8 @@ const Emulator = () => {
     // Satates
     const [groupedDishes, setGroupedDishes] = useState([]);
 
+    const BASE_URL = process.env.REACT_APP_URL;
+
     useEffect(() => {
         const getGroupedDishes = () => {
             const arr = [];
@@ -24,7 +26,7 @@ const Emulator = () => {
                 const item = {
                     categoryName: category.name,
                     categoryIcon: <FaHamburger />, // category.icon;
-                    categoryPicture: hamburguerImage, // category.image;
+                    categoryPicture: BASE_URL + '/category/get-image/' + category.image,
                     dishes: [],
                 }
                 for(const product of products){
