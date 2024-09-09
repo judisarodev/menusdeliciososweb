@@ -9,9 +9,7 @@ import { Button } from 'primereact/button';
 import { MdOutlineEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { Dialog } from "primereact/dialog";
-import { ConfirmDialog, confirmDialog  } from 'primereact/confirmdialog';
 import { DishForm } from "../dish-form/DishForm";
-import { Toast } from "primereact/toast";
 
 
 const Table = () => {
@@ -138,6 +136,29 @@ const Table = () => {
         });
     }
 
+    function deleteDish(dishId){
+        fetch(BASE_URL + '/dish/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                dishId
+            }),
+        }).then((response) => {
+            if(!response.ok){
+                throw new Error('No fue posible eliminar el producto.')
+            }
+            return response.json();
+        }).then((data) => {
+            getDishes();
+            console.log(data);
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
     // Effects
     useEffect(() => {
         if(token){
@@ -165,8 +186,7 @@ const Table = () => {
     }
 
     const showDeleteDishPanel = (dishId) => {
-        setDishIdToDelete(dishId);
-        confirm();
+        deleteDish(dishId);
     }
 
     const buttonTemplate = (rowData) => {
@@ -181,26 +201,6 @@ const Table = () => {
         return <h2>{text }</h2>
     }
 
-    const accept = () => {
-        toast.current.show({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
-    }
-
-    const reject = () => {
-        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-    }
-
-    const confirm = () => {
-        confirmDialog({
-            message: '¿Estás seguro de que deseas borrar el producto?',
-            header: 'Confirmacion',
-            defaultFocus: 'accept',
-            acceptLabel: 'Sí',
-            rejectLabel: 'No',
-            accept,
-            reject
-        });
-    }
-
     return(<div className="table__container">
         
         {dishes && dishes.length > 0 && dishes.map((p) => {    
@@ -213,9 +213,6 @@ const Table = () => {
                         <Column style={{ width: '25%' }} field="price" header="Precio"></Column>
                         <Column style={{ width: '40%' }} field="description" header="Descripción"></Column>
                     </DataTable>
-
-                    <Toast ref={toast} />
-                    <ConfirmDialog />
 
                     {
                         dish && dish.category &&  
