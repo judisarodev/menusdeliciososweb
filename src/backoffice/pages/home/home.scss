@@ -8,13 +8,12 @@
     background-color: $secondary-background-color;
 }
 .bhome__manager-container{
-    height: 100vh;
     grid-column: 1/2;
     grid-row: 1/2;
     padding: $small-box-spacig;
 }
 .bhome__menu-sample{
-    height: 100vh;
+    height: 100%;
     grid-column: 2/3;
     grid-row: 1/2;
     padding: $small-box-spacig;

@@ -34,14 +34,9 @@ const FastFoodCategoryContainer = ({ group, editable }) => {
                 })}
             </div>
         </div>
-        <div className={ editable ? 'fast-food-category__image fast-food-category__image--editable' : 'fast-food-category__image' }>
+        <div className='fast-food-category__image fast-food-category__image'>
             <img className="img" src={ categoryPicture } alt="Comida rápida"/>
-            <div className="overlay">
-                <div>
-                    <MdOutlineFileUpload color="white" size={30}/>
-                </div>
-                Cambiar imagen
-            </div>
+            
         </div>
     </div>);
 }

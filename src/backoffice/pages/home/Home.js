@@ -7,6 +7,7 @@ import { CategoriesContextProvider } from "../../context/restaurant/CategoriesCo
 import { ProductsContext, ProductsContextProvider } from "../../context/restaurant/ProductsContext";
 import { TokenContext } from "../../context/token/TokenContextProvider";
 import { Messages } from "primereact/messages";
+import { CategoryForm } from "../../category/category-form/CategoryForm";
 
 const Home = () => {    
 
@@ -60,7 +61,10 @@ const Home = () => {
         <div className="bhome__container">
             <div className="bhome__manager-container">
                 <Messages ref={message} />
-                <DishForm action={createDish} buttonText={'CREAR'}/>
+                <div>
+                    <CategoryForm />
+                    <DishForm action={createDish} buttonText={'CREAR'}/>
+                </div>
             </div>
             <div className="bhome__menu-sample">
                 <Emulator />
