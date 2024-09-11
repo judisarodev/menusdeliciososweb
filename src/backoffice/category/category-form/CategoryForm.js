@@ -9,6 +9,9 @@ const CategoryForm = ({ buttonText = 'CREAR', showTitle = true, action }) => {
     const [name, setName] = useState();
     const [image, setImage] = useState();
     const toast = useRef(null);
+
+    // Env
+    const BASE_URL = process.env.REACT_APP_URL;
     
     // Functions
     const onUpload = () => {
@@ -27,13 +30,6 @@ const CategoryForm = ({ buttonText = 'CREAR', showTitle = true, action }) => {
                 value={name} 
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Ingresa el nombre del producto"/>
-            </div>
-
-            <div className="dish-form__input-container">
-                <label>Agregar imagen</label>
-                <Toast ref={toast}></Toast>
-                <FileUpload value={''} mode="basic" name="demo[]" url="/api/upload" accept="image/*" maxFileSize={1000000} onUpload={onUpload} auto chooseLabel="Elegir de galería" />
-                <FileUpload value={''} mode="basic" name="demo[]" url="/api/upload" accept="image/*" maxFileSize={1000000} onUpload={onUpload} auto chooseLabel="Examinar equipo" />
             </div>
 
             <Button 
