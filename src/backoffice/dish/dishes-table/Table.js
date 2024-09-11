@@ -10,7 +10,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { Dialog } from "primereact/dialog";
 import { DishForm } from "../dish-form/DishForm";
-
+import { FaImage } from "react-icons/fa"
 
 const Table = () => {
 
@@ -201,6 +201,10 @@ const Table = () => {
         return <h2>{text }</h2>
     }
 
+    const manageImageButtonTemplate = (rowData) => {
+        return <Button onClick={() => console.log('')} label={<FaImage size={20} />} severity="secondary" tooltip="Imagen" tooltipOptions={{ position: 'top' }} />;;
+    }
+
     return(<div className="table__container">
         
         {dishes && dishes.length > 0 && dishes.map((p) => {    
@@ -209,9 +213,10 @@ const Table = () => {
                     <DataTable value={p.dishes} header={tableTitleTemplate(p.categoryName)} tableStyle={{ minWidth: '50rem' }} >
                         <Column style={{ width: '5%' }} body={buttonTemplate} header="Editar"></Column>
                         <Column style={{ width: '5%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
+                        <Column style={{ width: '5%' }} body={manageImageButtonTemplate} header="Imagen"></Column>
                         <Column style={{ width: '25%' }} field="name" header="Nombre"></Column>
                         <Column style={{ width: '25%' }} field="price" header="Precio"></Column>
-                        <Column style={{ width: '40%' }} field="description" header="Descripción"></Column>
+                        <Column style={{ width: '35%' }} field="description" header="Descripción"></Column>
                     </DataTable>
 
                     {

@@ -6,6 +6,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import { CategoryForm } from "../category-form/CategoryForm";
 import { CategoriesContext } from "../../context/restaurant/CategoriesContext";
+import { FaImage } from "react-icons/fa";
+import './categoriesTable.scss';
 
 
 const tableTitleTemplate = (text) => {
@@ -18,6 +20,10 @@ const buttonTemplate = (rowData) => {
 
 const deleteButtonTemplate = (rowData) => {
     return <Button onClick={() => console.log('')} label={<MdDelete size={20} />} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top' }} />;;
+}
+
+const manageImageButtonTemplate = (rowData) => {
+    return <Button onClick={() => console.log('')} label={<FaImage size={20} />} severity="secondary" tooltip="Imagen" tooltipOptions={{ position: 'top' }} />;;
 }
 
 
@@ -41,8 +47,8 @@ const CategoriesTable = () => {
         <DataTable value={categories} header={tableTitleTemplate("Categorías")} tableStyle={{ minWidth: '50rem' }} >
             <Column style={{ width: '5%' }} body={buttonTemplate} header="Editar"></Column>
             <Column style={{ width: '5%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
-            <Column style={{ width: '25%' }} field="name" header="Nombre"></Column>
-            <Column style={{ width: '55%' }} field="name" header="Imagen"></Column>
+            <Column style={{ width: '5%' }} body={manageImageButtonTemplate} header="Imagen"></Column>
+            <Column style={{ width: '85%' }} field="name" header="Imagen"></Column>
         </DataTable>
 
         {
