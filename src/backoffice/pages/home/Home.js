@@ -8,6 +8,7 @@ import { ProductsContext, ProductsContextProvider } from "../../context/restaura
 import { TokenContext } from "../../context/token/TokenContextProvider";
 import { Messages } from "primereact/messages";
 import { CategoryForm } from "../../category/category-form/CategoryForm";
+import { CategoriesTable } from "../../category/categories-table/CategoriesTable";
 
 const Home = () => {    
 
@@ -70,6 +71,7 @@ const Home = () => {
                 <Emulator />
             </div>
             <div className="bhome__table">
+                <CategoriesTable />
                 <Table />
             </div>
         </div>
