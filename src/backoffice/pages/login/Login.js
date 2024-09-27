@@ -38,15 +38,14 @@ const Login = ({ loginPage = true }) => {
 
     const loginRequeset = () => {
         if(username && password){
+            const credentials = btoa(`${username}:${password}`); 
+
             fetch(BASE_URL + '/restaurant/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + credentials,
                 },
-                body: JSON.stringify({
-                    email: username,
-                    password
-                })
             })
             .then((response) => {
                 const statusCode = response.status;
