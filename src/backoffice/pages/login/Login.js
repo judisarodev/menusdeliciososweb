@@ -56,7 +56,7 @@ const Login = ({ loginPage = true }) => {
                     throw new Error('No autorizado');
                 }
             }).then((data) => {
-                if(data.isVerified && data.jwt){
+                if(data.jwt){
                     setToken(data.jwt);
                     sessionStorage.setItem('token', data.jwt);
                     navigate('/panel');
