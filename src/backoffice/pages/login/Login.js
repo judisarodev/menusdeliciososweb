@@ -43,21 +43,44 @@ const Login = ({ loginPage = true }) => {
 
     // Get countries and types
     useEffect(() => {
-        fetch(BASE_URL + '/country/get-all', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then((response) => {
-            if(response.ok){
-                return response.json();
-            }
-            throw new Error('Error al consultar los países');
-        }).then((c) => {
-            setCountries(c);
-        }).catch((error) => {
-            message.current.show({ severity: 'error', summary: 'Ha ocurrido un error, intenta más tarde' });
-        });
+        const getCountries = () => {
+            fetch(BASE_URL + '/country/get-all', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => {
+                if(response.ok){
+                    return response.json();
+                }
+                throw new Error('Error al consultar los países');
+            }).then((c) => {
+                setCountries(c);
+            }).catch((error) => {
+                message.current.show({ severity: 'error', summary: 'Ha ocurrido un error, intenta más tarde' });
+            });
+        }
+
+        const getTypes = () => {
+            fetch(BASE_URL + '/restaurant-type/get-all', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => {
+                if(response.ok){
+                    return response.json();
+                }
+                throw new Error('Error al consultar los tipos de restaurante');
+            }).then((c) => {
+                setTypes(c);
+            }).catch((error) => {
+                message.current.show({ severity: 'error', summary: 'Ha ocurrido un error, intenta más tarde' });
+            });
+        }
+
+        getCountries();
+        getTypes();
     }, []);
 
     const validateCreateComopanyForm = () => {
