@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import './login.scss';
 import { SelectButton } from 'primereact/selectbutton';
 import { Button } from 'primereact/button';
@@ -40,6 +40,25 @@ const Login = ({ loginPage = true }) => {
 
     // References 
     const message = useRef(null);
+
+    // Get countries and types
+    useEffect(() => {
+        fetch(BASE_URL + '/country/get-all', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((response) => {
+            if(response.ok){
+                return response.json();
+            }
+            throw new Error('Error al consultar los países');
+        }).then((c) => {
+            setCountries(c);
+        }).catch((error) => {
+            message.current.show({ severity: 'error', summary: 'Ha ocurrido un error, intenta más tarde' });
+        });
+    }, []);
 
     const validateCreateComopanyForm = () => {
         if(restaurantName && email && phoneNumber && address && password && confirmPassword){
