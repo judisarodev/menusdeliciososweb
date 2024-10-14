@@ -121,9 +121,16 @@ const Login = ({ loginPage = true }) => {
         }).then((response) => {
             if(response.ok){
                 return response.json();
+            }else {
+                throw new Error(response.status);
             }
-            throw new Error(response.status);
+        }).then((data) => {
+            const { jwt } = data;
+            setToken(jwt);
+            sessionStorage.setItem('token', jwt);
+            navigate('/panel');
         }).catch((error) => {
+            console.log(error);
             if(error.message === '409'){
                 message.current.show({ severity: 'error', summary: 'El correo ingresado ya está registrado' }); 
             }else if(error.message === '401'){
