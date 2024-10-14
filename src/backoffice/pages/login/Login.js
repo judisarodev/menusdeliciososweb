@@ -8,7 +8,8 @@ import logo from './../../../assets/logo/white.png';
 import { Checkbox } from 'primereact/checkbox';
 import { useNavigate } from "react-router-dom";
 import { TokenContext } from "../../context/token/TokenContextProvider";
-import { Messages } from 'primereact/messages';
+import { Toast } from 'primereact/toast';
+import { Dropdown } from 'primereact/dropdown';
 
 const Login = ({ loginPage = true }) => {
     // Data
@@ -17,7 +18,7 @@ const Login = ({ loginPage = true }) => {
 
     // Context
     const tokenContext = useContext(TokenContext);
-    const { setToken } = tokenContext;
+    const { setToken, token } = tokenContext;
 
     // States
     const [page, setPage] = useState(loginPage ? pages[0] : pages[1]);
@@ -29,12 +30,56 @@ const Login = ({ loginPage = true }) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
     const [checked, setChecked] = useState(false);
+    const [country, setCountry] = useState("");
+    const [countries, setCountries] = useState([]);
+    const [type, setType] = useState("");
+    const [types, setTypes] = useState([]);
     
     // Navigation
     const navigate = useNavigate();
 
     // References 
     const message = useRef(null);
+
+    const validateCreateComopanyForm = () => {
+        if(restaurantName && email && phoneNumber && address && password && confirmPassword){
+            if(password === confirmPassword){
+                if(checked === true){
+                    const payload = {
+                        restaurantName,
+                        email, 
+                        phoneNumber,
+                        address,
+                        password
+                    }
+                    createCompany(payload);
+                }else{
+                    message.current.show({severity: 'warn', summary: 'Debes aceptar los términos y condiciones'});
+                }
+            }else {
+                message.current.show({severity: 'warn', summary: 'Las contraseñas ingresadas no coinciden'});
+            }
+        }else{
+            message.current.show({severity: 'warn', summary: 'Debes ingresar todos los campos'});
+        }
+    }
+
+    const createCompany = (payload) => {
+        fetch(BASE_URL + '/restaurant/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            }
+        }).then((response) => {
+            if(response.ok){
+                return response.json();
+            }
+            throw new Error("Error en la petición");
+        }).catch((error) => {
+            message.current.show({ severity: 'error', summary: 'Error al crear la cuenta' }); 
+        });
+    }
 
     const loginRequeset = () => {
         if(username && password){
@@ -73,7 +118,7 @@ const Login = ({ loginPage = true }) => {
 
     return(<div className="login__main-container">
         <img src={logo} alt="logo"/>
-        <Messages ref={message} />
+        <Toast ref={message}/>
         <div className="login__container">
             <SelectButton value={page} onChange={(e) =>setPage(e.value)} options={pages} />
             {page === pages[0] ?
@@ -112,6 +157,26 @@ const Login = ({ loginPage = true }) => {
                         <InputText value={address} onChange={(e) => setAddress(e.target.value)} />
                     </div>
                     <div className="login__input-item">
+                        <label htmlFor="country">País</label>
+                        <Dropdown
+                        value={country}
+                        options={countries}
+                        onChange={(e) => setCountry(e.value)}
+                        optionLabel="name"
+                        placeholder="Selecciona un país"
+                        />
+                    </div>
+                    <div className="login__input-item">
+                        <label htmlFor="type">Tipo de restaurante</label> 
+                        <Dropdown 
+                        value={type}
+                        options={types}
+                        onChange={(e) => setType(e.value)}
+                        optionLabel="name"
+                        placeholder="Selecciona el tipo de restaurante"
+                        />
+                    </div>
+                    <div className="login__input-item">
                         <label htmlFor="username">Contraseña</label>
                         <Password
                             toggleMask 
@@ -139,7 +204,7 @@ const Login = ({ loginPage = true }) => {
                     <p>Acepto los <span onClick={() => navigate('/terms')}>términos y condiciones</span> para el tratamiento de datos personales.</p>
                 </div>
             </div>}
-            <Button label="Siguiente" severity="primary" onClick={loginRequeset} />    
+            <Button label="Siguiente" severity="primary" onClick={page === pages[0] ? loginRequeset : validateCreateComopanyForm } />    
         </div>
     </div>);
 }

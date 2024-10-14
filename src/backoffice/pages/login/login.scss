@@ -39,8 +39,7 @@
     font-size: $small-font-size;
 }
 #login__register-form{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
     gap: $large-spacing;
 }
 .login__terms{
