@@ -29,6 +29,7 @@ const Login = ({ loginPage = true }) => {
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
+    const [addressDetails, setAddressDetails] = useState('');
     const [checked, setChecked] = useState(false);
     const [country, setCountry] = useState("");
     const [countries, setCountries] = useState([]);
@@ -88,11 +89,14 @@ const Login = ({ loginPage = true }) => {
             if(password === confirmPassword){
                 if(checked === true){
                     const payload = {
-                        restaurantName,
+                        name: restaurantName,
                         email, 
+                        password,
                         phoneNumber,
                         address,
-                        password
+                        addressDetails,
+                        countryId: country.countryId,
+                        restaurantTypeId: type.restaurantTypeId,
                     }
                     createCompany(payload);
                 }else{
@@ -112,14 +116,21 @@ const Login = ({ loginPage = true }) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token,
-            }
+            },
+            body: JSON.stringify(payload),
         }).then((response) => {
             if(response.ok){
                 return response.json();
             }
-            throw new Error("Error en la petición");
+            throw new Error(response.status);
         }).catch((error) => {
-            message.current.show({ severity: 'error', summary: 'Error al crear la cuenta' }); 
+            if(error.message === '409'){
+                message.current.show({ severity: 'error', summary: 'El correo ingresado ya está registrado' }); 
+            }else if(error.message === '401'){
+                message.current.show({ severity: 'error', summary: 'Ingresa todos los campos' }); 
+            }else {
+                message.current.show({ severity: 'error', summary: 'Ha ocurrido un error' }); 
+            }
         });
     }
 
@@ -197,6 +208,10 @@ const Login = ({ loginPage = true }) => {
                     <div className="login__input-item">
                         <label htmlFor="username">Dirección</label>
                         <InputText value={address} onChange={(e) => setAddress(e.target.value)} />
+                    </div>
+                    <div className="login__input-item">
+                        <label htmlFor="username">Detalles de la dirección (opcional)</label>
+                        <InputText value={addressDetails} onChange={(e) => setAddressDetails(e.target.value)} />
                     </div>
                     <div className="login__input-item">
                         <label htmlFor="country">País</label>
