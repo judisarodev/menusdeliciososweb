@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import './emulator.scss';
 import { FastFood } from "../../templates/fast-food/FastFood";
 import { MenuContext } from "../../context/restaurant/MenuContext";

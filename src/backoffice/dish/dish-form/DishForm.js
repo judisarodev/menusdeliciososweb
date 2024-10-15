@@ -7,51 +7,14 @@ import { Button } from 'primereact/button';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { IoAddOutline } from "react-icons/io5";
 import { Tooltip } from 'primereact/tooltip';
-import { FileUpload } from 'primereact/fileupload';
-import { Toast } from 'primereact/toast';
-import './dishForm.scss';
 import { TokenContext } from "../../context/token/TokenContextProvider";
-
-// React hook for categories management
-const useCategory = () => {
-
-    // States
-    const [categories, setCategories] = useState([]);
-    const [category, setCategory] = useState(null);
-
-    // Functions
-    const setAllCategories = (categoriesList) => {
-        setCategories(categoriesList);
-    }
-
-    const changeCategory = (category) => {
-        setCategory(category);
-    };
-    
-    const addCategory = (name) => {
-        const newCategory = {
-            id: categories.length > 0 ? categories[categories.length - 1].id + 1 : 1,
-            name
-        };
-        setCategories([...categories, newCategory]);
-
-        changeCategory(newCategory); 
-    };
-
-    return {
-        category,
-        categories, 
-        changeCategory, 
-        addCategory,
-        setAllCategories
-    }
-}
+import { MenuContext } from "../../context/restaurant/MenuContext";
+import './dishForm.scss';
 
 const DishForm = ({
     buttonText, 
     action, 
     showTitile = true, 
-    showAddCategoryButton = true,
     givenName = '', 
     givenCategory = null, 
     givenPrice = 0, 
@@ -61,9 +24,9 @@ const DishForm = ({
     const [name, setName] = useState(givenName);
     const [description, setDescription] = useState(givenDescription); 
     const [price, setPrice] = useState(givenPrice);
-    const [newCategory, setNewCategory] = useState();
     const [image, setImage] = useState();
-    const { setAllCategories, category, categories, changeCategory, addCategory } = useCategory();
+    const [categories, setCategories] = useState([]);
+    const [category, setCategory] = useState(givenCategory);
     
     // References 
     const toast = useRef(null);
@@ -73,64 +36,35 @@ const DishForm = ({
     // Context
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
+    const menuContext = useContext(MenuContext);
+    const { menu } = menuContext;
 
-    // Env
-    const BASE_URL = process.env.REACT_APP_URL;
+    useEffect(() => {
+        if(menu && menu.categories){
+            setCategories(menu.categories.map((category) => {
+                return {
+                    categoryId: category.categoryId,
+                    name: category.name,
+                }
+            }));
+        }
+    }, [menu]);
 
-    const createCategory = (e) => {
-        e.preventDefault(); 
-        setNewCategory(null); 
-        addCategory(newCategory);
-        createCategoryForm.current.toggle(false);
-    }
-
-    const showCreateCategoryForm = (e) => {
-        e.preventDefault(); 
-        createCategoryForm.current.toggle(e);
-    }
-    
     return(<>    
         <Tooltip target=".tooltip-target" />
-        
         <form className="dish-form__container">
             {showTitile && <div>
                 <p className="dish-form__title">Crear producto</p>
             </div>}
             <div className="dish-form__input-container">
                 <label>Categoría *</label>
-                <div className={showAddCategoryButton ? 'dish-form__input__group' : 'dish-form__input-container'}>
+                <div className={'dish-form__input-container'}>
                     <Dropdown 
                     value={category} 
-                    onChange={(e) => changeCategory(e.value)}
+                    onChange={(e) => setCategory(e.value)}
                     options={categories}
                     optionLabel="name"
                     placeholder="Selecciona una categoría"/>
-                    {
-                        showAddCategoryButton &&
-                        <Button onClick={showCreateCategoryForm} 
-                        label={<IoAddOutline 
-                        className="dish-form__input__group--icon tooltip-target"
-                        size={25} color="white"/>}
-                        tooltip="Crear categoría"
-                        tooltipOptions={{ position: 'top' }}
-                        />
-                    }
-                    <OverlayPanel ref={createCategoryForm}>
-                        <form>
-                            <div className="dish-form__input-container">
-                                <label>Nueva categoría</label>
-                                <InputText 
-                                value={newCategory}   
-                                onChange={(e) => setNewCategory(e.target.value)}
-                                placeholder="Ingresar categoría"/>
-                                <br></br>
-                                <Button 
-                                label="Agregar"
-                                onClick={createCategory}/>
-                            </div>
-                        </form>
-                    </OverlayPanel>
-                    
                 </div>
             </div>
 
@@ -162,21 +96,17 @@ const DishForm = ({
                 rows={3}/>
             </div>
 
-            {/*<div className="dish-form__input-container">
-                <label>Agregar imagen (opcional)</label>
-                <Toast ref={toast}></Toast>
-                <FileUpload value={''} mode="basic" name="demo[]" url="/api/upload" accept="image/*" maxFileSize={1000000} onUpload={onUpload} auto chooseLabel="Elegir de galería" />
-                <FileUpload value={''} mode="basic" name="demo[]" url="/api/upload" accept="image/*" maxFileSize={1000000} onUpload={onUpload} auto chooseLabel="Examinar equipo" />
-            </div>*/}
-
             <Button 
                 label={ buttonText }
                 onClick={(event) => {
                     event.preventDefault(); 
                     if(name && price && category){
                         action(name, price, category, description, image)
-                    }else {
-                        
+                        setName('');
+                        setPrice(0);
+                        setCategory(null);
+                        setDescription('');
+                        setImage('');
                     }
                 }
             }

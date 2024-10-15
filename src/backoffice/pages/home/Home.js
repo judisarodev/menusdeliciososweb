@@ -30,7 +30,7 @@ const Home = () => {
     }
 
     const createDish = (name, price, category, description = '', image = 'image') => {
-        if(!name || !price || !category){
+        if(!name || !price || !category || !category.categoryId){
             showMessage('error', 'Error al crear el producto');
         }
 
