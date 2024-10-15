@@ -9,6 +9,7 @@ import { IoFastFood } from "react-icons/io5";
 import './categoriesTable.scss';
 import { MenuContext } from "../../context/restaurant/MenuContext";
 import { TokenContext } from "../../context/token/TokenContextProvider";
+import { IconsContext } from "../../context/restaurant/IconsContext";
 
 const CategoriesTable = () => {
     // Env
@@ -19,6 +20,7 @@ const CategoriesTable = () => {
     const { menu } = menuContext;
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
+    const { icons } = useContext(IconsContext);
 
     const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState();
@@ -31,6 +33,7 @@ const CategoriesTable = () => {
                 return {
                     categoryId: category.categoryId,
                     name: category.name,
+                    icon: category.icon
                 }
             }));
         }
@@ -73,6 +76,15 @@ const CategoriesTable = () => {
             tooltipOptions={{ position: 'top' }} />
         );
     }
+
+    const iconTemplate = (rowData) => { 
+        const i = icons.find((icon) => icon.id === rowData.icon);
+        return (
+            <div className="category-table__big-icon">
+                { i.component }
+            </div>
+        );
+    }
     
     const deleteButtonTemplate = (rowData) => {
         return <Button onClick={() => deleteCategory(rowData.categoryId)} label={<MdDelete size={20} />} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top' }} />;;
@@ -108,7 +120,8 @@ const CategoriesTable = () => {
         <DataTable value={categories} header={tableTitleTemplate("Categorías")} tableStyle={{ minWidth: '50rem' }} emptyMessage={'No hay categorías'} >
             <Column style={{ width: '5%' }} body={buttonTemplate} header="Editar"></Column>
             <Column style={{ width: '5%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
-            <Column style={{ width: '85%' }} field="name" header="Nombre"></Column>
+            <Column style={{ width: '5%' }} body={iconTemplate} header="Icono"></Column>
+            <Column style={{ width: '70%' }} field="name" header="Nombre"></Column>
         </DataTable>
 
         {
@@ -130,11 +143,7 @@ const CategoriesTable = () => {
                 showTitle={false} 
                 buttonText={'ACTUALIZAR'} 
                 givenName={category.name}
-                givenIcon={{
-                    name: 'Comida rápida',
-                    id: 'fast-food',
-                    component: <IoFastFood />
-                }}
+                givenIcon={icons.find((icon) => icon.id === category.icon)}
                 action={updateCategory}
                 />
             </Dialog>

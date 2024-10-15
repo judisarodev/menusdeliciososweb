@@ -10,26 +10,29 @@ import { Login } from './backoffice/pages/login/Login';
 import { Panel } from './backoffice/pages/panel/Panel';
 import { TokenContextProvider } from './backoffice/context/token/TokenContextProvider';
 import { MenuContextProvider } from './backoffice/context/restaurant/MenuContext';
+import { IconsContextProvider } from './backoffice/context/restaurant/IconsContext';
 
 
 function App() {
 
   return (
     <TokenContextProvider>
-      <MenuContextProvider>
-      <PrimeReactProvider>
-        <div className="App">
-          <BrowserRouter>
-            <Routes>
-              <Route path='/' element={<Home />}/>
-              <Route path='/login' element={<Login />}/>
-              <Route path='/terms' element={'Términos'}/>
-              <Route path='/panel' element={<Panel />}/>
-            </Routes>
-          </BrowserRouter>
-        </div>
-      </PrimeReactProvider>
-      </MenuContextProvider>
+      <IconsContextProvider>
+        <MenuContextProvider>
+          <PrimeReactProvider>
+            <div className="App">
+              <BrowserRouter>
+                <Routes>
+                  <Route path='/' element={<Home />} />
+                  <Route path='/login' element={<Login />} />
+                  <Route path='/terms' element={'Términos'} />
+                  <Route path='/panel' element={<Panel />} />
+                </Routes>
+              </BrowserRouter>
+            </div>
+          </PrimeReactProvider>
+        </MenuContextProvider>
+      </IconsContextProvider>
     </TokenContextProvider>
   );
 }

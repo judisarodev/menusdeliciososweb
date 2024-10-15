@@ -1,36 +1,16 @@
 import { Button } from "primereact/button";
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from "primereact/inputtext";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import './categoryForm.scss';
-import { FaHamburger } from "react-icons/fa";
-import { FaPizzaSlice } from "react-icons/fa6";
-import { IoFastFood } from "react-icons/io5";
-import { GiTacos } from "react-icons/gi";
 import { Toast } from "primereact/toast";
+import { IconsContext } from "../../context/restaurant/IconsContext";
 
 const CategoryForm = ({ givenName = '', givenIcon = null, buttonText = 'CREAR', showTitle = true, action }) => {
     // States
     const [name, setName] = useState(givenName);
     const [selectedIcon, setSelectedIcon] = useState(givenIcon);
-    const icons = [{
-            name: 'Comida rápida',
-            id: 'fast-food',
-            component: <IoFastFood />
-        }, {
-            name: 'Hamburguesa',
-            id: 'hamburguer',
-            component: <FaHamburger />
-        }, {
-            name: 'Pizza',
-            id: 'pizza',
-            component: <FaPizzaSlice />
-        }, {
-            name: 'Taco',
-            id: 'taco',
-            component: <GiTacos />
-        }
-    ];
+    const { icons } = useContext(IconsContext);
 
     // References
     const message = useRef(null);
