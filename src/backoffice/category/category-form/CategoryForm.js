@@ -15,22 +15,26 @@ const CategoryForm = ({ buttonText = 'CREAR', showTitle = true, action }) => {
     const [icon, setIcon] = useState();
     const icons = [{
             name: 'Comida rápida',
-            source: <IoFastFood />
+            id: 'fast-food',
+            component: <IoFastFood />
         }, {
             name: 'Hamburguesa',
-            source: <FaHamburger />
+            id: 'hamburguer',
+            component: <FaHamburger />
         }, {
             name: 'Pizza',
-            source: <FaPizzaSlice />
+            id: 'pizza',
+            component: <FaPizzaSlice />
         }, {
             name: 'Taco',
-            source: <GiTacos />
+            id: 'taco',
+            component: <GiTacos />
         }
     ];
 
     const iconTemplate = (icon) => {
         return <div className="category-form__icon-list-item">
-            <div>{ icon.source }</div>
+            <div>{ icon.component }</div>
             <div>{icon.name}</div>
         </div>
     }
@@ -65,7 +69,7 @@ const CategoryForm = ({ buttonText = 'CREAR', showTitle = true, action }) => {
                 label={buttonText}
                 onClick={(event) => {
                     event.preventDefault();
-                    action(name, icon);
+                    action({ name, icon: icon.id });
                 }
                 }
             />

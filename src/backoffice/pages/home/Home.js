@@ -66,14 +66,14 @@ const Home = () => {
 
     function createCategory({ name, icon }){
         if(!name || !icon){
-            showMessage('error', 'Error al crear el producto');
+            showMessage('error', 'Ingresa todos los valores');
         }
 
         // Tarea: Agregar un servicio que permita la creación de platos 
         fetch(BASE_URL + '/category/create', {
             method: 'POST', 
             body: JSON.stringify({
-                name, icon
+                name, icon, menuId
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -86,7 +86,6 @@ const Home = () => {
             throw new Error();
         }).then((data) => {
             showMessage('info', 'Producto creado con éxito');
-            productsContext.setProducts([...productsContext.products, { ...data }]);
         }).catch((error) => {
             showMessage('error', 'Error al crear el producto');
         });
@@ -105,14 +104,14 @@ const Home = () => {
                     return response.json();
                 }
             }).then((data) => {
-                setMenuId(data.menuId)
-                getMenu();
+                setMenuId(data.menuId);
+                getMenu(data.menuId);
             }).catch(() => {
                 message.current.show({ severity: 'error', summary: 'Ha ocurrido un error' });
             });
         }
 
-        function getMenu(){
+        function getMenu(menuId){
             fetch(BASE_URL + '/menu/get/' + menuId, {
                 method: 'GET',
                 headers: {
