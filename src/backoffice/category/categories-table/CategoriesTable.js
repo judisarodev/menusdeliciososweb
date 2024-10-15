@@ -5,7 +5,7 @@ import { Dialog } from "primereact/dialog";
 import React, { useContext, useEffect, useState } from "react";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import { CategoryForm } from "../category-form/CategoryForm";
-import { FaImage } from "react-icons/fa";
+import { IoFastFood } from "react-icons/io5";
 import './categoriesTable.scss';
 import { MenuContext } from "../../context/restaurant/MenuContext";
 import { TokenContext } from "../../context/token/TokenContextProvider";
@@ -61,15 +61,46 @@ const CategoriesTable = () => {
     }
     
     const buttonTemplate = (rowData) => {
-        return <Button onClick={() => console.log('')} label={<MdOutlineEdit size={20} />} severity="primary" tooltip="Editar" tooltipOptions={{ position: 'top' }} />;
+        return (
+            <Button 
+            onClick={() => {
+                setCategory(rowData);
+                setUpdateDishPanelVisibility(true)
+            }} 
+            label={ <MdOutlineEdit size={20} /> } 
+            severity="primary" 
+            tooltip="Editar" 
+            tooltipOptions={{ position: 'top' }} />
+        );
     }
     
     const deleteButtonTemplate = (rowData) => {
         return <Button onClick={() => deleteCategory(rowData.categoryId)} label={<MdDelete size={20} />} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top' }} />;;
     }
-    
-    const manageImageButtonTemplate = (rowData) => {
-        return <Button onClick={() => console.log('')} label={<FaImage size={20} />} severity="secondary" tooltip="Imagen" tooltipOptions={{ position: 'top' }} />;;
+
+    const updateCategory = (name, icon) => {
+        fetch(BASE_URL + '/category/update', {
+            method: 'PUT',
+            body: JSON.stringify({
+                name,
+                icon,
+                categoryId: category.categoryId
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ token
+            }
+        }).then((response) => {
+            setUpdateDishPanelVisibility(false);
+            if(response.ok){
+                return response.json();
+            }
+            throw new Error('Error al actualizar la categoría');
+        }).then((data) => {
+            console.log('Categoría actualizada con éxito');
+        }).catch((error) => {
+            console.error(error);
+        });
     }
 
     return (<div className="category-table__container">
@@ -83,7 +114,7 @@ const CategoriesTable = () => {
         {
             category &&
             <Dialog
-                header="Actualizar categoryía"
+                header="Actualizar categoría"
                 visible={updateDishPanelVisibility}
                 style={{ width: '50vw' }}
                 onHide={() => {
@@ -95,7 +126,17 @@ const CategoriesTable = () => {
                         setUpdateDishPanelVisibility(false);
                     }
                 }}>
-                <CategoryForm />
+                <CategoryForm 
+                showTitle={false} 
+                buttonText={'ACTUALIZAR'} 
+                givenName={category.name}
+                givenIcon={{
+                    name: 'Comida rápida',
+                    id: 'fast-food',
+                    component: <IoFastFood />
+                }}
+                action={updateCategory}
+                />
             </Dialog>
         }
     </div>);

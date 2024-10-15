@@ -9,10 +9,10 @@ import { IoFastFood } from "react-icons/io5";
 import { GiTacos } from "react-icons/gi";
 import { Toast } from "primereact/toast";
 
-const CategoryForm = ({ buttonText = 'CREAR', showTitle = true, action }) => {
+const CategoryForm = ({ givenName = '', givenIcon = null, buttonText = 'CREAR', showTitle = true, action }) => {
     // States
-    const [name, setName] = useState('');
-    const [selectedIcon, setSelectedIcon] = useState(null);
+    const [name, setName] = useState(givenName);
+    const [selectedIcon, setSelectedIcon] = useState(givenIcon);
     const icons = [{
             name: 'Comida rápida',
             id: 'fast-food',
@@ -88,7 +88,7 @@ const CategoryForm = ({ buttonText = 'CREAR', showTitle = true, action }) => {
                 label={buttonText}
                 onClick={(event) => {
                     event.preventDefault();
-                    action({ name, icon: selectedIcon && selectedIcon.id ? selectedIcon.id : null });
+                    action(name, selectedIcon.id);
                     setName('');
                     setSelectedIcon(null);
                 }
