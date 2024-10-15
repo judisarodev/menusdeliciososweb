@@ -5,7 +5,6 @@ import { Dialog } from "primereact/dialog";
 import React, { useContext, useEffect, useState } from "react";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import { CategoryForm } from "../category-form/CategoryForm";
-import { CategoriesContext } from "../../context/restaurant/CategoriesContext";
 import { FaImage } from "react-icons/fa";
 import './categoriesTable.scss';
 
@@ -31,15 +30,11 @@ const manageImageButtonTemplate = (rowData) => {
 const CategoriesTable = () => {
 
     // Context 
-    const categoriesContext = useContext(CategoriesContext);
-    const [categories, setCategories] = useState(categoriesContext.categories);
+    
+    const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState();
     const [categoryId, setCategoryId] = useState();
     const [updateDishPanelVisibility, setUpdateDishPanelVisibility] = useState(false);
-
-    useEffect(() => {
-        setCategories(categoriesContext.categories);
-    }, [categoriesContext.categories]);
 
     return (<div className="category-table__container">
         

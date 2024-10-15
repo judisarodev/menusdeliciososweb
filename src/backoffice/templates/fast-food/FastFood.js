@@ -1,31 +1,29 @@
 import React from "react";
 import './fastFood.scss';
 import { formatCurrency } from './../../../utils/currency/formatCurrency';
-import { MdOutlineFileUpload } from "react-icons/md";
-import { Skeleton } from "primereact/skeleton";
 
-const FastFood = ({ title, subtitle, groupedDishes, editable = false }) => {
+const FastFood = ({ title, subtitle, menu, editable = false }) => {
     return(<div className="fast-food__container">
         <h2>{subtitle}</h2>
         <h1>{title}</h1>
-        {groupedDishes.map((group => {
+        {menu && menu.map((group => {
             return(<FastFoodCategoryContainer group={group} editable={editable}/>);
         })) }
     </div>);
 }
 
 const FastFoodCategoryContainer = ({ group, editable }) => {
-    const { categoryName, categoryIcon, categoryPicture, dishes } = group;
+    const { name, icon, dishes } = group;
 
     return(
     <div className="fast-food-category__container">
         <div className="fast-food-category__info">
             <div className="fast-food-category__title">
                 <div className="fast-food-category__name">
-                    <p>{ categoryName }</p>
+                    <p>{ name }</p>
                 </div>
                 <div className="fast-food-category__icon">
-                    <i>{ categoryIcon }</i>
+                    <i>{ icon }</i>
                 </div>
             </div>
             <div className="fast-food-cateogry__dishes">
@@ -33,10 +31,6 @@ const FastFoodCategoryContainer = ({ group, editable }) => {
                     return <FastFoodItem dish={dish} editable={editable}/>;
                 })}
             </div>
-        </div>
-        <div className='fast-food-category__image fast-food-category__image'>
-            <img className="img" src={ categoryPicture } alt="Comida rápida"/>
-            
         </div>
     </div>);
 }

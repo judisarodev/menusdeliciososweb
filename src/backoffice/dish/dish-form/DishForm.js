@@ -11,7 +11,6 @@ import { FileUpload } from 'primereact/fileupload';
 import { Toast } from 'primereact/toast';
 import './dishForm.scss';
 import { TokenContext } from "../../context/token/TokenContextProvider";
-import { CategoriesContext } from "../../context/restaurant/CategoriesContext";
 
 // React hook for categories management
 const useCategory = () => {
@@ -74,9 +73,6 @@ const DishForm = ({
     // Context
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
-    const categoriesContext = useContext(CategoriesContext);
-    //const productsContext = useContext(ProductsContext);
-
 
     // Env
     const BASE_URL = process.env.REACT_APP_URL;
@@ -92,39 +88,7 @@ const DishForm = ({
         e.preventDefault(); 
         createCategoryForm.current.toggle(e);
     }
-/*
-    useEffect(() => {
-        function getCategories(){
-            fetch(BASE_URL + '/category/get-all', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'authorization': 'Bearer ' + token,
-                }
-            }).then((response) => {
-                if(!response.ok){
-                    throw new Error('No fue posible consultar las categorías.')
-                }
-                return response.json();
-            }).then((data) => {
-                setAllCategories(data);
-                categoriesContext.setCategories(data);
-            }).catch((error) => {
-                console.error(error);
-            });
-        }
-        
-        if(token && !categoriesContext.categories){
-            //getCategories();
-        }else {
-            setAllCategories(categoriesContext.categories);
-            console.log(categoriesContext.categories); 
-        }   
-        
-        console.log('given category', givenCategory);
-        changeCategory(givenCategory);
-    }, [token]);
- */
+    
     return(<>    
         <Tooltip target=".tooltip-target" />
         
@@ -209,7 +173,11 @@ const DishForm = ({
                 label={ buttonText }
                 onClick={(event) => {
                     event.preventDefault(); 
-                    action(name, price, category, description, image)
+                    if(name && price && category){
+                        action(name, price, category, description, image)
+                    }else {
+                        
+                    }
                 }
             }
             />

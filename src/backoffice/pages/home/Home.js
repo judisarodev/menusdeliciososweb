@@ -3,12 +3,11 @@ import './home.scss';
 import { DishForm } from "../../dish/dish-form/DishForm";
 import { Table } from "../../dish/dishes-table/Table";
 import { Emulator } from "./../../components/emulator/Emulator";
-import { CategoriesContextProvider } from "../../context/restaurant/CategoriesContext";
-import { ProductsContext, ProductsContextProvider } from "../../context/restaurant/ProductsContext";
+import { MenuContext } from "../../context/restaurant/MenuContext";
 import { TokenContext } from "../../context/token/TokenContextProvider";
+import { Messages } from "primereact/messages";
 import { CategoryForm } from "../../category/category-form/CategoryForm";
 import { CategoriesTable } from "../../category/categories-table/CategoriesTable";
-import { Toast } from "primereact/toast";
 
 const Home = () => {    
     // Env
@@ -17,7 +16,8 @@ const Home = () => {
     // Context
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
-    const productsContext = useContext(ProductsContext);
+    const menuContext = useContext(MenuContext);
+    const { setMenu } = menuContext;
 
     // References
     const message = useRef(null);
@@ -25,9 +25,13 @@ const Home = () => {
     // State
     const [menuId, setMenuId] = useState();
 
+    const showMessage = (severity, text) => {
+        message.current.show({severity, summary: text});
+    }
+
     const createDish = (name, price, category, description = '', image = 'image') => {
         if(!name || !price || !category){
-            return message.current.show({ severity: 'error', summary: 'Ingresa los valores requeridos' });
+            showMessage('error', 'Error al crear el producto');
         }
 
         // Tarea: Agregar un servicio que permita la creación de platos 
@@ -51,16 +55,19 @@ const Home = () => {
             
             return response.json();
         }).then((data) => {
-            console.log([...productsContext.products, { ...data }]);
-            productsContext.setProducts([...productsContext.products, { ...data }]);
-            message.current.show({ severity: 'info', summary: '' });
+            showMessage('info', 'Producto creado con éxito');
         }).catch((error) => {
-            message.current.show({ severity: 'error', summary: '' });
+            showMessage('error', 'Error al crear el producto');
             console.error(error);
         });
     }
 
     function createCategory({ name, icon }){
+        if(!name || !icon){
+            return showMessage('error', 'Ingresa todos los valores');
+        }
+
+        // Tarea: Agregar un servicio que permita la creación de platos 
         fetch(BASE_URL + '/category/create', {
             method: 'POST', 
             body: JSON.stringify({
@@ -76,9 +83,9 @@ const Home = () => {
             }
             throw new Error();
         }).then((data) => {
-            
+            showMessage('info', 'Categoría creada con éxito');
         }).catch((error) => {
-            
+            showMessage('error', 'Error al crear el producto');
         });
     }
     
@@ -114,7 +121,7 @@ const Home = () => {
                     return response.json();
                 }
             }).then((data) => {
-                console.log(data);
+                setMenu(data);
             }).catch(() => {
                 message.current.show({ severity: 'error', summary: 'Ha ocurrido un error' });
             });
@@ -128,7 +135,7 @@ const Home = () => {
     return(<>
         <div className="bhome__container">
             <div className="bhome__manager-container">
-                <Toast ref={message} />
+                <Messages ref={message} />
                 <div>
                     <CategoryForm action={createCategory} />
                     <DishForm action={createDish} buttonText={'CREAR'}/>

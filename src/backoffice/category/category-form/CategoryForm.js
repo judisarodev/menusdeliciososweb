@@ -88,13 +88,9 @@ const CategoryForm = ({ buttonText = 'CREAR', showTitle = true, action }) => {
                 label={buttonText}
                 onClick={(event) => {
                     event.preventDefault();
-                    if(name && selectedIcon){
-                        action({ name, icon: selectedIcon.id });
-                        setName('');
-                        setSelectedIcon(null);
-                    }else {
-                        message.current.show({ severity: 'warn', summary: 'Ingresa los valores requeridos' });
-                    }
+                    action({ name, icon: selectedIcon && selectedIcon.id ? selectedIcon.id : null });
+                    setName('');
+                    setSelectedIcon(null);
                 }
                 }
             />
