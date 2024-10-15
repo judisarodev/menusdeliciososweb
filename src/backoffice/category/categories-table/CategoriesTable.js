@@ -55,8 +55,7 @@ const CategoriesTable = () => {
         <DataTable value={categories} header={tableTitleTemplate("Categorías")} tableStyle={{ minWidth: '50rem' }} >
             <Column style={{ width: '5%' }} body={buttonTemplate} header="Editar"></Column>
             <Column style={{ width: '5%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
-            <Column style={{ width: '5%' }} body={manageImageButtonTemplate} header="Imagen"></Column>
-            <Column style={{ width: '85%' }} field="name" header="Imagen"></Column>
+            <Column style={{ width: '85%' }} field="name" header="Nombre"></Column>
         </DataTable>
 
         {
