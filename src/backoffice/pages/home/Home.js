@@ -6,9 +6,9 @@ import { Emulator } from "./../../components/emulator/Emulator";
 import { CategoriesContextProvider } from "../../context/restaurant/CategoriesContext";
 import { ProductsContext, ProductsContextProvider } from "../../context/restaurant/ProductsContext";
 import { TokenContext } from "../../context/token/TokenContextProvider";
-import { Messages } from "primereact/messages";
 import { CategoryForm } from "../../category/category-form/CategoryForm";
 import { CategoriesTable } from "../../category/categories-table/CategoriesTable";
+import { Toast } from "primereact/toast";
 
 const Home = () => {    
     // Env
@@ -25,13 +25,9 @@ const Home = () => {
     // State
     const [menuId, setMenuId] = useState();
 
-    const showMessage = (severity, text) => {
-        message.current.show({severity, summary: text});
-    }
-
     const createDish = (name, price, category, description = '', image = 'image') => {
         if(!name || !price || !category){
-            showMessage('error', 'Error al crear el producto');
+            return message.current.show({ severity: 'error', summary: 'Ingresa los valores requeridos' });
         }
 
         // Tarea: Agregar un servicio que permita la creación de platos 
@@ -57,19 +53,14 @@ const Home = () => {
         }).then((data) => {
             console.log([...productsContext.products, { ...data }]);
             productsContext.setProducts([...productsContext.products, { ...data }]);
-            showMessage('info', 'Producto creado con éxito');
+            message.current.show({ severity: 'info', summary: '' });
         }).catch((error) => {
-            showMessage('error', 'Error al crear el producto');
+            message.current.show({ severity: 'error', summary: '' });
             console.error(error);
         });
     }
 
     function createCategory({ name, icon }){
-        if(!name || !icon){
-            showMessage('error', 'Ingresa todos los valores');
-        }
-
-        // Tarea: Agregar un servicio que permita la creación de platos 
         fetch(BASE_URL + '/category/create', {
             method: 'POST', 
             body: JSON.stringify({
@@ -85,9 +76,9 @@ const Home = () => {
             }
             throw new Error();
         }).then((data) => {
-            showMessage('info', 'Producto creado con éxito');
+            
         }).catch((error) => {
-            showMessage('error', 'Error al crear el producto');
+            
         });
     }
     
@@ -137,7 +128,7 @@ const Home = () => {
     return(<>
         <div className="bhome__container">
             <div className="bhome__manager-container">
-                <Messages ref={message} />
+                <Toast ref={message} />
                 <div>
                     <CategoryForm action={createCategory} />
                     <DishForm action={createDish} buttonText={'CREAR'}/>

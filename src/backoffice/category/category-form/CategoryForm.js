@@ -1,18 +1,18 @@
 import { Button } from "primereact/button";
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from "primereact/inputtext";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import './categoryForm.scss';
 import { FaHamburger } from "react-icons/fa";
 import { FaPizzaSlice } from "react-icons/fa6";
 import { IoFastFood } from "react-icons/io5";
 import { GiTacos } from "react-icons/gi";
-
+import { Toast } from "primereact/toast";
 
 const CategoryForm = ({ buttonText = 'CREAR', showTitle = true, action }) => {
     // States
-    const [name, setName] = useState();
-    const [icon, setIcon] = useState();
+    const [name, setName] = useState('');
+    const [selectedIcon, setSelectedIcon] = useState(null);
     const icons = [{
             name: 'Comida rápida',
             id: 'fast-food',
@@ -32,6 +32,9 @@ const CategoryForm = ({ buttonText = 'CREAR', showTitle = true, action }) => {
         }
     ];
 
+    // References
+    const message = useRef(null);
+
     const iconTemplate = (icon) => {
         return <div className="category-form__icon-list-item">
             <div>{ icon.component }</div>
@@ -39,7 +42,20 @@ const CategoryForm = ({ buttonText = 'CREAR', showTitle = true, action }) => {
         </div>
     }
 
+    const selectedIconTemplate = (option, props) => {
+        if (selectedIcon) {
+            return (
+                <div className="category-form__icon-list-item">
+                    <div>{selectedIcon.component}</div>
+                    <div>{selectedIcon.name}</div>
+                </div>
+            );
+        }
+        return <span>{props.placeholder}</span>;
+    };
+
     return (<>
+        <Toast ref={message} />
         <form className="dish-form__container">
             {showTitle && <div>
                 <p className="dish-form__title">Crear categoría</p>
@@ -55,21 +71,30 @@ const CategoryForm = ({ buttonText = 'CREAR', showTitle = true, action }) => {
 
             <div className="dish-form__input-container">
                 <label>Icono *</label>
-                {icons &&  <Dropdown
-                    value={icon}
+                <Dropdown
+                    value={selectedIcon}
                     options={icons}
-                    onChange={(e) => setIcon(e.value)}
                     optionLabel="name"
+                    onChange={(e) => {
+                        setSelectedIcon(e.value);
+                    }}
                     placeholder="Selecciona el icono"
                     itemTemplate={iconTemplate}
-                />}
+                    valueTemplate={selectedIconTemplate} 
+                />
             </div>
 
             <Button
                 label={buttonText}
                 onClick={(event) => {
                     event.preventDefault();
-                    action({ name, icon: icon.id });
+                    if(name && selectedIcon){
+                        action({ name, icon: selectedIcon.id });
+                        setName('');
+                        setSelectedIcon(null);
+                    }else {
+                        message.current.show({ severity: 'warn', summary: 'Ingresa los valores requeridos' });
+                    }
                 }
                 }
             />
