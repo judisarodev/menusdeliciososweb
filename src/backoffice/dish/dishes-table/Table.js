@@ -8,8 +8,10 @@ import { MdOutlineEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { Dialog } from "primereact/dialog";
 import { DishForm } from "../dish-form/DishForm";
-import { FaImage } from "react-icons/fa"
+import noImage from './../../../assets/images/no-image.png';
 import { MenuContext } from "../../context/restaurant/MenuContext";
+import { Image } from 'primereact/image';
+
 
 const Table = () => {
 
@@ -26,44 +28,23 @@ const Table = () => {
     const [updateDishPanelVisibility, setUpdateDishPanelVisibility] = useState(false);
     const [dishes, setDishes] = useState([]);
     const [dish, setDish] = useState();
-    const [dishIdToDelete, setDishIdToDelete] = useState(null);
-    const [dishId, setDishId] = useState(null);
+    const [categories, setCategories] = useState([]);
     
-    // Reference
-    const toast = useRef(null);
-
     useEffect(() => {
         if(menu.categories){
             setDishes(menu.categories);
+            setCategories(menu.categories.map((category) => {
+                return {
+                    categoryId: category.categoryId,
+                    name: category.name,
+                }
+            }));
         }
     }, [menu]);
-
-    // Functions 
-    function getDish(){
-        fetch(BASE_URL + '/dish/get/' + dishId, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': 'Bearer ' + token,
-            }
-        }).then((response) => {
-            if(!response.ok){
-                throw new Error('No fue posible consultar el producto.')
-            }
-            return response.json();
-        }).then((data) => {
-            if(data){
-                setDish(data);
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
-    }
-
     
-    const updateDish = (name, price, category, description, image = 'image') => {
+    const updateDish = (name, price, category, description, image = '') => {
         fetch(BASE_URL + '/dish/update', {
-            method: 'PATCH',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': 'Bearer ' + token,
@@ -75,8 +56,8 @@ const Table = () => {
                     categoryId: category.categoryId,
                     description,
                     image
-                }, 
-                dishId
+                },
+                dishId: dish.dishId
             }),
         }).then((response) => {
             if(!response.ok){
@@ -84,10 +65,8 @@ const Table = () => {
             }
             return response.json();
         }).then((data) => {
-            //getDishes();
-            setDishId(null);
-            setDish(null);
             setUpdateDishPanelVisibility(false);
+            setDish(null);
         }).catch((error) => {
             console.error(error);
         });
@@ -109,25 +88,10 @@ const Table = () => {
             }
             return response.json();
         }).then((data) => {
-            //getDishes();
             console.log(data);
         }).catch((error) => {
             console.error(error);
         });
-    }
-
-    // Effects
-    useEffect(() => {
-        if(token){
-            //getDish();
-            setUpdateDishPanelVisibility(true);
-        }
-    }, [dishId, token]);
-
-
-    // Actions
-    const showUpdateDishPanel = (dishId) => {
-        setDishId(dishId);
     }
 
     const showDeleteDishPanel = (dishId) => {
@@ -135,7 +99,10 @@ const Table = () => {
     }
 
     const buttonTemplate = (rowData) => {
-        return <Button onClick={() => showUpdateDishPanel(rowData.dishId)} label={<MdOutlineEdit size={20}/>} severity="primary" tooltip="Editar" tooltipOptions={{ position: 'top'}}/>;
+        return <Button onClick={() => {
+            setDish(rowData);
+            setUpdateDishPanelVisibility(true);
+        }} label={<MdOutlineEdit size={20}/>} severity="primary" tooltip="Editar" tooltipOptions={{ position: 'top'}}/>;
     }
 
     const deleteButtonTemplate = (rowData) => {
@@ -147,7 +114,11 @@ const Table = () => {
     }
 
     const manageImageButtonTemplate = (rowData) => {
-        return <Button onClick={() => console.log('')} label={<FaImage size={20} />} severity="secondary" tooltip="Imagen" tooltipOptions={{ position: 'top' }} />;;
+        console.log(rowData.image);
+        if(!rowData.image){
+            return <Image src={noImage} alt="Image" width="60" preview />;
+        }
+        return <Image src={rowData.image} alt="Image" width="50" preview />;
     }
 
     return(<div className="table__container">
@@ -155,17 +126,17 @@ const Table = () => {
         {dishes && dishes.length > 0 && dishes.map((p) => {    
             return(
                 <div key={p.name}>
-                    <DataTable value={p.dishes} header={tableTitleTemplate(p.name)} tableStyle={{ minWidth: '50rem' }} emptyMessage={'No hay platos en esta categoría'} >
-                        <Column style={{ width: '5%' }} body={buttonTemplate} header="Editar"></Column>
-                        <Column style={{ width: '5%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
-                        <Column style={{ width: '5%' }} body={manageImageButtonTemplate} header="Imagen"></Column>
-                        <Column style={{ width: '25%' }} field="name" header="Nombre"></Column>
-                        <Column style={{ width: '25%' }} field="price" header="Precio"></Column>
-                        <Column style={{ width: '35%' }} field="description" header="Descripción"></Column>
+                    <DataTable value={p.dishes.map((t) => { return { ...t, category: p.name }})} header={tableTitleTemplate(p.name)} tableStyle={{ minWidth: '50rem' }} emptyMessage={'No hay platos en esta categoría'} >
+                        <Column style={{ width: '10%' }} body={buttonTemplate} header="Editar"></Column>
+                        <Column style={{ width: '10%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
+                        <Column style={{ width: '10%' }} body={manageImageButtonTemplate} header="Imagen"></Column>
+                        <Column style={{ width: '15%' }} field="name" header="Nombre"></Column>
+                        <Column style={{ width: '15%' }} field="price" header="Precio"></Column>
+                        <Column style={{ width: '15%' }} field="description" header="Descripción"></Column>
+                        <Column style={{ width: '15%' }} field="category" header="Categoría"></Column>
                     </DataTable>
 
                     {
-                        dish && dish.category &&  
                         <Dialog
                         header="Actualizar producto" 
                         visible={updateDishPanelVisibility} 
@@ -175,19 +146,17 @@ const Table = () => {
                             return;
                         }else {
                             setDish(null);
-                            setDishId(null);
                             setUpdateDishPanelVisibility(false); 
                         }}}>
-                            <DishForm
-                                buttonText={'ACTUALIZAR'} 
-                                showTitile={false} 
-                                showAddCategoryButton={false}
-                                action={updateDish} 
-                                givenName={dish.name}
-                                givenCategory={dish.category}
-                                givenDescription={dish.description}
-                                givenPrice={dish.price}
-                            />
+                            {dish && <DishForm
+                              buttonText={'ACTUALIZAR'}
+                              action={updateDish}
+                              showTitile={false}
+                              givenName={dish.name}
+                              givenPrice={dish.price}
+                              givenDescription={dish.description}
+                              givenCategory={categories.find((e) => e.name === dish.category)}
+                            />}
                         </Dialog>
                     }
                 </div>

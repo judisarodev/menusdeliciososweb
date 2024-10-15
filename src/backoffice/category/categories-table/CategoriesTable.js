@@ -118,9 +118,9 @@ const CategoriesTable = () => {
     return (<div className="category-table__container">
         
         <DataTable value={categories} header={tableTitleTemplate("Categorías")} tableStyle={{ minWidth: '50rem' }} emptyMessage={'No hay categorías'} >
-            <Column style={{ width: '5%' }} body={buttonTemplate} header="Editar"></Column>
-            <Column style={{ width: '5%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
-            <Column style={{ width: '5%' }} body={iconTemplate} header="Icono"></Column>
+            <Column style={{ width: '10%' }} body={buttonTemplate} header="Editar"></Column>
+            <Column style={{ width: '10%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
+            <Column style={{ width: '10%' }} body={iconTemplate} header="Icono"></Column>
             <Column style={{ width: '70%' }} field="name" header="Nombre"></Column>
         </DataTable>
 

@@ -27,15 +27,8 @@ const DishForm = ({
     const [image, setImage] = useState();
     const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState(givenCategory);
-    
-    // References 
-    const toast = useRef(null);
-    
-    const createCategoryForm = useRef(null); 
 
     // Context
-    const tokenContext = useContext(TokenContext);
-    const { token } = tokenContext;
     const menuContext = useContext(MenuContext);
     const { menu } = menuContext;
 
