@@ -3,13 +3,13 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import './table.scss'; 
 import { TokenContext } from "../../context/token/TokenContextProvider";
-import { formatCurrency } from '../../../utils/currency/formatCurrency';
 import { Button } from 'primereact/button';
 import { MdOutlineEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { Dialog } from "primereact/dialog";
 import { DishForm } from "../dish-form/DishForm";
 import { FaImage } from "react-icons/fa"
+import { MenuContext } from "../../context/restaurant/MenuContext";
 
 const Table = () => {
 
@@ -19,6 +19,8 @@ const Table = () => {
     // Context
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
+    const menuContext = useContext(MenuContext);
+    const { menu } = menuContext;
     
     // States
     const [updateDishPanelVisibility, setUpdateDishPanelVisibility] = useState(false);
@@ -30,8 +32,13 @@ const Table = () => {
     // Reference
     const toast = useRef(null);
 
-    // Functions 
+    useEffect(() => {
+        if(menu.categories){
+            setDishes(menu.categories);
+        }
+    }, [menu]);
 
+    // Functions 
     function getDish(){
         fetch(BASE_URL + '/dish/get/' + dishId, {
             method: 'GET',
@@ -147,8 +154,8 @@ const Table = () => {
         
         {dishes && dishes.length > 0 && dishes.map((p) => {    
             return(
-                <div key={p.category}>
-                    <DataTable value={p.dishes} header={tableTitleTemplate(p.categoryName)} tableStyle={{ minWidth: '50rem' }} >
+                <div key={p.name}>
+                    <DataTable value={p.dishes} header={tableTitleTemplate(p.name)} tableStyle={{ minWidth: '50rem' }} >
                         <Column style={{ width: '5%' }} body={buttonTemplate} header="Editar"></Column>
                         <Column style={{ width: '5%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
                         <Column style={{ width: '5%' }} body={manageImageButtonTemplate} header="Imagen"></Column>
