@@ -155,7 +155,7 @@ const Table = () => {
         {dishes && dishes.length > 0 && dishes.map((p) => {    
             return(
                 <div key={p.name}>
-                    <DataTable value={p.dishes} header={tableTitleTemplate(p.name)} tableStyle={{ minWidth: '50rem' }} >
+                    <DataTable value={p.dishes} header={tableTitleTemplate(p.name)} tableStyle={{ minWidth: '50rem' }} emptyMessage={'No hay platos en esta categoría'} >
                         <Column style={{ width: '5%' }} body={buttonTemplate} header="Editar"></Column>
                         <Column style={{ width: '5%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
                         <Column style={{ width: '5%' }} body={manageImageButtonTemplate} header="Imagen"></Column>
