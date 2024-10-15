@@ -32,7 +32,6 @@ const CategoriesTable = () => {
 
     // Context 
     const categoriesContext = useContext(CategoriesContext);
-    console.log('this are my categories', categoriesContext.categories);
     const [categories, setCategories] = useState(categoriesContext.categories);
     const [category, setCategory] = useState();
     const [categoryId, setCategoryId] = useState();

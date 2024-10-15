@@ -80,7 +80,7 @@ const Table = () => {
         }, []);
         setDishes(sortedProducts);
     }
-
+/*
     function getDishes(){
         fetch(BASE_URL + '/dish/get-all', {
             method: 'GET',
@@ -103,7 +103,7 @@ const Table = () => {
             console.error(error); 
         });
     }
-
+*/
     const updateDish = (name, price, category, description, image = 'image') => {
         fetch(BASE_URL + '/dish/update', {
             method: 'PATCH',
@@ -127,7 +127,7 @@ const Table = () => {
             }
             return response.json();
         }).then((data) => {
-            getDishes();
+            //getDishes();
             setDishId(null);
             setDish(null);
             setUpdateDishPanelVisibility(false);
@@ -152,7 +152,7 @@ const Table = () => {
             }
             return response.json();
         }).then((data) => {
-            getDishes();
+            //getDishes();
             console.log(data);
         }).catch((error) => {
             console.error(error);
@@ -162,7 +162,7 @@ const Table = () => {
     // Effects
     useEffect(() => {
         if(token){
-            getDish();
+            //getDish();
             setUpdateDishPanelVisibility(true);
         }
     }, [dishId, token]);
@@ -173,12 +173,6 @@ const Table = () => {
             sortProducts(); 
         }
     }, [products]);
-
-    useEffect(() => {
-        if(token){
-            getDishes();
-        }
-    }, [token]);
 
     // Actions
     const showUpdateDishPanel = (dishId) => {

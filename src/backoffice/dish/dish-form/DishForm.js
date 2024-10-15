@@ -92,7 +92,7 @@ const DishForm = ({
         e.preventDefault(); 
         createCategoryForm.current.toggle(e);
     }
-
+/*
     useEffect(() => {
         function getCategories(){
             fetch(BASE_URL + '/category/get-all', {
@@ -115,7 +115,7 @@ const DishForm = ({
         }
         
         if(token && !categoriesContext.categories){
-            getCategories();
+            //getCategories();
         }else {
             setAllCategories(categoriesContext.categories);
             console.log(categoriesContext.categories); 
@@ -124,7 +124,7 @@ const DishForm = ({
         console.log('given category', givenCategory);
         changeCategory(givenCategory);
     }, [token]);
- 
+ */
     return(<>    
         <Tooltip target=".tooltip-target" />
         

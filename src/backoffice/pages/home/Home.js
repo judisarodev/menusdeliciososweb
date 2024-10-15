@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import './home.scss';
 import { DishForm } from "../../dish/dish-form/DishForm";
 import { Table } from "../../dish/dishes-table/Table";
@@ -57,6 +57,47 @@ const Home = () => {
         });
     }
     
+    useEffect(() => {
+        function getRestaurant(){
+            fetch(BASE_URL + '/restaurant/get', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'aplication/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            }).then((response) => {
+                if(response.ok){
+                    return response.json();
+                }
+            }).then((data) => {
+                getMenu(data.menuId);
+            }).catch(() => {
+                message.current.show({ severity: 'error', summary: 'Ha ocurrido un error' });
+            });
+        }
+
+        function getMenu(menuId){
+            fetch(BASE_URL + '/menu/get/' + menuId, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'aplication/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            }).then((response) => {
+                if(response.ok){
+                    return response.json();
+                }
+            }).then((data) => {
+                console.log(data);
+            }).catch(() => {
+                message.current.show({ severity: 'error', summary: 'Ha ocurrido un error' });
+            });
+        }
+
+        if(token){
+            getRestaurant();
+        }
+    }, [token]);
 
     return(<>
         <div className="bhome__container">

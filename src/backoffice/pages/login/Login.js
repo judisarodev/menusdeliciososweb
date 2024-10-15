@@ -42,47 +42,41 @@ const Login = ({ loginPage = true }) => {
     // References 
     const message = useRef(null);
 
-    // Get countries and types
-    useEffect(() => {
-        const getCountries = () => {
-            fetch(BASE_URL + '/country/get-all', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }).then((response) => {
-                if(response.ok){
-                    return response.json();
-                }
-                throw new Error('Error al consultar los países');
-            }).then((c) => {
-                setCountries(c);
-            }).catch((error) => {
-                message.current.show({ severity: 'error', summary: 'Ha ocurrido un error, intenta más tarde' });
-            });
-        }
+    const getCountries = () => {
+        fetch(BASE_URL + '/country/get-all', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((response) => {
+            if(response.ok){
+                return response.json();
+            }
+            throw new Error('Error al consultar los países');
+        }).then((c) => {
+            setCountries(c);
+        }).catch((error) => {
+            message.current.show({ severity: 'error', summary: 'Ha ocurrido un error, intenta más tarde' });
+        });
+    }
 
-        const getTypes = () => {
-            fetch(BASE_URL + '/restaurant-type/get-all', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }).then((response) => {
-                if(response.ok){
-                    return response.json();
-                }
-                throw new Error('Error al consultar los tipos de restaurante');
-            }).then((c) => {
-                setTypes(c);
-            }).catch((error) => {
-                message.current.show({ severity: 'error', summary: 'Ha ocurrido un error, intenta más tarde' });
-            });
-        }
-
-        getCountries();
-        getTypes();
-    }, []);
+    const getTypes = () => {
+        fetch(BASE_URL + '/restaurant-type/get-all', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((response) => {
+            if(response.ok){
+                return response.json();
+            }
+            throw new Error('Error al consultar los tipos de restaurante');
+        }).then((c) => {
+            setTypes(c);
+        }).catch((error) => {
+            message.current.show({ severity: 'error', summary: 'Ha ocurrido un error, intenta más tarde' });
+        });
+    }
 
     const validateCreateComopanyForm = () => {
         if(restaurantName && email && phoneNumber && address && password && confirmPassword){
@@ -175,12 +169,20 @@ const Login = ({ loginPage = true }) => {
         }
     }
 
+    const setView = (e) => {
+        setPage(e.value);
+        if(e.value === pages[1] && (countries.length === 0 || types.length === 0 )){
+            getCountries();
+            getTypes();
+        }
+    }
+
 
     return(<div className="login__main-container">
         <img src={logo} alt="logo"/>
         <Toast ref={message}/>
         <div className="login__container">
-            <SelectButton value={page} onChange={(e) =>setPage(e.value)} options={pages} />
+            <SelectButton value={page} onChange={(e) => setView(e)} options={pages} />
             {page === pages[0] ?
             <form>
                 <div className="login__input-item">
