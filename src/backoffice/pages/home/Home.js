@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useContext, useRef, useEffect, useState } from "react";
 import './home.scss';
 import { DishForm } from "../../dish/dish-form/DishForm";
 import { Table } from "../../dish/dishes-table/Table";
@@ -11,12 +11,19 @@ import { CategoryForm } from "../../category/category-form/CategoryForm";
 import { CategoriesTable } from "../../category/categories-table/CategoriesTable";
 
 const Home = () => {    
-
+    // Env
     const BASE_URL = process.env.REACT_APP_URL;
+
+    // Context
     const tokenContext = useContext(TokenContext);
-    const productsContext = useContext(ProductsContext);
     const { token } = tokenContext;
+    const productsContext = useContext(ProductsContext);
+
+    // References
     const message = useRef(null);
+
+    // State
+    const [menuId, setMenuId] = useState();
 
     const showMessage = (severity, text) => {
         message.current.show({severity, summary: text});
@@ -56,6 +63,34 @@ const Home = () => {
             console.error(error);
         });
     }
+
+    function createCategory({ name, icon }){
+        if(!name || !icon){
+            showMessage('error', 'Error al crear el producto');
+        }
+
+        // Tarea: Agregar un servicio que permita la creación de platos 
+        fetch(BASE_URL + '/category/create', {
+            method: 'POST', 
+            body: JSON.stringify({
+                name, icon
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer ' + token,
+            }
+        }).then((response) => {
+            if(response.ok){
+                return response.json();
+            }
+            throw new Error();
+        }).then((data) => {
+            showMessage('info', 'Producto creado con éxito');
+            productsContext.setProducts([...productsContext.products, { ...data }]);
+        }).catch((error) => {
+            showMessage('error', 'Error al crear el producto');
+        });
+    }
     
     useEffect(() => {
         function getRestaurant(){
@@ -70,13 +105,14 @@ const Home = () => {
                     return response.json();
                 }
             }).then((data) => {
-                getMenu(data.menuId);
+                setMenuId(data.menuId)
+                getMenu();
             }).catch(() => {
                 message.current.show({ severity: 'error', summary: 'Ha ocurrido un error' });
             });
         }
 
-        function getMenu(menuId){
+        function getMenu(){
             fetch(BASE_URL + '/menu/get/' + menuId, {
                 method: 'GET',
                 headers: {
@@ -104,7 +140,7 @@ const Home = () => {
             <div className="bhome__manager-container">
                 <Messages ref={message} />
                 <div>
-                    <CategoryForm />
+                    <CategoryForm action={createCategory} />
                     <DishForm action={createDish} buttonText={'CREAR'}/>
                 </div>
             </div>
