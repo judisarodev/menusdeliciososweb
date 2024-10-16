@@ -21,14 +21,22 @@ const MenuSettings = () => {
 
     const fonts = [{
         name: 'Sans Serif',
-        value: 'sans-serif',
     }, {
-        name: 'Verdana',
-        value: 'verdana',
+        name: 'Georgia, serif',
+    }, {
+        name: 'Garamond, serif',
+    }, {
+        name: 'Verdana, sans-serif',
+    }, {
+        name: 'Helvetica, sans-serif',
+    }, {
+        name: 'Tahoma, sans-serif',
+    }, {
+        name: 'monospace',
     }];
 
-    const [font, setFont] = useState(menu.font);
-    const [layout, setLayout] = useState(menu.layout);
+    const [font, setFont] = useState({ name: menu.layout || 'linearito' });
+    const [layout, setLayout] = useState({ name: menu.font || 'Sans Serif' });
     const [palette, setPalette] = useState();
     const [palettes, setPalettes] = useState();
     const [showDescriptions, setShowDescriptions] = useState(menu.showDescription);
@@ -38,6 +46,8 @@ const MenuSettings = () => {
 
     useEffect(() => {
         setPalette(menu.palette);
+        setLayout({ name: menu.layout || 'linearito' });
+        setFont({ name: menu.font || 'Sans Serif' });    
     }, [menu]);
 
     const selectedPaletteTemplate = (option) => {
@@ -63,6 +73,31 @@ const MenuSettings = () => {
             );
         }
         return <span>{props.placeholder}</span>;
+    }
+
+
+    const selectedFontTemplate = (option) => {
+        if(option){
+            return (
+                <div style={{ fontFamily: option.name }}>
+                    { option.name }
+                </div>
+            );
+        }
+        return <span>Selecciona una fuente</span>; // Mensaje alternativo
+    }
+
+    const fontTemplate = (option, props) => {
+        if (!option) {
+            return <span>Selecciona una fuente</span>; // Mensaje alternativo
+        }
+        
+        return (
+            <div style={{ fontFamily: option.name }}>
+                { option.name }
+            </div>
+        );
+    
     }
 
     useEffect(() => {
@@ -98,13 +133,15 @@ const MenuSettings = () => {
                     onChange={(e) => {
                         setFont(e.value);
                     }}
+                    valueTemplate={selectedFontTemplate}
+                    itemTemplate={fontTemplate}
                     placeholder="Selecciona la fuente"
                 />
             </div>
 
             <div className="dish-form__input-container">
                 <label>Plantilla</label>
-                <Dropdown
+                {layout && <Dropdown
                     value={layout}
                     options={layouts}
                     optionLabel="name"
@@ -112,7 +149,7 @@ const MenuSettings = () => {
                         setLayout(e.value);
                     }}
                     placeholder="Selecciona la plantilla"
-                />
+                />}
             </div>
 
             <div className="dish-form__input-container">
