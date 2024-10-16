@@ -59,7 +59,7 @@ const Home = () => {
         });
     }
 
-    function createCategory({ name, icon }){
+    function createCategory(name, icon){
         if(!name || !icon){
             return showMessage('error', 'Ingresa todos los valores');
         }
