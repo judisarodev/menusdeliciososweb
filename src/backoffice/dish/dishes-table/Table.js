@@ -42,7 +42,7 @@ const Table = () => {
         }
     }, [menu]);
     
-    const updateDish = (name, price, category, description, image = '') => {
+    const updateDish = (name, price, category, description, image) => {
         fetch(BASE_URL + '/dish/update', {
             method: 'PUT',
             headers: {
@@ -55,7 +55,7 @@ const Table = () => {
                     price,
                     categoryId: category.categoryId,
                     description,
-                    image
+                    imageId: image.imageId
                 },
                 dishId: dish.dishId
             }),
@@ -155,6 +155,7 @@ const Table = () => {
                               givenPrice={dish.price}
                               givenDescription={dish.description}
                               givenCategory={categories.find((e) => e.name === dish.category)}
+                              givenImage={dish.image}
                             />}
                         </Dialog>
                     }

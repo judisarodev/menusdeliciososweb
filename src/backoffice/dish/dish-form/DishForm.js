@@ -19,13 +19,14 @@ const DishForm = ({
     givenName = '',
     givenCategory = null,
     givenPrice = 0,
-    givenDescription = ''
+    givenDescription = '',
+    givenImage
 }) => {
     // States
     const [name, setName] = useState(givenName);
     const [description, setDescription] = useState(givenDescription);
     const [price, setPrice] = useState(givenPrice);
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState(givenImage);
     const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState(givenCategory);
     const [visible, setVisible] = useState(false);
@@ -175,7 +176,7 @@ const DishForm = ({
                 onClick={(event) => {
                     event.preventDefault();
                     if (name && price && category) {
-                        action(name, price, category, description, image.imageId)
+                        action(name, price, category, description, image)
                         setName('');
                         setPrice(0);
                         setCategory(null);
