@@ -8,6 +8,7 @@ import { TokenContext } from "../../context/token/TokenContextProvider";
 import { Messages } from "primereact/messages";
 import { CategoryForm } from "../../category/category-form/CategoryForm";
 import { CategoriesTable } from "../../category/categories-table/CategoriesTable";
+import { MenuSettings } from "../../components/menu-settings/MenuSettings";
 
 const Home = () => {    
     // Env
@@ -139,6 +140,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="bhome__menu-sample">
+                <MenuSettings />
                 <Emulator />
             </div>
             <div className="bhome__table">

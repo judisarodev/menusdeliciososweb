@@ -23,10 +23,11 @@ $font-size-small-text: 0.7rem;
     font-style: normal;
 }
 .fast-food__container{
-    height: 756px;
+    min-height: 670px;
+    max-height: 100vh;
     overflow: scroll;
     padding: 40px;
-    background: linear-gradient(to bottom, $primary-background-color, $secondary-background-color);
+    background: black; 
 }
 .fast-food__container h1 {
     font-size: $font-size-title;

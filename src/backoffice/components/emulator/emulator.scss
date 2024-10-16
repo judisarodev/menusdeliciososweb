@@ -1,8 +1,9 @@
 @import './../../../styles/variables';
 .emulator__container{
-    height: 100%;
     width: 100%; 
     border: 5px solid $light-color;
-    border-radius: $standard-border-raius; 
-    height: 100%;
+    margin: $small-box-spacig;
+    border-radius: $standard-border-raius;
+    min-height: 670px;
+    max-height: 100vh;
 }

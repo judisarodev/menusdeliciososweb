@@ -1,0 +1,26 @@
+@import './../../../styles/variables';
+
+.menu-settings__switch-contaier {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+.menu-settings__switch-contaier div {
+    display: flex;
+    align-items: center; 
+    gap: 5px;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.menu-settings__switch-contaier label{
+    font-size: $small-font-size;
+    color: $secondary-text-color;
+}
+.menu-settings__palette-item{
+    width: 20px;
+    height: 20px;
+}
+.menu-settings__palette-container{
+    display: flex;
+    gap: 12px;
+}
