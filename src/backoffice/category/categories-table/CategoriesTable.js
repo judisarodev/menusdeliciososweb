@@ -17,7 +17,7 @@ const CategoriesTable = () => {
 
     // Context
     const menuContext = useContext(MenuContext);
-    const { menu } = menuContext;
+    const { menu, getMenu } = menuContext;
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
     const { icons } = useContext(IconsContext);
@@ -53,7 +53,7 @@ const CategoriesTable = () => {
             }
             throw new Error('Error al eliminar la categoría');
         }).then((data) => {
-            console.log('Categoría eliminada con éxito');
+            getMenu();
         }).catch((error) => {
             console.error('Error al eliminar la categoría ', error);
         });
@@ -109,7 +109,7 @@ const CategoriesTable = () => {
             }
             throw new Error('Error al actualizar la categoría');
         }).then((data) => {
-            console.log('Categoría actualizada con éxito');
+            getMenu();
         }).catch((error) => {
             console.error(error);
         });

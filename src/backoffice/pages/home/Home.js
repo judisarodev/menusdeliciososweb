@@ -17,13 +17,10 @@ const Home = () => {
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
     const menuContext = useContext(MenuContext);
-    const { setMenu } = menuContext;
+    const { menuId, setMenuId, setMenu, getMenu } = menuContext;
 
     // References
     const message = useRef(null);
-
-    // State
-    const [menuId, setMenuId] = useState();
 
     const showMessage = (severity, text) => {
         message.current.show({severity, summary: text});
@@ -55,7 +52,7 @@ const Home = () => {
             
             return response.json();
         }).then((data) => {
-            showMessage('info', 'Producto creado con éxito');
+            getMenu();
         }).catch((error) => {
             showMessage('error', 'Error al crear el producto');
             console.error(error);
@@ -83,7 +80,7 @@ const Home = () => {
             }
             throw new Error();
         }).then((data) => {
-            showMessage('info', 'Categoría creada con éxito');
+            getMenu();
         }).catch((error) => {
             showMessage('error', 'Error al crear el producto');
         });

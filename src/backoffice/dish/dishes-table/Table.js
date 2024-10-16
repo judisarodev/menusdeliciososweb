@@ -22,7 +22,7 @@ const Table = () => {
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
     const menuContext = useContext(MenuContext);
-    const { menu } = menuContext;
+    const { menu, getMenu } = menuContext;
     
     // States
     const [updateDishPanelVisibility, setUpdateDishPanelVisibility] = useState(false);
@@ -65,6 +65,7 @@ const Table = () => {
             }
             return response.json();
         }).then((data) => {
+            getMenu();
             setUpdateDishPanelVisibility(false);
             setDish(null);
         }).catch((error) => {
@@ -88,7 +89,7 @@ const Table = () => {
             }
             return response.json();
         }).then((data) => {
-            console.log(data);
+            getMenu();
         }).catch((error) => {
             console.error(error);
         });
