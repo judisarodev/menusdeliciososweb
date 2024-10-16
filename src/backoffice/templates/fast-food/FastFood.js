@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import './fastFood.scss';
 import { formatCurrency } from './../../../utils/currency/formatCurrency';
+import { MenuContext } from "../../context/restaurant/MenuContext";
 
 const FastFood = ({ title, subtitle, menu, editable = false }) => {
     return(<div className="fast-food__container">
@@ -12,8 +13,10 @@ const FastFood = ({ title, subtitle, menu, editable = false }) => {
     </div>);
 }
 
-const FastFoodCategoryContainer = ({ group, editable }) => {
+const FastFoodCategoryContainer = ({ group, layout, editable }) => {
     const { name, icon, dishes } = group;
+    const menuContext = useContext(MenuContext);
+    const { layouts, fonts } = menuContext;
 
     return(
     <div className="fast-food-category__container">

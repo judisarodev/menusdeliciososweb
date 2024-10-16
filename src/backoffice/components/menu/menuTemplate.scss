@@ -1,0 +1,32 @@
+@import './../../../styles/variables';
+.menu__container{
+    height: 96vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.menu__navigation-categories{
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    gap: $extra-large-spacing; 
+}
+.menu__navigation-category:hover{
+    opacity: 80%;
+    cursor: pointer;
+}
+.menu__navigation-category{
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-self: center; 
+    width: 50%;
+    text-align: center; 
+    border: 1px solid black;
+    padding-left: $medium-box-spacig; 
+    padding-right: $medium-box-spacig; 
+    padding-top: $small-box-spacig; 
+    padding-bottom: $small-box-spacig; 
+    border-radius: $button-border-raius;
+}

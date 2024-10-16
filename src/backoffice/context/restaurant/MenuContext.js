@@ -11,6 +11,26 @@ function MenuContextProvider ({ children }) {
     const [menu, setMenu] = useState([]);
     const [menuId, setMenuId] = useState([]);
 
+    const layouts = [{
+        name: 'Grilla'
+    }, {
+        name: 'Grilla'
+    }, {
+        name: 'Lista'
+    }];
+
+    const fonts = [{
+        name: 'Elegancia Clásica',
+    }, {
+        name: 'Energía Urbana',
+    }, {
+        name: 'Calidez Artesanal',
+    }, {
+        name: 'Dulzura Sofisticada',
+    }, {
+        name: 'Estilo Nocturno',
+    }];
+
     const getMenu = () => {
         fetch(BASE_URL + '/menu/get/' + menuId, {
             method: 'GET',
@@ -30,7 +50,7 @@ function MenuContextProvider ({ children }) {
     }
 
     return(
-        <MenuContext.Provider value={{ menu, setMenu, menuId, setMenuId, getMenu }}>
+        <MenuContext.Provider value={{ menu, setMenu, menuId, setMenuId, getMenu, layouts, fonts }}>
             { children }
         </MenuContext.Provider>
     );

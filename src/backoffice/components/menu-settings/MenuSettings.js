@@ -10,31 +10,9 @@ const MenuSettings = () => {
     const BASE_URL = process.env.REACT_APP_URL;
 
     const menuContext = useContext(MenuContext);
-    const { menu, getMenu, menuId } = menuContext;
+    const { menu, getMenu, menuId, layouts, fonts } = menuContext;
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
-
-    const layouts = [{
-        name: 'Linear'
-    }, {
-        name: 'Grilla'
-    }];
-
-    const fonts = [{
-        name: 'Sans Serif',
-    }, {
-        name: 'Georgia, serif',
-    }, {
-        name: 'Garamond, serif',
-    }, {
-        name: 'Verdana, sans-serif',
-    }, {
-        name: 'Helvetica, sans-serif',
-    }, {
-        name: 'Tahoma, sans-serif',
-    }, {
-        name: 'monospace',
-    }];
 
     const [font, setFont] = useState();
     const [layout, setLayout] = useState();
