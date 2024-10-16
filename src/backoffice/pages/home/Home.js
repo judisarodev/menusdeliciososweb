@@ -29,7 +29,7 @@ const Home = () => {
         message.current.show({severity, summary: text});
     }
 
-    const createDish = (name, price, category, description = '', image = 'image') => {
+    const createDish = (name, price, category, description = '', image) => {
         if(!name || !price || !category || !category.categoryId){
             showMessage('error', 'Error al crear el producto');
         }
@@ -42,7 +42,7 @@ const Home = () => {
                 name,
                 price,
                 description,
-                image,
+                imageId: image,
             }),
             headers: {
                 'Content-Type': 'application/json',

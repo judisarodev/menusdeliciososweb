@@ -114,11 +114,10 @@ const Table = () => {
     }
 
     const manageImageButtonTemplate = (rowData) => {
-        console.log(rowData.image);
         if(!rowData.image){
             return <Image src={noImage} alt="Image" width="60" preview />;
         }
-        return <Image src={rowData.image} alt="Image" width="50" preview />;
+        return <Image src={BASE_URL + rowData.image.url} alt="Image" width="60" preview />;
     }
 
     return(<div className="table__container">

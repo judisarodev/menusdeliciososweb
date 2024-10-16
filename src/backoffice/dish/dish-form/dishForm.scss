@@ -44,3 +44,20 @@
     display: flex;
     justify-content: center;   
 }
+.dish-form__image-input-container label{
+    width: 100%;
+}
+.dish-form__image-temaplate:hover{
+    cursor: pointer;
+    opacity: 80%;
+}
+.dish-form__images-container{
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.dish-form__get-image-temaplate{
+    margin: 12px;
+}
