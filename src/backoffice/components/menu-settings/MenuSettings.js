@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Dropdown } from 'primereact/dropdown';
 import './menuSettings.scss';
 import { InputSwitch } from 'primereact/inputswitch';
+import { MenuContext } from "../../context/restaurant/MenuContext";
 
 const MenuSettings = () => {
+    // Data
+    const BASE_URL = process.env.REACT_APP_URL;
+
+    const menuContext = useContext(MenuContext);
+    const { menu } = menuContext;
 
     const layouts = [{
         name: 'Linear',
@@ -21,25 +27,18 @@ const MenuSettings = () => {
         value: 'verdana',
     }];
 
-    const palettes = [{
-        primaryColor: '#F5F5F5',
-        secondaryColor: 'red',
-        primaryTextColor: '#F5F5F5',
-        secondaryTextColor: 'red'
-    }, {
-        primaryColor: 'red',
-        secondaryColor: '#F5F5F5',
-        primaryTextColor: 'red',
-        secondaryTextColor: '#F5F5F5'
-    },];
+    const [font, setFont] = useState(menu.font);
+    const [layout, setLayout] = useState(menu.layout);
+    const [palette, setPalette] = useState();
+    const [palettes, setPalettes] = useState();
+    const [showDescriptions, setShowDescriptions] = useState(menu.showDescription);
+    const [showIcons, setShowIcons] = useState(menu.showIcons);
+    const [showImages, setShowImages] = useState(menu.showNavigation);
+    const [showNavigation, setShowNavigation] = useState(menu.showNavigation);
 
-    const [font, setFont] = useState();
-    const [layout, setLayout] = useState();
-    const [palette, setPalette] = useState(palettes[0]);
-    const [showDescriptions, setShowDescriptions] = useState();
-    const [showIcons, setShowIcons] = useState();
-    const [showImages, setShowImages] = useState();
-    const [showNavigation, setShowNavigation] = useState();
+    useEffect(() => {
+        setPalette(menu.palette);
+    }, [menu]);
 
     const selectedPaletteTemplate = (option) => {
         return (
@@ -65,6 +64,24 @@ const MenuSettings = () => {
         }
         return <span>{props.placeholder}</span>;
     }
+
+    useEffect(() => {
+        fetch(BASE_URL + '/menu/get-palettes', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+            if(response.ok){
+                return response.json();
+            }
+            throw new Error('No fue posible consultar las paletas de colores');
+        }).then((data) => {
+            setPalettes(data);
+        }).catch((error) => {
+            console.error(error);
+        });
+    }, []);
 
     return (<div className="menu-settings__container">
         <form className="dish-form__container">
@@ -100,7 +117,7 @@ const MenuSettings = () => {
 
             <div className="dish-form__input-container">
                 <label>Paleta de colores</label>
-                <Dropdown
+                {palette && <Dropdown
                     value={palette}
                     options={palettes}
                     onChange={(e) => {
@@ -109,7 +126,7 @@ const MenuSettings = () => {
                     valueTemplate={selectedPaletteTemplate}
                     itemTemplate={paletteTemplate}
                     placeholder="Selecciona la paleta de colores"
-                />
+                />}
             </div>
 
             <div className="menu-settings__switch-contaier">

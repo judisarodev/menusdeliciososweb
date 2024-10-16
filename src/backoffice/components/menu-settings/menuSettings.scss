@@ -19,6 +19,8 @@
 .menu-settings__palette-item{
     width: 20px;
     height: 20px;
+    border: 1px solid gray;
+    border-radius: 5px;
 }
 .menu-settings__palette-container{
     display: flex;
