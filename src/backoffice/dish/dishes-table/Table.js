@@ -30,6 +30,7 @@ const Table = () => {
     const [dishes, setDishes] = useState([]);
     const [dish, setDish] = useState();
     const [categories, setCategories] = useState([]);
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     
     useEffect(() => {
         if(menu.categories){
@@ -105,7 +106,10 @@ const Table = () => {
     }
 
     const deleteButtonTemplate = (rowData) => {
-        return <Button onClick={() => deleteDialog(rowData)} label={<MdDelete size={20}/>} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top'}}/>;;
+        return <Button onClick={() => {
+            setShowConfirmDialog(true);
+            deleteDialog(rowData);
+        }} label={<MdDelete size={20}/>} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top'}}/>;;
     }
 
     const tableTitleTemplate = (text) => {
@@ -123,13 +127,16 @@ const Table = () => {
         confirmDialog({
             message: '¿Estás seguro de que deseas borrar este plato?',
             header: 'Confirmación',
-            defaultFocus: 'accept',
-            accept: () => deleteDish(rowData.dishId),
+            accept: () => {
+                setShowConfirmDialog(false);
+                deleteDish(rowData.dishId);
+            },
+            reject: () => setShowConfirmDialog(false),
         });
     };
 
     return(<div className="table__container">
-        <ConfirmDialog />
+        {showConfirmDialog && <ConfirmDialog />}
         {dishes && dishes.length > 0 && dishes.map((p) => {    
             return(
                 <div key={p.name}>

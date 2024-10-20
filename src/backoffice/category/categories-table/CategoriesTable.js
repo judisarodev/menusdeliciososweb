@@ -5,23 +5,24 @@ import { Dialog } from "primereact/dialog";
 import React, { useContext, useEffect, useState } from "react";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import { CategoryForm } from "../category-form/CategoryForm";
-import { IoFastFood } from "react-icons/io5";
 import './categoriesTable.scss';
 import { MenuContext } from "../../context/restaurant/MenuContext";
 import { TokenContext } from "../../context/token/TokenContextProvider";
 import { IconsContext } from "../../context/restaurant/IconsContext";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 
 const CategoriesTable = () => {
     // Env
     const BASE_URL = process.env.REACT_APP_URL;
-
+    
     // Context
     const menuContext = useContext(MenuContext);
     const { menu, getMenu } = menuContext;
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
     const { icons } = useContext(IconsContext);
-
+    
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState();
     const [categoryId, setCategoryId] = useState();
@@ -40,6 +41,20 @@ const CategoriesTable = () => {
     }, [menu]);
 
     
+    const deleteDialog = (rowData) => {
+        confirmDialog({
+            message: '¿Estás seguro de que deseas eliminar esta categoría? Se eliminarán todos los platos que pertenecen a esta categoría.',
+            header: 'Confirmación',
+            accept: () => {
+                setShowConfirmDialog(false);
+                deleteCategory(rowData.categoryId);
+            },
+            reject: () => {
+                setShowConfirmDialog(false);
+            }
+        });
+    };
+
     const deleteCategory = (categoryId) => {
         fetch(BASE_URL + '/category/delete/' + categoryId, {
             method: 'DELETE',
@@ -87,7 +102,10 @@ const CategoriesTable = () => {
     }
     
     const deleteButtonTemplate = (rowData) => {
-        return <Button onClick={() => deleteCategory(rowData.categoryId)} label={<MdDelete size={20} />} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top' }} />;;
+        return <Button onClick={() => {
+            setShowConfirmDialog(true);
+            deleteDialog(rowData);
+        }} label={<MdDelete size={20} />} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top' }} />;;
     }
 
     const updateCategory = (name, icon) => {
@@ -116,7 +134,7 @@ const CategoriesTable = () => {
     }
 
     return (<div className="category-table__container">
-        
+        {showConfirmDialog && <ConfirmDialog />}
         <DataTable value={categories} header={tableTitleTemplate("Categorías")} tableStyle={{ minWidth: '50rem' }} emptyMessage={'No hay categorías'} >
             <Column style={{ width: '10%' }} body={buttonTemplate} header="Editar"></Column>
             <Column style={{ width: '10%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
