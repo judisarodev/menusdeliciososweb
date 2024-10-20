@@ -12,7 +12,7 @@ import noImage from './../../../assets/images/no-image.png';
 import { MenuContext } from "../../context/restaurant/MenuContext";
 import { Image } from 'primereact/image';
 import { confirmDialog, ConfirmDialog } from "primereact/confirmdialog";
-
+import {formatCurrency} from './../../../utils/currency/formatCurrency';
 
 const Table = () => {
 
@@ -123,6 +123,10 @@ const Table = () => {
         return <Image src={BASE_URL + rowData.image.url} alt="Image" width="60" preview />;
     }
 
+    const managePriceTemplate = (rowData) => {
+        return <div style={{display: 'flex', justifyContent: 'flex-end', marginRight: '50%'}}>$ {formatCurrency(rowData.price)}</div>;
+    }
+
     const deleteDialog = (rowData) => {
         confirmDialog({
             message: '¿Estás seguro de que deseas borrar este plato?',
@@ -144,9 +148,9 @@ const Table = () => {
                         <Column style={{ width: '10%' }} body={buttonTemplate} header="Editar"></Column>
                         <Column style={{ width: '10%' }} body={deleteButtonTemplate} header="Eliminar"></Column>
                         <Column style={{ width: '10%' }} body={manageImageButtonTemplate} header="Imagen"></Column>
-                        <Column style={{ width: '15%' }} field="name" header="Nombre"></Column>
-                        <Column style={{ width: '15%' }} field="price" header="Precio"></Column>
-                        <Column style={{ width: '15%' }} field="description" header="Descripción"></Column>
+                        <Column style={{ width: '20%' }} field="name" header="Nombre"></Column>
+                        <Column style={{ width: '15%' }} body={managePriceTemplate} header="Precio"></Column>
+                        <Column style={{ width: '20%' }} field="description" header="Descripción"></Column>
                         <Column style={{ width: '15%' }} field="category" header="Categoría"></Column>
                     </DataTable>
 
