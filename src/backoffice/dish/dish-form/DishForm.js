@@ -136,8 +136,6 @@ const DishForm = ({
                     value={price}
                     onChange={(e) => setPrice(e.value)}
                     placeholder="Ingresa el costo del producto"
-                    mode="currency"
-                    currency="COP"
                     maxFractionDigits={0} />
             </div>
 
