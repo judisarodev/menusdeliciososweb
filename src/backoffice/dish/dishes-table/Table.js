@@ -11,6 +11,7 @@ import { DishForm } from "../dish-form/DishForm";
 import noImage from './../../../assets/images/no-image.png';
 import { MenuContext } from "../../context/restaurant/MenuContext";
 import { Image } from 'primereact/image';
+import { confirmDialog, ConfirmDialog } from "primereact/confirmdialog";
 
 
 const Table = () => {
@@ -95,9 +96,6 @@ const Table = () => {
         });
     }
 
-    const showDeleteDishPanel = (dishId) => {
-        deleteDish(dishId);
-    }
 
     const buttonTemplate = (rowData) => {
         return <Button onClick={() => {
@@ -107,7 +105,7 @@ const Table = () => {
     }
 
     const deleteButtonTemplate = (rowData) => {
-        return <Button onClick={() => showDeleteDishPanel(rowData.dishId)} label={<MdDelete size={20}/>} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top'}}/>;;
+        return <Button onClick={() => deleteDialog(rowData)} label={<MdDelete size={20}/>} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top'}}/>;;
     }
 
     const tableTitleTemplate = (text) => {
@@ -121,8 +119,17 @@ const Table = () => {
         return <Image src={BASE_URL + rowData.image.url} alt="Image" width="60" preview />;
     }
 
+    const deleteDialog = (rowData) => {
+        confirmDialog({
+            message: '¿Estás seguro de que deseas borrar este plato?',
+            header: 'Confirmación',
+            defaultFocus: 'accept',
+            accept: () => deleteDish(rowData.dishId),
+        });
+    };
+
     return(<div className="table__container">
-        
+        <ConfirmDialog />
         {dishes && dishes.length > 0 && dishes.map((p) => {    
             return(
                 <div key={p.name}>

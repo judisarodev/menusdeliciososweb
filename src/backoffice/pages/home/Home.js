@@ -42,7 +42,7 @@ const Home = () => {
                 name,
                 price,
                 description,
-                imageId: image.imageId,
+                imageId: image ? image.imageId : null,
             }),
             headers: {
                 'Content-Type': 'application/json',
