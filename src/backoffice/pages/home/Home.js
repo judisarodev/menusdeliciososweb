@@ -2,15 +2,17 @@ import React, { useContext, useRef, useEffect, useState } from "react";
 import './home.scss';
 import { DishForm } from "../../dish/dish-form/DishForm";
 import { Table } from "../../dish/dishes-table/Table";
-import { Emulator } from "./../../components/emulator/Emulator";
+import { MdOutlineRestaurantMenu } from "react-icons/md";
 import { MenuContext } from "../../context/restaurant/MenuContext";
 import { TokenContext } from "../../context/token/TokenContextProvider";
 import { Messages } from "primereact/messages";
 import { CategoryForm } from "../../category/category-form/CategoryForm";
 import { CategoriesTable } from "../../category/categories-table/CategoriesTable";
 import { MenuSettings } from "../../components/menu-settings/MenuSettings";
+import { Button } from "primereact/button";
+import { FaChartPie } from "react-icons/fa";
 
-const Home = () => {    
+const Home = () => {
     // Env
     const BASE_URL = process.env.REACT_APP_URL;
 
@@ -24,17 +26,17 @@ const Home = () => {
     const message = useRef(null);
 
     const showMessage = (severity, text) => {
-        message.current.show({severity, summary: text});
+        message.current.show({ severity, summary: text });
     }
 
     const createDish = (name, price, category, description = '', image) => {
-        if(!name || !price || !category || !category.categoryId){
+        if (!name || !price || !category || !category.categoryId) {
             showMessage('error', 'Error al crear el producto');
         }
 
         // Tarea: Agregar un servicio que permita la creación de platos 
         fetch(BASE_URL + '/dish/create', {
-            method: 'POST', 
+            method: 'POST',
             body: JSON.stringify({
                 categoryId: category.categoryId,
                 name,
@@ -47,10 +49,10 @@ const Home = () => {
                 'authorization': 'Bearer ' + token,
             }
         }).then((response) => {
-            if(!response.ok){
+            if (!response.ok) {
                 throw new Error('Error al crear producto');
             }
-            
+
             return response.json();
         }).then((data) => {
             getMenu();
@@ -60,14 +62,14 @@ const Home = () => {
         });
     }
 
-    function createCategory(name, icon){
-        if(!name || !icon){
+    function createCategory(name, icon) {
+        if (!name || !icon) {
             return showMessage('error', 'Ingresa todos los valores');
         }
 
         // Tarea: Agregar un servicio que permita la creación de platos 
         fetch(BASE_URL + '/category/create', {
-            method: 'POST', 
+            method: 'POST',
             body: JSON.stringify({
                 name, icon, menuId
             }),
@@ -76,7 +78,7 @@ const Home = () => {
                 'authorization': 'Bearer ' + token,
             }
         }).then((response) => {
-            if(response.ok){
+            if (response.ok) {
                 return response.json();
             }
             throw new Error();
@@ -86,9 +88,9 @@ const Home = () => {
             showMessage('error', 'Error al crear el producto');
         });
     }
-    
+
     useEffect(() => {
-        function getRestaurant(){
+        function getRestaurant() {
             fetch(BASE_URL + '/restaurant/get', {
                 method: 'GET',
                 headers: {
@@ -96,7 +98,7 @@ const Home = () => {
                     'Authorization': 'Bearer ' + token
                 }
             }).then((response) => {
-                if(response.ok){
+                if (response.ok) {
                     return response.json();
                 }
             }).then((data) => {
@@ -107,7 +109,7 @@ const Home = () => {
             });
         }
 
-        function getMenu(menuId){
+        function getMenu(menuId) {
             fetch(BASE_URL + '/menu/get/' + menuId, {
                 method: 'GET',
                 headers: {
@@ -115,7 +117,7 @@ const Home = () => {
                     'Authorization': 'Bearer ' + token
                 }
             }).then((response) => {
-                if(response.ok){
+                if (response.ok) {
                     return response.json();
                 }
             }).then((data) => {
@@ -125,23 +127,35 @@ const Home = () => {
             });
         }
 
-        if(token){
+        if (token) {
             getRestaurant();
         }
     }, [token]);
 
-    return(<>
+    return (<>
         <div className="bhome__container">
             <div className="bhome__manager-container">
                 <Messages ref={message} />
-                <div>
-                    <CategoryForm action={createCategory} />
-                    <DishForm action={createDish} buttonText={'CREAR'}/>
-                </div>
+
+                <Button
+                    style={{ width: '90%', margin: '12px' }}
+                    icon={<MdOutlineRestaurantMenu size={25} style={{ marginRight: '15px' }} />}
+                    severity="success"
+                    label="Visualizar Menú"
+                    raised />
+                <Button
+                    style={{ width: '90%', margin: '12px' }}
+                    icon={<FaChartPie size={25} style={{ marginRight: '15px' }} />}
+                    severity="success"
+                    label="Ver estadísticas de uso"
+                    outlined
+                    raised />
+                <DishForm action={createDish} buttonText={'CREAR'} />
+
             </div>
             <div className="bhome__menu-sample">
+                <CategoryForm action={createCategory} />
                 <MenuSettings />
-                <Emulator />
             </div>
             <div className="bhome__table">
                 <CategoriesTable />

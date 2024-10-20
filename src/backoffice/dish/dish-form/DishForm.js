@@ -53,7 +53,7 @@ const DishForm = ({
                 </div>);
         }
         return (
-            <div className="dish-form__get-image-temaplate"> 
+            <div className="dish-form__get-image-temaplate">
                 <Image src={BASE_URL + url} alt="Image" width="150" preview />
             </div>
         );
@@ -65,7 +65,7 @@ const DishForm = ({
                 <Image src={BASE_URL + image.url} alt="Image" width="200" onClick={() => {
                     setImage(image);
                     setVisible(false);
-                }}/>
+                }} />
             </div>
         );
     }
@@ -84,7 +84,7 @@ const DishForm = ({
             }));
         }
 
-        if(token){
+        if (token) {
             fetch(BASE_URL + '/restaurant/get-images', {
                 method: 'GET',
                 headers: {
@@ -151,14 +151,16 @@ const DishForm = ({
             </div>
 
             <div>
+                {image && <div>
+                    <div className="dish-form__input-container">
+                        <label>Imagen seleccionada (opcional)</label>
+                    </div>
+                    <div>
+                        {getImageTemplate(image.url)}
+                    </div>
+                </div>}
                 <div className="dish-form__input-container">
-                    <label>Imagen seleccionada (opcional)</label>
-                </div>
-                <div>
-                    {getImageTemplate(image ? image.url : null)}
-                </div>
-                <div className="dish-form__input-container">
-                    <Button label="Cambiar Imagen" severity="secondary" outlined onClick={(e) => {
+                    <Button label={!image ? 'Agregar Imagen' : 'Cambiar imagen'} severity="secondary" outlined onClick={(e) => {
                         e.preventDefault();
                         openDialog();
                     }} />
