@@ -46,6 +46,30 @@ const MenuSettings = () => {
     }
 
     useEffect(() => {
+        function getBakcgroundImages(){
+            fetch(BASE_URL + '/restaurant/get-background-images', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            }).then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Error al consultar las imágenes');
+            }).then((data) => {
+                console.log(data);
+                setBackgroundImages(data);
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+
+        getBakcgroundImages();
+    }, [token]);
+
+    useEffect(() => {
         setPalette(menu.palette);
         setLayout({ name: menu.layout || 'linearito' });
         setFont({ name: menu.font || 'Sans Serif' });
@@ -129,7 +153,7 @@ const MenuSettings = () => {
         return (
             <div className="dish-form__image-temaplate">
                 <Image src={BASE_URL + image.url} alt="Image" width="200" onClick={() => {
-                    //setVisible(false);
+                    setVisible(false);
                 }} />
             </div>
         );
@@ -199,6 +223,8 @@ const MenuSettings = () => {
                     placeholder="Selecciona la paleta de colores"
                 />}
             </div>
+
+            <br></br>
 
             <div className="menu-settings__switch-contaier">
 
