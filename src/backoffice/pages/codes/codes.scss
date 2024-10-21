@@ -1,0 +1,23 @@
+@import './../../../styles/variables';  
+.codes__container{
+    background-color: $secondary-background-color;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    gap: $small-box-spacig;
+    padding: $small-box-spacig;
+}
+.codes__container > div{
+    border: 1px solid black;
+    background-color: white;
+    padding: $large-box-spacig;
+    border-radius: $standard-border-raius;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.codes__container h2 {
+    font-weight: 600;
+}

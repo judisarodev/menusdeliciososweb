@@ -9,11 +9,12 @@ import { FaQrcode } from "react-icons/fa";
 import { Home } from "../home/Home";
 import logo from './../../../assets/logo/black-text.png';
 import { Survey } from "../survey/Survey";
+import { Codes } from "../codes/Codes";
 const Panel = () => {
 
     const homeView = <Home />;
     const surveyView = <Survey />;
-    const CodesView = "QR Codes";
+    const CodesView = <Codes />;
     const billView = "Bills";
     const settingsView = "settings";
     

@@ -10,7 +10,7 @@ const tableTitleTemplate = (text) => {
 
 const SurveysTable = ({ surveys }) => {
     return(<div className="surveys-table__container">
-        <DataTable value={surveys} header={tableTitleTemplate('Encuestas')} tableStyle={{ minWidth: '50rem' }} emptyMessage={'No hay categorías'} size={'small'} stripedRows={true} >
+        <DataTable value={surveys} header={tableTitleTemplate('Encuestas')} tableStyle={{ minWidth: '50rem' }} emptyMessage={'Aún no hay encuestas'} size={'small'} stripedRows={true} >
             <Column style={{ width: '20%' }} field="date" header="Fecha"></Column>
             <Column style={{ width: '20%' }} field="time" header="Hora"></Column>
             <Column style={{ width: '20%' }} field="score" header="Puntaje"></Column>
