@@ -4,6 +4,9 @@ import './menuSettings.scss';
 import { InputSwitch } from 'primereact/inputswitch';
 import { MenuContext } from "../../context/restaurant/MenuContext";
 import { TokenContext } from "../../context/token/TokenContextProvider";
+import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
+import { Image } from "primereact/image";
 
 const MenuSettings = () => {
     // Data
@@ -22,8 +25,11 @@ const MenuSettings = () => {
     const [showIcons, setShowIcons] = useState();
     const [showImages, setShowImages] = useState();
     const [showNavigation, setShowNavigation] = useState();
+    const [visible, setVisible] = useState(false);
+    const [backgroundImage, setBackgroundImage] = useState([]);
+    const [backgroundImages, setBackgroundImages] = useState([]);
 
-    async function updateMenu(object){
+    async function updateMenu(object) {
         return await fetch(BASE_URL + '/menu/update/' + menuId, {
             method: 'PATCH',
             headers: {
@@ -32,7 +38,7 @@ const MenuSettings = () => {
             },
             body: JSON.stringify(object),
         }).then((response) => {
-            if(response.ok){
+            if (response.ok) {
                 return true;
             }
             return false;
@@ -42,15 +48,16 @@ const MenuSettings = () => {
     useEffect(() => {
         setPalette(menu.palette);
         setLayout({ name: menu.layout || 'linearito' });
-        setFont({ name: menu.font || 'Sans Serif' });    
+        setFont({ name: menu.font || 'Sans Serif' });
         setShowDescription(menu.showDescription);
         setShowIcons(menu.showIcons);
         setShowNavigation(menu.showNavigation);
         setShowImages(menu.showImage);
+        setBackgroundImage(menu.backgroundImage);
     }, [menu]);
 
     const selectedPaletteTemplate = (option) => {
-        if(option){
+        if (option) {
             return (<>
                 <div className="menu-settings__palette-container">
                     <div className="menu-settings__palette-item" style={{ backgroundColor: option.primaryColor }}></div>
@@ -78,10 +85,10 @@ const MenuSettings = () => {
 
 
     const selectedFontTemplate = (option) => {
-        if(option){
+        if (option) {
             return (
                 <div style={{ fontFamily: option.name }}>
-                    { option.name }
+                    {option.name}
                 </div>
             );
         }
@@ -92,10 +99,10 @@ const MenuSettings = () => {
         if (!option) {
             return <span>Selecciona una fuente</span>; // Mensaje alternativo
         }
-        
+
         return (
             <div style={{ fontFamily: option.name }}>
-                { option.name }
+                {option.name}
             </div>
         );
     }
@@ -107,7 +114,7 @@ const MenuSettings = () => {
                 'Content-Type': 'application/json'
             }
         }).then((response) => {
-            if(response.ok){
+            if (response.ok) {
                 return response.json();
             }
             throw new Error('No fue posible consultar las paletas de colores');
@@ -118,10 +125,28 @@ const MenuSettings = () => {
         });
     }, []);
 
+    const imageTemplate = (image) => {
+        return (
+            <div className="dish-form__image-temaplate">
+                <Image src={BASE_URL + image.url} alt="Image" width="200" onClick={() => {
+                    //setVisible(false);
+                }} />
+            </div>
+        );
+    }
+
+    const getImageTemplate = (url) => {
+        return (
+            <div className="dish-form__get-image-temaplate">
+                <Image src={BASE_URL + url} alt="Image" width="150" preview />
+            </div>
+        );
+    }
+
     return (<div className="menu-settings__container">
         <form className="dish-form__container">
             <div>
-                <p className="dish-form__title">Configuración</p>
+                <p className="dish-form__title">Configuración del menú</p>
             </div>
 
             <div className="dish-form__input-container">
@@ -132,7 +157,7 @@ const MenuSettings = () => {
                     optionLabel="name"
                     onChange={async (e) => {
                         const response = await updateMenu({ font: e.value.name });
-                        if(response){
+                        if (response) {
                             getMenu();
                         }
                     }}
@@ -150,7 +175,7 @@ const MenuSettings = () => {
                     optionLabel="name"
                     onChange={async (e) => {
                         const response = await updateMenu({ layout: e.value.name });
-                        if(response){
+                        if (response) {
                             getMenu();
                         }
                     }}
@@ -165,7 +190,7 @@ const MenuSettings = () => {
                     options={palettes}
                     onChange={async (e) => {
                         const response = await updateMenu({ paletteId: e.value.paletteId });
-                        if(response){
+                        if (response) {
                             getMenu();
                         }
                     }}
@@ -176,55 +201,78 @@ const MenuSettings = () => {
             </div>
 
             <div className="menu-settings__switch-contaier">
-                <div>
-                    <label>Imágenes</label>
-                    <InputSwitch
-                        checked={showImages}
-                        onChange={async (e) => {
-                            const response = await updateMenu({ showImages: e.value });
-                            if(response){
-                                getMenu();
-                            }
-                        }} />
-                </div>
 
                 <div>
-                    <label>Iconos</label>
-                    <InputSwitch
-                        checked={showIcons}
-                        onChange={async (e) => {
-                            const response = await updateMenu({ showIcons: e.value });
-                            if(response){
-                                getMenu();
-                            }
-                        }} />
-                </div>
-
-                <div>
-                    <label>Descripciones</label>
-                    <InputSwitch
-                        checked={showDescription}
-                        onChange={async (e) => {
-                            const response = await updateMenu({ showDescription: e.value });
-                            if(response){
-                                getMenu();
-                            }
-                        }} />
-                </div>
-
-                <div>
-                    <label>Menú de navegación</label>
+                    <label>¿Mostrar menú general de navegación?</label>
                     <InputSwitch
                         checked={showNavigation}
                         onChange={async (e) => {
                             const response = await updateMenu({ showNavigation: e.value });
-                            if(response){
+                            if (response) {
                                 getMenu();
                             }
                         }} />
                 </div>
+
+
+                <div>
+                    <label>¿Mostrar iconos de las categorías?</label>
+                    <InputSwitch
+                        checked={showIcons}
+                        onChange={async (e) => {
+                            const response = await updateMenu({ showIcons: e.value });
+                            if (response) {
+                                getMenu();
+                            }
+                        }} />
+                </div>
+
+                <div>
+                    <label>¿Mostrar imágenes de los platos?</label>
+                    <InputSwitch
+                        checked={showImages}
+                        onChange={async (e) => {
+                            const response = await updateMenu({ showImages: e.value });
+                            if (response) {
+                                getMenu();
+                            }
+                        }} />
+                </div>
+
+                <div>
+                    <label>¿Mostrar descripciones de los platos?</label>
+                    <InputSwitch
+                        checked={showDescription}
+                        onChange={async (e) => {
+                            const response = await updateMenu({ showDescription: e.value });
+                            if (response) {
+                                getMenu();
+                            }
+                        }} />
+                </div>
+
             </div>
 
+            <br></br>
+
+            <div className="dish-form__input-container">
+                <label>Image de fondo del menú</label>
+                {backgroundImage && <div>
+                    {getImageTemplate(backgroundImage.url)}
+                </div>}
+                <div className="dish-form__input-container">
+                    <Button label={'Cambiar imagen de fondo del menú'} severity="secondary" outlined onClick={(e) => {
+                        e.preventDefault();
+                        setVisible(true);
+                    }} />
+                </div>
+
+                <Dialog header="Seleccionar Imagen" visible={visible} modal onHide={() => setVisible(false)}>
+                    <div className="dish-form__images-container">{
+                        backgroundImages.map((i) => imageTemplate(i))
+                    }</div>
+                </Dialog>
+            </div>
         </form>
     </div>);
 }

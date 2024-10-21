@@ -156,14 +156,14 @@ const Home = () => {
                     style={{ width: '90%', margin: '12px' }}
                     icon={<FaChartPie size={25} style={{ marginRight: '15px' }} />}
                     severity="success"
-                    label="Ver estadísticas de uso"
+                    label="Guardar cambios del ménú"
                     outlined
                     raised />
+                <CategoryForm action={createCategory} />
                 <DishForm action={createDish} buttonText={'CREAR'} />
-
             </div>
             <div className="bhome__menu-sample">
-                <CategoryForm action={createCategory} />
+                
                 <MenuSettings />
             </div>
             <div className="bhome__table">

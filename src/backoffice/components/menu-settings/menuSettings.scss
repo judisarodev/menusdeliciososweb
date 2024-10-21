@@ -2,15 +2,13 @@
 
 .menu-settings__switch-contaier {
     display: flex;
-    flex-wrap: wrap;
-
+    flex-direction: column;
+    gap: $large-spacing;
 }
 .menu-settings__switch-contaier div {
     display: flex;
-    align-items: center; 
-    gap: 5px;
-    flex-direction: column;
-    flex-grow: 1;
+    gap: $small-spacing;
+    align-items: center;
 }
 .menu-settings__switch-contaier label{
     font-size: $small-font-size;
