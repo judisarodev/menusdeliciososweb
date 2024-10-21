@@ -11,9 +11,7 @@ function MenuContextProvider ({ children }) {
     const [menu, setMenu] = useState([]);
     const [menuId, setMenuId] = useState([]);
 
-    const layouts = [{
-        name: 'Grilla'
-    }, {
+    const layouts = [ {
         name: 'Grilla'
     }, {
         name: 'Lista'

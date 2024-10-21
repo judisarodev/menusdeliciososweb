@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import './emulator.scss';
-import { FastFood } from "../../templates/fast-food/FastFood";
 import { MenuContext } from "../../context/restaurant/MenuContext";
 import { MenuTemplate } from './../menu/MenuTemplate';
+import './emulator.scss';
 
 const Emulator = () => {
 
@@ -15,6 +14,7 @@ const Emulator = () => {
     const [showNavigation, setShowNavigation] = useState();
     const [categoriesAndDishes, setCategoriesAndDishes] = useState([]);
     const [showDescriptions, setShowDescriptions] = useState();
+    const [layout, setLayout]  = useState('Lista');
     const [palette, setPalette] = useState({
         primaryColor: '#000000',
         secondaryColor: '#FFFFFF',
@@ -37,6 +37,7 @@ const Emulator = () => {
             setCategoriesAndDishes(menu.categories);
             setShowNavigation(menu.showNavigation);
             setShowDescriptions(menu.showDescription);
+            setLayout(menu.layout);
         }
     }, [menu]);
 
@@ -50,7 +51,8 @@ const Emulator = () => {
             palette={palette}
             showNavigation={showNavigation}
             categoriesAndDishes={categoriesAndDishes}
-            showDescriptions={showDescriptions}/>
+            showDescriptions={showDescriptions}
+            layout={layout}/>
         </div>
     );
 }

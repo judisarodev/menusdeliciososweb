@@ -1,8 +1,6 @@
 @import './../../../styles/variables';
 .menu__container{
-    overflow: scroll;
     position: relative;
-    height: 96vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -23,9 +21,7 @@
     text-align: center; 
 }
 .menu-template__home-button{
-    position: absolute;
-    left: 10px;
-    top: 10px;
+    position: fixed;
     font-size: 1.2rem;
 }
 
@@ -45,9 +41,9 @@ $font-size-small-text: 0.7rem;
 
 // Fast Food Category
 .menu-template-item__container{
-    padding: $large-box-spacig;
-    width: 100%;
-    margin-bottom: $large-box-spacig;
+    padding: $base-box-spacig;
+    margin: $base-box-spacig;
+    border-radius: $standard-border-raius;
 }
 .menu-template-category__info{
     display: flex;
@@ -67,9 +63,8 @@ $font-size-small-text: 0.7rem;
     display: flex;
     font-size: 1.5rem;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin-bottom: $large-box-spacig;
 }
 .menu-template-cateogry__dishes{
     display: flex;
@@ -119,4 +114,31 @@ $font-size-small-text: 0.7rem;
     display: flex;
     justify-content: center;
     margin: $base-box-spacig;
+}
+.menu__container__divider{
+   display: flex;
+   flex-direction: row;
+    padding: $base-box-spacig;
+}
+.menu-template-category__icon{
+    font-size: 1.8rem;
+    padding-right: $base-box-spacig;
+}
+.menu-template__items-container--list {
+    display: flex;
+    flex-direction: column;
+    gap: $large-spacing;
+    width: 100%;
+}
+.menu-template__items-container--list {
+    display: flex;
+    flex-direction: column;
+    gap: $large-spacing;
+}
+
+.menu-template__items-container--grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    gap: $large-spacing;
 }

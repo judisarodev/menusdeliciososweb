@@ -11,6 +11,8 @@ import { CategoriesTable } from "../../category/categories-table/CategoriesTable
 import { MenuSettings } from "../../components/menu-settings/MenuSettings";
 import { Button } from "primereact/button";
 import { FaChartPie } from "react-icons/fa";
+import { Sidebar } from "primereact/sidebar";
+import { Emulator } from "../../components/emulator/Emulator";
 
 const Home = () => {
     // Env
@@ -21,6 +23,8 @@ const Home = () => {
     const { token } = tokenContext;
     const menuContext = useContext(MenuContext);
     const { menuId, setMenuId, setMenu, getMenu } = menuContext;
+
+    const [emulatorVisibility, setEmulatorVisibility] = useState(false);
 
     // References
     const message = useRef(null);
@@ -136,12 +140,17 @@ const Home = () => {
         <div className="bhome__container">
             <div className="bhome__manager-container">
                 <Messages ref={message} />
-
+                <Sidebar visible={emulatorVisibility} onHide={() => setEmulatorVisibility(false)} position="right" style={{width: '90%'}}> 
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <Emulator />
+                    </div>
+                </Sidebar>
                 <Button
                     style={{ width: '90%', margin: '12px' }}
                     icon={<MdOutlineRestaurantMenu size={25} style={{ marginRight: '15px' }} />}
                     severity="success"
                     label="Visualizar Menú"
+                    onClick={() => setEmulatorVisibility(true)}
                     raised />
                 <Button
                     style={{ width: '90%', margin: '12px' }}
