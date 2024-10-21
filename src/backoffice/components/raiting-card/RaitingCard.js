@@ -2,10 +2,16 @@ import React, { useEffect } from "react";
 import './raitingCard.scss';
 import { Rating } from 'primereact/rating';
 import { ProgressBar } from 'primereact/progressbar';
+import { FaRegUser } from "react-icons/fa";
+import { FaChartBar } from "react-icons/fa";
+
 
 const RaitingCard = ({ score, max, oneStarts, twoStarts, threeStarts, fourStarts, fiveStarts }) => {
 
     return (<div className="raiting-card__container">
+        <div className="raiting-card__icon">
+            <FaChartBar size={20} color="#06b6d4"/>
+        </div>
         <div className="raiting-card__summary">
             <p className="raiting-card__score">{ score }</p>
             <Rating value={score} cancel={false} />

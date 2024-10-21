@@ -1,5 +1,6 @@
 @import './../../../styles/variables'; 
 .respondent-card__container {
+    position: relative;
     background-color: white;
     padding: $large-box-spacig;
     margin: $small-box-spacig;
@@ -18,4 +19,12 @@
 .respondent-card__container p{
     margin: 0px;
     padding: 0px;
+}
+.respondent-card__icon{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: $secondary-background-color;
+    padding: $medium-box-spacig;
+    border-radius: $standard-border-raius;
 }
