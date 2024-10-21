@@ -8,10 +8,11 @@ import { CiSettings } from "react-icons/ci";
 import { FaQrcode } from "react-icons/fa";
 import { Home } from "../home/Home";
 import logo from './../../../assets/logo/black-text.png';
+import { Survey } from "../survey/Survey";
 const Panel = () => {
 
     const homeView = <Home />;
-    const surveyView = "Survey";
+    const surveyView = <Survey />;
     const CodesView = "QR Codes";
     const billView = "Bills";
     const settingsView = "settings";

@@ -1,0 +1,10 @@
+@import './../../../styles/variables';  
+.survey-container {
+    background-color: $secondary-background-color;
+    height: 100vh;
+}
+.survey__cards-container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+}
