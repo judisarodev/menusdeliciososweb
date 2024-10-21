@@ -1,12 +1,12 @@
 import { Image } from "primereact/image";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import './menuTemplate.scss';
 import { IconsContext } from "../../context/restaurant/IconsContext";
 import { FaHome } from "react-icons/fa";
 import { Button } from 'primereact/button';
 import { formatCurrency } from "../../../utils/currency/formatCurrency";
 
-const MenuTemplate = ({ logo, categoriesAndDishes, categories, font, layout, palette, showImages, showIcons, showDescriptions, showNavigation }) => {
+const MenuTemplate = ({ logo, categoriesAndDishes, categories, font, layout, palette, showImages, showIcons, showDescriptions, showNavigation, backgroundImage }) => {
     const { icons } = useContext(IconsContext);
     const getIcon = (iconId) => {
         return icons.find((c) => c.id === iconId);
@@ -20,7 +20,14 @@ const MenuTemplate = ({ logo, categoriesAndDishes, categories, font, layout, pal
     const BASE_URL = process.env.REACT_APP_URL;
 
     return (
-        <div className="menu__container" style={{ backgroundColor: secondaryColor }}>
+        <div className="menu__container" style={backgroundImage ? {
+            width: '100%',
+            height: '100%',
+            backgroundImage: 'url(' + BASE_URL + backgroundImage.url + ")", 
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+        } : {backgroundColor: secondaryColor}}>
+            
             <div className="menu__container__divider">
                 <Button
                     style={{ backgroundColor: primaryColor }}

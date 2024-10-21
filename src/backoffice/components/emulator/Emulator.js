@@ -15,6 +15,7 @@ const Emulator = () => {
     const [categoriesAndDishes, setCategoriesAndDishes] = useState([]);
     const [showDescriptions, setShowDescriptions] = useState();
     const [layout, setLayout]  = useState('Lista');
+    const [backgroundImage, setBackgroundImage] = useState();
     const [palette, setPalette] = useState({
         primaryColor: '#000000',
         secondaryColor: '#FFFFFF',
@@ -38,6 +39,7 @@ const Emulator = () => {
             setShowNavigation(menu.showNavigation);
             setShowDescriptions(menu.showDescription);
             setLayout(menu.layout);
+            setBackgroundImage(menu.backgroundImage);
         }
     }, [menu]);
 
@@ -52,7 +54,8 @@ const Emulator = () => {
             showNavigation={showNavigation}
             categoriesAndDishes={categoriesAndDishes}
             showDescriptions={showDescriptions}
-            layout={layout}/>
+            layout={layout}
+            backgroundImage={backgroundImage}/>
         </div>
     );
 }
