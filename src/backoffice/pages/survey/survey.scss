@@ -7,4 +7,6 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto;
+    gap: $small-box-spacig;
+    padding: $small-box-spacig;
 }

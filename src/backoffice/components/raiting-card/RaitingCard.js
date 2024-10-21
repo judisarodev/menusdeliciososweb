@@ -1,44 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import './raitingCard.scss';
 import { Rating } from 'primereact/rating';
 import { ProgressBar } from 'primereact/progressbar';
 
-const RaitingCard = () => {
-    const [score, setScore] = useState(0);
-    const [oneStarts, setOneStarts] = useState();
-    const [twoStarts, setTwoStarts] = useState();
-    const [threeStarts, seTthreeStarts] = useState();
-    const [fourStarts, setFourStarts] = useState();
-    const [fiveStarts, setFiveStarts] = useState();
-    const [max, setMax] = useState(1);
-
-    useEffect(() => {
-        const scores = [1, 2, 3, 5, 10];
-
-        setMax(getMax(scores));
-        setOneStarts(scores[0]);
-        setTwoStarts(scores[1]);
-        seTthreeStarts(scores[2]);
-        setFourStarts(scores[3]);
-        setFiveStarts(scores[4]);
-        setScore((sum(scores))/5);
-    }, []);
-
-    function getMax(arr){
-        let max = 0;
-        for(let i = 0; i < arr.length; i++){
-            if(arr[i] > max){
-                max = arr[i];
-            }
-        }
-        return max;
-    }
-
-    function sum(arr){
-        return arr.reduce((acc, value) => {
-            return acc + value
-        }, 0);
-    }
+const RaitingCard = ({ score, max, oneStarts, twoStarts, threeStarts, fourStarts, fiveStarts }) => {
 
     return (<div className="raiting-card__container">
         <div className="raiting-card__summary">

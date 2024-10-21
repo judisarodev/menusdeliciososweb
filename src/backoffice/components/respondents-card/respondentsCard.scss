@@ -1,0 +1,21 @@
+@import './../../../styles/variables'; 
+.respondent-card__container {
+    background-color: white;
+    padding: $large-box-spacig;
+    margin: $small-box-spacig;
+    border-radius: $standard-border-raius;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $small-box-spacig;
+    justify-content: center;    
+}
+
+.respondent-card__title {
+    font-size: 2rem;
+    font-weight: 600;
+}
+.respondent-card__container p{
+    margin: 0px;
+    padding: 0px;
+}

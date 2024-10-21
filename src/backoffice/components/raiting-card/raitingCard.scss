@@ -2,9 +2,7 @@
 .raiting-card__container {
     background-color: white;
     padding: $large-box-spacig;
-    margin: $small-box-spacig;
     border-radius: $standard-border-raius;
-    width: 100%;
     display: grid;
     grid-template-columns: 30% 70%;
     grid-template-rows: auto;
