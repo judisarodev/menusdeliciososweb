@@ -152,13 +152,6 @@ const Home = () => {
                     label="Visualizar Menú"
                     onClick={() => setEmulatorVisibility(true)}
                     raised />
-                <Button
-                    style={{ width: '90%', margin: '12px' }}
-                    icon={<FaChartPie size={25} style={{ marginRight: '15px' }} />}
-                    severity="success"
-                    label="Guardar cambios del ménú"
-                    outlined
-                    raised />
                 <CategoryForm action={createCategory} />
                 <DishForm action={createDish} buttonText={'CREAR'} />
             </div>

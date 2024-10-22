@@ -11,6 +11,7 @@ import { Panel } from './backoffice/pages/panel/Panel';
 import { TokenContextProvider } from './backoffice/context/token/TokenContextProvider';
 import { MenuContextProvider } from './backoffice/context/restaurant/MenuContext';
 import { IconsContextProvider } from './backoffice/context/restaurant/IconsContext';
+import { MenuContainer } from './landing/pages/menu-container/MenuContainer';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
                   <Route path='/login' element={<Login />} />
                   <Route path='/terms' element={'Términos'} />
                   <Route path='/panel' element={<Panel />} />
+                  <Route path='/menu/:url' element={<MenuContainer />} />
                 </Routes>
               </BrowserRouter>
             </div>

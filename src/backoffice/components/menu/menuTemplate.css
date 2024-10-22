@@ -1,0 +1,144 @@
+.menu__container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.menu__navigation-categories {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 36px; /* $extra-large-spacing */
+}
+
+.menu__navigation-category {
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-self: center;
+    width: 50%;
+    text-align: center;
+}
+
+.menu-template__home-button {
+    position: fixed;
+    font-size: 1.2rem;
+}
+
+/* Fast Food Category */
+.menu-template-item__container {
+    padding: 12px; /* $base-box-spacig */
+    margin: 12px; /* $base-box-spacig */
+    border-radius: 12px; /* $standard-border-raius */
+}
+
+.menu-template-category__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-template-category__image {
+    position: relative;
+    width: 100%;
+}
+
+.menu-template-category__image .img {
+    margin: 35px;
+    width: 70%;
+    border-radius: 50%;
+}
+
+.menu-template-category__title {
+    display: flex;
+    font-size: 1.5rem;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-template-category__dishes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Fast Food Item */
+.menu-template-item__container {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-template-item__summary {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    gap: 12px;
+}
+
+.menu-template-item__container p {
+    margin: 0px;
+}
+
+.menu-template-item__divider {
+    width: 100%;
+    border-bottom: 3px dotted #ffffff; /* $primary-text-color */
+    position: relative;
+    bottom: 12px;
+}
+
+.menu-template-item__name {
+    text-align: start;
+    white-space: nowrap;
+}
+
+.menu-template-item__price {
+    text-align: end;
+}
+
+.menu-template-item__description p {
+    text-align: start;
+    font-size: 0.8rem;
+}
+
+.hide {
+    display: none;
+}
+
+.menu-template-item__image img {
+    border-radius: 12px; /* $standard-border-raius */
+}
+
+.menu-template-item__image {
+    display: flex;
+    justify-content: center;
+    margin: 12px; /* $base-box-spacig */
+}
+
+.menu__container__divider {
+    display: flex;
+    flex-direction: row;
+    padding: 12px; /* $base-box-spacig */
+}
+
+.menu-template-category__icon {
+    font-size: 1.8rem;
+    padding-right: 12px; /* $base-box-spacig */
+}
+
+.menu-template__items-container--list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* $large-spacing */
+    width: 100%;
+}
+
+.menu-template__items-container--grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    gap: 24px; /* $large-spacing */
+}

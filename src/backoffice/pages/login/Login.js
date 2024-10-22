@@ -129,7 +129,9 @@ const Login = ({ loginPage = true }) => {
                 message.current.show({ severity: 'error', summary: 'El correo ingresado ya está registrado' }); 
             }else if(error.message === '401'){
                 message.current.show({ severity: 'error', summary: 'Ingresa todos los campos' }); 
-            }else {
+            } else if(error.message === '406'){
+                message.current.show({ severity: 'error', summary: 'El nomobre del restaurante ya está registrado' }); 
+            } else {
                 message.current.show({ severity: 'error', summary: 'Ha ocurrido un error' }); 
             }
         });
