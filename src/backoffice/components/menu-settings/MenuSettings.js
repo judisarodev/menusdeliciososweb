@@ -67,7 +67,7 @@ const MenuSettings = () => {
         }
 
         getBakcgroundImages();
-    }, [token]);
+    }, [token, BASE_URL]);
 
     useEffect(() => {
         setPalette(menu.palette);
@@ -152,7 +152,11 @@ const MenuSettings = () => {
     const imageTemplate = (image) => {
         return (
             <div className="dish-form__image-temaplate">
-                <Image src={BASE_URL + image.url} alt="Image" width="200" onClick={() => {
+                <Image src={BASE_URL + image.url} alt="Image" width="200" onClick={async () => {
+                    const response = await updateMenu({ backgroundImageId: image.imageId });
+                    if(response){
+                            getMenu();
+                    }
                     setVisible(false);
                 }} />
             </div>
