@@ -28,7 +28,7 @@ function App() {
                   <Route path='/login' element={<Login />} />
                   <Route path='/terms' element={'Términos'} />
                   <Route path='/panel' element={<Panel />} />
-                  <Route path='/menu/:url' element={<MenuContainer />} />
+                  <Route path='/:url' element={<MenuContainer />} />
                 </Routes>
               </BrowserRouter>
             </div>
