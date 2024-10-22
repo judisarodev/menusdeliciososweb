@@ -1,14 +1,14 @@
 @import './../../../styles/variables';  
 .codes__container{
     background-color: $secondary-background-color;
-    height: 100vh;
+    height: 80vh;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto;
     gap: $small-box-spacig;
     padding: $small-box-spacig;
 }
-.codes__container > div{
+.codes__code{
     border: 1px solid black;
     background-color: white;
     padding: $large-box-spacig;
@@ -20,4 +20,8 @@
 }
 .codes__container h2 {
     font-weight: 600;
+}
+.codes__button-container{
+    display: flex;
+    gap: 12px;
 }
