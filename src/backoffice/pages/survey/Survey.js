@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RaitingCard } from "../../components/raiting-card/RaitingCard";
 import './survey.scss';
 import { RespondentsCard } from "../../components/respondents-card/RespondentsCard";
 import { SurveysTable } from "../../components/surveys-table/SurveysTable";
+import { TokenContext } from "../../context/token/TokenContextProvider";
+import { MenuContext } from "../../context/restaurant/MenuContext";
 
 const Survey = () => {
     const [numberOfRespondants, setNumberOfRespondants] = useState(0);
@@ -15,65 +17,83 @@ const Survey = () => {
     const [max, setMax] = useState(1);
     const [surveys, setSurveys] = useState([]);
 
-    useEffect(() => {
-        const scores = [1, 2, 3, 5, 10];
-        setMax(getMax(scores));
-        setOneStarts(scores[0]);
-        setTwoStarts(scores[1]);
-        seTthreeStarts(scores[2]);
-        setFourStarts(scores[3]);
-        setFiveStarts(scores[4]);
-        setScore((sum(scores))/5);
-        setNumberOfRespondants(54);
-        setSurveys([{
-            date: '2024-10-10',
-            time: '10:00:12',
-            score: 3,
-            comments: 'Comida deliciosa'
-        }, {
-            date: '2024-10-10',
-            time: '10:00:12',
-            score: 3,
-            comments: 'Comida deliciosa'
-        }, {
-            date: '2024-10-10',
-            time: '10:00:12',
-            score: 3,
-            comments: 'Comida deliciosa'
-        }]);
-    }, []);
+    const tokenContext = useContext(TokenContext);
+    const { token } = tokenContext;
+    const menuContext = useContext(MenuContext);
+    const { restaurant } = menuContext;
 
-    
-    function getMax(arr){
+    // Env
+    const BASE_URL = process.env.REACT_APP_URL;
+
+    const scores = [0, 0, 0, 0, 0];
+
+    useEffect(() => {
+
+        if (token) {
+            fetch(BASE_URL + '/survey/get-all/' + restaurant.restaurantId, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            }).then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Error al consultar las imágenes');
+            }).then((data) => {
+                for (const survey of data.surveys) {
+                    scores[survey.score - 1]++;
+                }
+                setMax(getMax(scores));
+                
+                setOneStarts(scores[0]);
+                setTwoStarts(scores[1]);
+                seTthreeStarts(scores[2]);
+                setFourStarts(scores[3]);
+                setFiveStarts(scores[4]);
+                setScore(((sum(scores)) / data.totalRecords).toFixed(1));
+                setNumberOfRespondants(data.totalRecords);
+                setSurveys(data.surveys);
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+    }, [token]);
+
+
+    function getMax(arr) {
         let max = 0;
-        for(let i = 0; i < arr.length; i++){
-            if(arr[i] > max){
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] > max) {
                 max = arr[i];
             }
         }
         return max;
     }
 
-    function sum(arr){
-        return arr.reduce((acc, value) => {
-            return acc + value
-        }, 0);
+    function sum(arr) {
+        let sum = 0;
+        for(let i = 0; i < arr.length; i++){
+            sum += (arr[i] * (i + 1));
+        }
+        return sum.toFixed(1);
     }
 
-    return(<div className="survey-container">
+    return (<div className="survey-container">
         <div className="survey__cards-container">
-            <RaitingCard 
-            score={score} 
-            max={max}
-            oneStarts={oneStarts} 
-            twoStarts={twoStarts} 
-            threeStarts={threeStarts}
-            fourStarts={fourStarts}
-            fiveStarts={fiveStarts}/>
+            <RaitingCard
+                score={score}
+                oneStarts={oneStarts}
+                twoStarts={twoStarts}
+                threeStarts={threeStarts}
+                fourStarts={fourStarts}
+                fiveStarts={fiveStarts} 
+                numberOfRespondants={numberOfRespondants}/>
             <RespondentsCard numberOfRespondants={numberOfRespondants} />
         </div>
         <div className="survey__table-container">
-            <SurveysTable surveys={surveys}/>
+            <SurveysTable surveys={surveys} />
         </div>
     </div>);
 }

@@ -1,18 +1,41 @@
 import { Rating } from "primereact/rating";
-import React, { useState } from "react";
 import { InputTextarea } from 'primereact/inputtextarea';
 import './answerSurvey.scss';
 import { Button } from 'primereact/button';
 import backgroundImage from './../../../assets/survey/survey_background.jpg'
-import { Image } from "primereact/image";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 const AnswerSurvey = () => {
     const [score, setScore] = useState(0);
     const [wasSubmitted, setWasSubmitted] = useState(false);
     const [comments, setComments] = useState('');
 
+    const { url } = useParams();
+
+    // Env
+    const BASE_URL = process.env.REACT_APP_URL;
+
     function submitSurvey() {
-        setWasSubmitted(true);
+        fetch(BASE_URL + '/client/make-survey/' + url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                score, 
+                comments: comments || '',
+            })
+        }).then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Error al realizar encuesta');
+        }).then((data) => {
+            setWasSubmitted(true);
+        }).catch((error) => {
+            console.error(error);
+        });
     }
 
     return (<div className="answer-survey__conatainer" style={{

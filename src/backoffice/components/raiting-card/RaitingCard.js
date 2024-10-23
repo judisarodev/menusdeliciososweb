@@ -5,7 +5,7 @@ import { ProgressBar } from 'primereact/progressbar';
 import { FaChartBar } from "react-icons/fa";
 import { Tooltip } from 'primereact/tooltip';
 
-const RaitingCard = ({ score, max, oneStarts, twoStarts, threeStarts, fourStarts, fiveStarts }) => {
+const RaitingCard = ({ score, oneStarts, twoStarts, threeStarts, fourStarts, fiveStarts, numberOfRespondants }) => {
 
     return (<div className="raiting-card__container">
         <div className="raiting-card__icon">
@@ -16,21 +16,21 @@ const RaitingCard = ({ score, max, oneStarts, twoStarts, threeStarts, fourStarts
             <Rating value={score} cancel={false} />
         </div>
         <div className="raiting-card__detail">
-            <Rate className={'raiting-card__one-starts'} starts={oneStarts} max={max}/>   
-            <Rate className={'raiting-card__two-starts'} starts={twoStarts} max={max}/>
-            <Rate className={'raiting-card__three-starts'} starts={threeStarts} max={max}/>
-            <Rate className={'raiting-card__four-starts'} starts={fourStarts} max={max}/>
-            <Rate className={'raiting-card__five-starts'} starts={fiveStarts} max={max}/>
+            <Rate label={1} className={'raiting-card__one-starts'} starts={oneStarts} numberOfRespondants={numberOfRespondants}/>   
+            <Rate label={2} className={'raiting-card__two-starts'} starts={twoStarts} numberOfRespondants={numberOfRespondants}/>
+            <Rate label={3} className={'raiting-card__three-starts'} starts={threeStarts} numberOfRespondants={numberOfRespondants}/>
+            <Rate label={4} className={'raiting-card__four-starts'} starts={fourStarts} numberOfRespondants={numberOfRespondants}/>
+            <Rate label={5} className={'raiting-card__five-starts'} starts={fiveStarts} numberOfRespondants={numberOfRespondants}/>
         </div>
     </div>);
 }
 
-const Rate = ({className, starts, max}) => {
+const Rate = ({className, starts, label, numberOfRespondants}) => {
     return (<>
         <Tooltip position="left" target={'.' + className} content={`${starts} votaciones`} />
         <div>
-            <p>5</p>
-            <ProgressBar className={className} showValue={false} value={(starts * 100) / max}></ProgressBar>
+            <p>{label}</p>
+            <ProgressBar className={className} showValue={false} value={(starts * 100) / numberOfRespondants}></ProgressBar>
         </div>
     </>
     );

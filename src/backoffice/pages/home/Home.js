@@ -22,9 +22,10 @@ const Home = () => {
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
     const menuContext = useContext(MenuContext);
-    const { menuId, setMenuId, setMenu, getMenu } = menuContext;
+    const { menuId, setMenuId, setMenu, getMenu, setRestaurant } = menuContext;
 
     const [emulatorVisibility, setEmulatorVisibility] = useState(false);
+    
 
     // References
     const message = useRef(null);
@@ -106,6 +107,7 @@ const Home = () => {
                     return response.json();
                 }
             }).then((data) => {
+                setRestaurant(data);
                 setMenuId(data.menuId);
                 getMenu(data.menuId);
             }).catch(() => {

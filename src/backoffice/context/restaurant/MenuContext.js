@@ -11,6 +11,8 @@ function MenuContextProvider ({ children }) {
     const [menu, setMenu] = useState([]);
     const [menuId, setMenuId] = useState([]);
 
+    const [restaurant, setRestaurant] = useState({});
+
     const layouts = [ {
         name: 'Grilla'
     }, {
@@ -48,7 +50,7 @@ function MenuContextProvider ({ children }) {
     }
 
     return(
-        <MenuContext.Provider value={{ menu, setMenu, menuId, setMenuId, getMenu, layouts, fonts }}>
+        <MenuContext.Provider value={{ menu, setMenu, menuId, setMenuId, getMenu, layouts, fonts, restaurant, setRestaurant }}>
             { children }
         </MenuContext.Provider>
     );
