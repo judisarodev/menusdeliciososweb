@@ -12,6 +12,7 @@ import { TokenContextProvider } from './backoffice/context/token/TokenContextPro
 import { MenuContextProvider } from './backoffice/context/restaurant/MenuContext';
 import { IconsContextProvider } from './backoffice/context/restaurant/IconsContext';
 import { MenuContainer } from './landing/pages/menu-container/MenuContainer';
+import { AnswerSurvey } from './backoffice/pages/answer-survey/AnswerSurvey';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
                   <Route path='/terms' element={'Términos'} />
                   <Route path='/panel' element={<Panel />} />
                   <Route path='/:url' element={<MenuContainer />} />
+                  <Route path='/:url/encuesta' element={<AnswerSurvey />} />
                 </Routes>
               </BrowserRouter>
             </div>
