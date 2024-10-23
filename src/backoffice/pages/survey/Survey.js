@@ -28,38 +28,36 @@ const Survey = () => {
     const scores = [0, 0, 0, 0, 0];
 
     useEffect(() => {
-
-        if (token) {
-            fetch(BASE_URL + '/survey/get-all/' + restaurant.restaurantId, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                }
-            }).then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Error al consultar las imágenes');
-            }).then((data) => {
-                for (const survey of data.surveys) {
-                    scores[survey.score - 1]++;
-                }
-                setMax(getMax(scores));
-                
-                setOneStarts(scores[0]);
-                setTwoStarts(scores[1]);
-                seTthreeStarts(scores[2]);
-                setFourStarts(scores[3]);
-                setFiveStarts(scores[4]);
-                setScore(((sum(scores)) / data.totalRecords).toFixed(1));
-                setNumberOfRespondants(data.totalRecords);
-                setSurveys(data.surveys);
-            }).catch((error) => {
-                console.error(error);
-            });
-        }
-    }, [token]);
+        fetch(BASE_URL + '/survey/get-all/' + restaurant.restaurantId, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Error al consultar las imágenes');
+        }).then((data) => {
+            for (const survey of data.surveys) {
+                scores[survey.score - 1]++;
+            }
+            setMax(getMax(scores));
+            
+            setOneStarts(scores[0]);
+            setTwoStarts(scores[1]);
+            seTthreeStarts(scores[2]);
+            setFourStarts(scores[3]);
+            setFiveStarts(scores[4]);
+            setScore(((sum(scores)) / data.totalRecords).toFixed(1));
+            setNumberOfRespondants(data.totalRecords);
+            setSurveys(data.surveys);
+        }).catch((error) => {
+            console.error(error);
+        });
+    
+    }, []);
 
 
     function getMax(arr) {
