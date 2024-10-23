@@ -1,3 +1,5 @@
+@import './../../../styles/variables';
+
 .answer-survey__conatainer{
     height: 100vh;
     width: 100%;
@@ -7,6 +9,9 @@
     align-items: center;
 }
 .answer-survey__form > div{
+    background-color: $secondary-background-color;
+    padding: $base-spacing;
+    border-radius: $standard-border-raius;
     text-align: start;
     max-width: 800px;
     display: flex;

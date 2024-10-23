@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { InputTextarea } from 'primereact/inputtextarea';
 import './answerSurvey.scss';
 import { Button } from 'primereact/button';
+import backgroundImage from './../../../assets/survey/survey_background.jpg'
+import { Image } from "primereact/image";
 
 const AnswerSurvey = () => {
     const [score, setScore] = useState(0);
@@ -13,7 +15,11 @@ const AnswerSurvey = () => {
         setWasSubmitted(true);
     }
 
-    return (<div className="answer-survey__conatainer">
+    return (<div className="answer-survey__conatainer" style={{
+        backgroundImage: `url(${backgroundImage})`, 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+    }}>
         <div className="answer-survey__form">
             {!wasSubmitted &&
                 <div>
