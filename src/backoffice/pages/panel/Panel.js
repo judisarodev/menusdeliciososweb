@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import './panel.scss';
 import { Menu } from 'primereact/menu';
-import { CiHome } from "react-icons/ci";
+import { CiHome, CiMoneyBill } from "react-icons/ci";
 import { FcSurvey } from "react-icons/fc";
-//import { CiMoneyBill } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
 import { FaQrcode } from "react-icons/fa";
 import { Home } from "../home/Home";
 import logo from './../../../assets/logo/black-text.png';
 import { Survey } from "../survey/Survey";
 import { Codes } from "../codes/Codes";
+import { Settings } from "../settings/Settings";
 const Panel = () => {
 
     const homeView = <Home />;
     const surveyView = <Survey />;
     const CodesView = <Codes />;
-    //const billView = "Bills";
-    const settingsView = "settings";
+    const billView = "Bills";
+    const settingsView = <Settings />;
     
     const [view, setView] = useState(homeView);
 
@@ -36,11 +36,11 @@ const Panel = () => {
         label: 'Códigos QR',
         icon: <FaQrcode  size={20}/>,
         command: () => setView(CodesView), 
-    }, /*{
-        label: 'Facturas',
+    }, {
+        label: 'Suscripcion',
         icon: <CiMoneyBill size={20}/>,
         command: () => setView(billView), 
-    }, */{
+    }, {
         label: 'Configuración',
         icon: <CiSettings size={20}/>,
         command: () => setView(settingsView), 

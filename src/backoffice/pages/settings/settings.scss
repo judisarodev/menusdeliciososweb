@@ -1,0 +1,43 @@
+@import './../../../styles/variables';
+
+.settings__container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    background-color: #f5fafa;
+    min-height: 100vh;
+}
+
+.settings__panel{
+    display: flex;
+    flex-direction: column;
+    gap: $base-box-spacig;
+    background-color: white;
+    padding: $large-box-spacig;
+    margin: $small-box-spacig;
+    border-radius: $standard-border-raius;
+    text-align: start;
+}
+.settings__title {
+    color: $primary-text-color;
+    font-size: $title-font-size;
+    margin: 0px;
+}
+.settings__input-container{
+    display: flex;
+    flex-direction: column;
+    gap: $small-box-spacig;
+}
+.settings__input-container label{
+    font-size: $small-font-size;
+    color: $secondary-text-color;
+}
+.settings__input-container input{
+    width: 100%;
+}
+
+.settings__form_container {
+    display: flex;
+    flex-direction: column;
+    gap: $base-box-spacig;
+}
