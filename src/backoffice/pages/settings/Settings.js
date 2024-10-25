@@ -1,22 +1,42 @@
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import './settings.scss';
 import { Image } from "primereact/image";
+import { MenuContext } from "../../context/restaurant/MenuContext";
 const Settings = () => {
 
+    const menuContext = useContext(MenuContext);
+    const { restaurant, globalCountries, globalTypes } = menuContext;
+
+    const [restaurantId, setRestaurantId] = useState();
     const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [country, setCountry] = useState('');
     const [countries, setCountries] = useState([]);
     const [restaurantType, setRestaurantType] = useState('');
     const [restaurantTypes, setRestaurantTypes] = useState([]);
-
     const [addresses, setAddresses] = useState('');
     const [email, setEmail] = useState(''); 
-
     const [logo, setLogo] = useState(null);
+
+    useState(() => {
+        if(restaurant){
+            setRestaurantId(restaurant.restaurantId);
+            setName(restaurant.name);
+            setPhoneNumber(restaurant.phoneNumber);
+            setCountry(restaurant.country);
+            setRestaurantType(restaurant.restaurantType);
+            setAddresses(restaurant.addresses);
+            setEmail(restaurant.email);
+            setLogo(restaurant.logo);
+            setCountries(globalCountries);
+            setRestaurantTypes(globalTypes);
+        }
+    }, [restaurant]);
+
+    
 
     return (<>
         <div className="settings__container">
@@ -30,23 +50,15 @@ const Settings = () => {
                             <InputText
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                placeholder="Ingresa el nombre del producto" />
-                        </div>
-
-                        <div className="settings__input-container">
-                            <label>Correo electrónico *</label>
-                            <InputText
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder="Ingresa el nombre del producto" />
+                                placeholder="Ingresa el nombre del restaurante" />
                         </div>
 
                         <div className="settings__input-container">
                             <label>Número de celular *</label>
                             <InputText
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder="Ingresa el nombre del producto" />
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                placeholder="Ingresa número de celular" />
                         </div>
 
                         <div className="settings__input-container">
@@ -92,13 +104,14 @@ const Settings = () => {
                         <div className="settings__input-container">
                             <label>Correo electrónico *</label>
                             <InputText
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Ingresa el correo electónico" />
                         </div>
                         <br></br>
                         <Button
                         label={'ACTUALIZAR *'}
+                        severity="secondary"
                         onClick={(event) => {
                             event.preventDefault();
                         }}
@@ -112,11 +125,34 @@ const Settings = () => {
                     <br></br>
                     <Button
                     label={'ENVIAR CORREO *'}
+                    severity="secondary"
                     onClick={(event) => {
                         event.preventDefault();
                     }}
                     />
                     <small>(*) Recibirás un e-mail con un link que te permitirá cambiar tu contraseña. </small>
+                </div>
+
+                <div className="settings__panel">
+                    <p className="settings__title">Editar direcciones</p>
+                    <form className="settings__form_container">
+                        <div className="settings__input-container">
+                            <label>Correo electrónico *</label>
+                            <InputText
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder="Ingresa el correo electónico" />
+                        </div>
+                        <br></br>
+                        <Button
+                        label={'ACTUALIZAR *'}
+                        severity="secondary"
+                        onClick={(event) => {
+                            event.preventDefault();
+                        }}
+                        />
+                        <small>(*) Recibirás un e-mail de confirmación, debes abirir el link de confirmación para que la actualización sea exitosa. </small>
+                    </form>
                 </div>
             </div>
         </div>

@@ -9,8 +9,12 @@ import { Home } from "../home/Home";
 import logo from './../../../assets/logo/black-text.png';
 import { Survey } from "../survey/Survey";
 import { Codes } from "../codes/Codes";
+import { CiLogout } from "react-icons/ci";
 import { Settings } from "../settings/Settings";
+import { useNavigate } from "react-router-dom";
 const Panel = () => {
+
+    const navigate = useNavigate();
 
     const homeView = <Home />;
     const surveyView = <Survey />;
@@ -44,6 +48,10 @@ const Panel = () => {
         label: 'Configuración',
         icon: <CiSettings size={20}/>,
         command: () => setView(settingsView), 
+    }, {
+        label: 'Cerrar sesión',
+        icon: <CiLogout size={20}/>,
+        command: () => navigate('/'), 
     }];
 
     return(<>

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { TokenContext } from "../../context/token/TokenContextProvider";
 import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
+import { MenuContext } from "../../context/restaurant/MenuContext";
 
 const Login = ({ loginPage = true }) => {
     // Data
@@ -17,6 +18,8 @@ const Login = ({ loginPage = true }) => {
     const BASE_URL = process.env.REACT_APP_URL;
 
     // Context
+    const menuContext = useContext(MenuContext);
+    const { setGlobalCountries, setGlobalTypes } = menuContext;
     const tokenContext = useContext(TokenContext);
     const { setToken, token } = tokenContext;
 
@@ -55,6 +58,7 @@ const Login = ({ loginPage = true }) => {
             throw new Error('Error al consultar los países');
         }).then((c) => {
             setCountries(c);
+            setGlobalCountries(c);
         }).catch((error) => {
             message.current.show({ severity: 'error', summary: 'Ha ocurrido un error, intenta más tarde' });
         });
@@ -73,6 +77,7 @@ const Login = ({ loginPage = true }) => {
             throw new Error('Error al consultar los tipos de restaurante');
         }).then((c) => {
             setTypes(c);
+            setGlobalTypes(c);
         }).catch((error) => {
             message.current.show({ severity: 'error', summary: 'Ha ocurrido un error, intenta más tarde' });
         });
