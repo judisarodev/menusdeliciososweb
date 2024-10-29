@@ -6,8 +6,26 @@ import './settings.scss';
 import { Image } from "primereact/image";
 import { MenuContext } from "../../context/restaurant/MenuContext";
 import { TokenContext } from "../../context/token/TokenContextProvider";
-const Settings = () => {
 
+const useAddresses = () => {
+    const [addresses, setAddresses] = useState([]);
+    
+    const updateAddressField = (addressId, field, newValue) => {
+        setAddresses((prevAddresses) =>
+            prevAddresses.map((a) =>
+                a.addressId === addressId ? { ...a, [field]: newValue } : a
+            )
+        );
+    };
+
+    return {
+        addresses, 
+        setAddresses,
+        updateAddressField
+    };
+}
+
+const Settings = () => {
     const BASE_URL = process.env.REACT_APP_URL;
 
     const menuContext = useContext(MenuContext);
@@ -16,18 +34,16 @@ const Settings = () => {
     const tokenContext = useContext(TokenContext);
     const { token } = tokenContext;
 
-    const [restaurantId, setRestaurantId] = useState();
     const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [country, setCountry] = useState('');
     const [restaurantType, setRestaurantType] = useState('');
-    const [addresses, setAddresses] = useState([]);
+    const { addresses, setAddresses, updateAddressField} = useAddresses();
     const [email, setEmail] = useState('');
     const [logo, setLogo] = useState(null);
 
     useEffect(() => {
         if (restaurant) {
-            setRestaurantId(restaurant.restaurantId);
             setName(restaurant.name);
             setPhoneNumber(restaurant.phoneNumber);
             setCountry(restaurant.country);
@@ -45,13 +61,26 @@ const Settings = () => {
         setAddresses(updatedAddresses);
     };
 
-    const addAddress = () => {
-        setAddresses([...addresses, { address: '', addressId: Date.now() }]);
-    };
-
-    const removeAddress = (index) => {
-        setAddresses(addresses.filter((_, i) => i !== index));
-    };
+    const updateAddresses = () => {
+        console.log(addresses);
+        fetch(BASE_URL + '/address/update', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify(addresses),
+        }).then((response) => {
+            if(response.ok){
+                return response.json();
+            }
+            throw new Error(response.status);
+        }).then((data) => {
+            console.log(data); 
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
 
     const updateRestaurant = () => {
         fetch(BASE_URL + '/restaurant/update', {
@@ -76,7 +105,6 @@ const Settings = () => {
             
         }).catch((error) => {
             console.log(error);
-            
         });
     }
 
@@ -127,7 +155,6 @@ const Settings = () => {
                             </div>
                         </div>
 
-                        <br></br>
                         <Button
                             label={'ACTUALIZAR'}
                             severity="secondary"
@@ -143,8 +170,6 @@ const Settings = () => {
                 <div className="settings__panel">
                     <p className="settings__title">Logo del restaurante</p>
                     {logo && <Image width="200" src={logo} />}
-                    {!logo && <p>Aún no has cargado el logo de tu restaurante.</p>}
-                    <br></br>
                     <Button
                         label={!logo ? 'SUBIR' : 'CAMBIAR'}
                         outlined
@@ -157,7 +182,6 @@ const Settings = () => {
 
                 <div className="settings__panel">
                     <p className="settings__title">Actualizar contraseña</p>
-                    <br></br>
                     <Button
                         label={'ENVIAR CORREO *'}
                         severity="secondary"
@@ -180,7 +204,6 @@ const Settings = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Ingresa el correo electónico" />
                         </div>
-                        <br></br>
                         <Button
                             label={'ACTUALIZAR *'}
                             severity="secondary"
@@ -201,13 +224,13 @@ const Settings = () => {
                                 <label>Dirección {index + 1}</label>
                                 <InputText
                                     value={addressObj.address}
-                                    onChange={(e) => handleAddressChange(index, e.target.value)}
+                                    onChange={(e) => updateAddressField(addressObj.addressId, 'address', e.target.value)}
                                     placeholder="Ingresa la dirección"
                                 />
                                 <label>Detalles de la dirección {index + 1} (opcional)</label>
                                 <InputText
                                     value={addressObj.details}
-                                    onChange={(e) => handleAddressChange(index, e.target.value)}
+                                    onChange={(e) => updateAddressField(addressObj.addressId, 'details', e.target.value)}
                                     placeholder="Ingresa los detalles de la dirección"
                                 />
                             </div>
@@ -217,6 +240,7 @@ const Settings = () => {
                             severity="secondary"
                             outlined
                             onClick={(event) => {
+                                updateAddresses();
                                 event.preventDefault();
                             }}
                         />
