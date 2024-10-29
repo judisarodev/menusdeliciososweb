@@ -19,7 +19,7 @@ const Login = ({ loginPage = true }) => {
 
     // Context
     const menuContext = useContext(MenuContext);
-    const { setGlobalCountries, setGlobalTypes } = menuContext;
+    const { countries, restaurantTypes } = menuContext;
     const tokenContext = useContext(TokenContext);
     const { setToken, token } = tokenContext;
 
@@ -35,9 +35,7 @@ const Login = ({ loginPage = true }) => {
     const [addressDetails, setAddressDetails] = useState('');
     const [checked, setChecked] = useState(false);
     const [country, setCountry] = useState("");
-    const [countries, setCountries] = useState([]);
     const [type, setType] = useState("");
-    const [types, setTypes] = useState([]);
     
     // Navigation
     const navigate = useNavigate();
@@ -45,43 +43,7 @@ const Login = ({ loginPage = true }) => {
     // References 
     const message = useRef(null);
 
-    const getCountries = () => {
-        fetch(BASE_URL + '/country/get-all', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then((response) => {
-            if(response.ok){
-                return response.json();
-            }
-            throw new Error('Error al consultar los países');
-        }).then((c) => {
-            setCountries(c);
-            setGlobalCountries(c);
-        }).catch((error) => {
-            message.current.show({ severity: 'error', summary: 'Ha ocurrido un error, intenta más tarde' });
-        });
-    }
-
-    const getTypes = () => {
-        fetch(BASE_URL + '/restaurant-type/get-all', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then((response) => {
-            if(response.ok){
-                return response.json();
-            }
-            throw new Error('Error al consultar los tipos de restaurante');
-        }).then((c) => {
-            setTypes(c);
-            setGlobalTypes(c);
-        }).catch((error) => {
-            message.current.show({ severity: 'error', summary: 'Ha ocurrido un error, intenta más tarde' });
-        });
-    }
+    
 
     const validateCreateComopanyForm = () => {
         if(restaurantName && email && phoneNumber && address && password && confirmPassword){
@@ -178,10 +140,6 @@ const Login = ({ loginPage = true }) => {
 
     const setView = (e) => {
         setPage(e.value);
-        if(e.value === pages[1] && (countries.length === 0 || types.length === 0 )){
-            getCountries();
-            getTypes();
-        }
     }
 
 
@@ -243,7 +201,7 @@ const Login = ({ loginPage = true }) => {
                         <label htmlFor="type">Tipo de restaurante</label> 
                         <Dropdown 
                         value={type}
-                        options={types}
+                        options={restaurantTypes}
                         onChange={(e) => setType(e.value)}
                         optionLabel="name"
                         placeholder="Selecciona el tipo de restaurante"

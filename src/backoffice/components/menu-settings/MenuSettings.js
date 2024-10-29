@@ -65,8 +65,9 @@ const MenuSettings = () => {
                 console.error(error);
             });
         }
-
-        getBakcgroundImages();
+        if(token){
+            getBakcgroundImages();
+        }
     }, [token, BASE_URL]);
 
     useEffect(() => {
@@ -147,7 +148,7 @@ const MenuSettings = () => {
         }).catch((error) => {
             console.error(error);
         });
-    }, []);
+    }, [BASE_URL]);
 
     const imageTemplate = (image) => {
         return (

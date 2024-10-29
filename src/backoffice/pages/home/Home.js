@@ -10,7 +10,6 @@ import { CategoryForm } from "../../category/category-form/CategoryForm";
 import { CategoriesTable } from "../../category/categories-table/CategoriesTable";
 import { MenuSettings } from "../../components/menu-settings/MenuSettings";
 import { Button } from "primereact/button";
-import { FaChartPie } from "react-icons/fa";
 import { Sidebar } from "primereact/sidebar";
 import { Emulator } from "../../components/emulator/Emulator";
 

@@ -1,27 +1,25 @@
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import './settings.scss';
 import { Image } from "primereact/image";
 import { MenuContext } from "../../context/restaurant/MenuContext";
 const Settings = () => {
 
     const menuContext = useContext(MenuContext);
-    const { restaurant, globalCountries, globalTypes } = menuContext;
+    const { restaurant, countries, restaurantTypes } = menuContext;
 
     const [restaurantId, setRestaurantId] = useState();
     const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [country, setCountry] = useState('');
-    const [countries, setCountries] = useState([]);
     const [restaurantType, setRestaurantType] = useState('');
-    const [restaurantTypes, setRestaurantTypes] = useState([]);
-    const [addresses, setAddresses] = useState('');
+    const [addresses, setAddresses] = useState([]);
     const [email, setEmail] = useState(''); 
     const [logo, setLogo] = useState(null);
 
-    useState(() => {
+    useEffect(() => {
         if(restaurant){
             setRestaurantId(restaurant.restaurantId);
             setName(restaurant.name);
@@ -31,12 +29,23 @@ const Settings = () => {
             setAddresses(restaurant.addresses);
             setEmail(restaurant.email);
             setLogo(restaurant.logo);
-            setCountries(globalCountries);
-            setRestaurantTypes(globalTypes);
         }
     }, [restaurant]);
-
     
+    const handleAddressChange = (index, newValue) => {
+        const updatedAddresses = addresses.map((address, i) =>
+            i === index ? { ...address, address: newValue } : address
+        );
+        setAddresses(updatedAddresses);
+    };
+
+    const addAddress = () => {
+        setAddresses([...addresses, { address: '', addressId: Date.now() }]);
+    };
+
+    const removeAddress = (index) => {
+        setAddresses(addresses.filter((_, i) => i !== index));
+    };
 
     return (<>
         <div className="settings__container">
@@ -69,17 +78,18 @@ const Settings = () => {
                                     onChange={(e) => setCountry(e.value)}
                                     options={countries}
                                     optionLabel="name"
-                                    placeholder="Selecciona una categoría" />
+                                    placeholder="Selecciona un país" />
                             </div>
                         </div>
 
                         <br></br>
                         <Button
-                            label={'ACTUALIZAR'}
-                            onClick={(event) => {
-                                event.preventDefault();
-                            }
-                            }
+                        label={'ACTUALIZAR'}
+                        severity="secondary"
+                        outlined
+                        onClick={(event) => {
+                            event.preventDefault();
+                        }}
                         />
                     </form>
                 </div>
@@ -91,10 +101,26 @@ const Settings = () => {
                     <br></br>
                     <Button
                     label={!logo ? 'SUBIR' : 'CAMBIAR'}
+                    outlined
+                    severity="secondary"
                     onClick={(event) => {
                         event.preventDefault();
                     }}
                     />
+                </div>
+
+                <div className="settings__panel">
+                    <p className="settings__title">Actualizar contraseña</p>
+                    <br></br>
+                    <Button
+                    label={'ENVIAR CORREO *'}
+                    severity="secondary"
+                    outlined
+                    onClick={(event) => {
+                        event.preventDefault();
+                    }}
+                    />
+                    <small>(*) Recibirás un e-mail con un link que te permitirá cambiar tu contraseña. </small>
                 </div>
             </div>
             <div>   
@@ -112,6 +138,7 @@ const Settings = () => {
                         <Button
                         label={'ACTUALIZAR *'}
                         severity="secondary"
+                        outlined
                         onClick={(event) => {
                             event.preventDefault();
                         }}
@@ -121,37 +148,34 @@ const Settings = () => {
                 </div>
 
                 <div className="settings__panel">
-                    <p className="settings__title">Actualizar contraseña</p>
-                    <br></br>
-                    <Button
-                    label={'ENVIAR CORREO *'}
-                    severity="secondary"
-                    onClick={(event) => {
-                        event.preventDefault();
-                    }}
-                    />
-                    <small>(*) Recibirás un e-mail con un link que te permitirá cambiar tu contraseña. </small>
-                </div>
-
-                <div className="settings__panel">
                     <p className="settings__title">Editar direcciones</p>
                     <form className="settings__form_container">
-                        <div className="settings__input-container">
-                            <label>Correo electrónico *</label>
-                            <InputText
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder="Ingresa el correo electónico" />
-                        </div>
+                    {addresses.map((addressObj, index) => (
+                            <div key={addressObj.addressId} className="settings__input-container">
+                                <label>Dirección {index + 1 }</label>
+                                <InputText
+                                    value={addressObj.address}
+                                    onChange={(e) => handleAddressChange(index, e.target.value)}
+                                    placeholder="Ingresa la dirección"
+                                />
+                                <label>Detalles de la dirección {index + 1} (opcional)</label>
+                                <InputText
+                                    value={addressObj.details}
+                                    onChange={(e) => handleAddressChange(index, e.target.value)}
+                                    placeholder="Ingresa los detalles de la dirección"
+                                />
+                                <br></br>
+                            </div>
+                        ))}
                         <br></br>
                         <Button
-                        label={'ACTUALIZAR *'}
+                        label={'ACTUALIZAR'}
                         severity="secondary"
+                        outlined
                         onClick={(event) => {
                             event.preventDefault();
                         }}
                         />
-                        <small>(*) Recibirás un e-mail de confirmación, debes abirir el link de confirmación para que la actualización sea exitosa. </small>
                     </form>
                 </div>
             </div>

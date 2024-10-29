@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState,  } from 'react';
+import React, { createContext, useContext, useEffect, useState,  } from 'react';
 import { TokenContext } from '../token/TokenContextProvider';
 const MenuContext = createContext(null);
 
@@ -11,8 +11,8 @@ function MenuContextProvider ({ children }) {
     const [menu, setMenu] = useState([]);
     const [menuId, setMenuId] = useState([]);
 
-    const [globalCountries, setGlobalCountries] = useState([]);
-    const [globalTypes, setGlobalTypes] = useState([]);
+    const [countries, setCountries] = useState([]);
+    const [restaurantTypes, setRestaurantTypes] = useState([]);
 
     const [restaurant, setRestaurant] = useState({});
 
@@ -52,8 +52,46 @@ function MenuContextProvider ({ children }) {
         });
     }
 
+    useEffect(() => {
+        const getCountries = () => {
+            fetch(BASE_URL + '/country/get-all', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => {
+                if(response.ok){
+                    return response.json();
+                }
+                throw new Error('Error al consultar los países');
+            }).then((c) => {
+                setCountries(c);
+            });
+        }
+    
+        const getTypes = () => {
+            fetch(BASE_URL + '/restaurant-type/get-all', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((response) => {
+                if(response.ok){
+                    return response.json();
+                }
+                throw new Error('Error al consultar los tipos de restaurante');
+            }).then((c) => {
+                setRestaurantTypes(c);
+            });
+        }
+
+        getTypes();
+        getCountries();
+    }, [BASE_URL]);
+
+
     return(
-        <MenuContext.Provider value={{ menu, setMenu, menuId, setMenuId, getMenu, layouts, fonts, restaurant, setRestaurant, globalCountries, setGlobalCountries, globalTypes, setGlobalTypes }}>
+        <MenuContext.Provider value={{ menu, setMenu, menuId, setMenuId, getMenu, layouts, fonts, restaurant, setRestaurant, countries, restaurantTypes }}>
             { children }
         </MenuContext.Provider>
     );
