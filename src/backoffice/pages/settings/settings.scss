@@ -2,10 +2,9 @@
 
 .settings__container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     grid-template-rows: auto;
     background-color: #f5fafa;
-    min-height: 100vh;
 }
 
 .settings__panel{
@@ -17,6 +16,7 @@
     margin: $small-box-spacig;
     border-radius: $standard-border-raius;
     text-align: start;
+    align-self: start;
 }
 .settings__title {
     color: $primary-text-color;

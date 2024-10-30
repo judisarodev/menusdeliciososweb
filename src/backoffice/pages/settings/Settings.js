@@ -147,145 +147,140 @@ const Settings = () => {
     return (<>
         <Toast ref={toast} />
         <div className="settings__container">
-            <div>
-                <div className="settings__panel">
-                    <p className="settings__title">Editar restaurante</p>
-                    <form className="settings__form_container">
+            <div className="settings__panel">
+                <p className="settings__title">Editar restaurante</p>
+                <form className="settings__form_container">
 
-                        <div className="settings__input-container">
-                            <label>Nombre del restaurante *</label>
-                            <InputText
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder="Ingresa el nombre del restaurante" />
+                    <div className="settings__input-container">
+                        <label>Nombre del restaurante *</label>
+                        <InputText
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Ingresa el nombre del restaurante" />
+                    </div>
+
+                    <div className="settings__input-container">
+                        <label>Correo electrónico *</label>
+                        <InputText
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Ingresa el correo electónico" />
+                    </div>
+
+                    <div className="settings__input-container">
+                        <label>Número de celular *</label>
+                        <InputText
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                            placeholder="Ingresa número de celular" />
+                    </div>
+
+                    <div className="settings__input-container">
+                        <label>País *</label>
+                        <div className={'settings__input-container'}>
+                            <Dropdown
+                                value={country}
+                                onChange={(e) => setCountry(e.value)}
+                                options={countries}
+                                optionLabel="name"
+                                placeholder="Selecciona un país" />
                         </div>
+                    </div>
 
-                        <div className="settings__input-container">
-                            <label>Correo electrónico *</label>
-                            <InputText
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Ingresa el correo electónico" />
+                    <div className="settings__input-container">
+                        <label>Tipo de restaurante *</label>
+                        <div className={'settings__input-container'}>
+                            <Dropdown
+                                value={restaurantType}
+                                onChange={(e) => setRestaurantType(e.value)}
+                                options={restaurantTypes}
+                                optionLabel="name"
+                                placeholder="Selecciona un país" />
                         </div>
+                    </div>
 
-                        <div className="settings__input-container">
-                            <label>Número de celular *</label>
-                            <InputText
-                                value={phoneNumber}
-                                onChange={(e) => setPhoneNumber(e.target.value)}
-                                placeholder="Ingresa número de celular" />
-                        </div>
-
-                        <div className="settings__input-container">
-                            <label>País *</label>
-                            <div className={'settings__input-container'}>
-                                <Dropdown
-                                    value={country}
-                                    onChange={(e) => setCountry(e.value)}
-                                    options={countries}
-                                    optionLabel="name"
-                                    placeholder="Selecciona un país" />
-                            </div>
-                        </div>
-
-                        <div className="settings__input-container">
-                            <label>Tipo de restaurante *</label>
-                            <div className={'settings__input-container'}>
-                                <Dropdown
-                                    value={restaurantType}
-                                    onChange={(e) => setRestaurantType(e.value)}
-                                    options={restaurantTypes}
-                                    optionLabel="name"
-                                    placeholder="Selecciona un país" />
-                            </div>
-                        </div>
-
-                        <Button
-                            label={'ACTUALIZAR'}
-                            onClick={(event) => {
-                                event.preventDefault();
-                                updateRestaurant();
-                            }}
-                        />
-                    </form>
-                </div>
-
-                <div className="settings__panel">
-                    <p className="settings__title">Editar direcciones</p>
-                    <form className="settings__form_container">
-                        {addresses.map((addressObj, index) => (
-                            <div className="settings__address-container">
-                                <div className="settings__address-container-form">
-                                    <div key={addressObj.addressId} className="settings__input-container">
-                                        <label>Dirección {index + 1}</label>
-                                        <InputText
-                                            value={addressObj.address}
-                                            onChange={(e) => updateAddressField(index, 'address', e.target.value)}
-                                            placeholder="Ingresa la dirección"
-                                        />
-                                        <label>Detalles de la dirección {index + 1} (opcional)</label>
-                                        <InputText
-                                            value={addressObj.details}
-                                            onChange={(e) => updateAddressField(index, 'details', e.target.value)}
-                                            placeholder="Ingresa los detalles de la dirección"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="settings__address-container-delete-button">
-                                    <Button
-                                        outlined
-                                        disabled={addresses.length > 1 ? false : true}
-                                        onClick={(event) => {
-                                            event.preventDefault();
-                                            deleteAddress(toast, BASE_URL, token, addressObj.addressId);
-                                        }} label={<MdDelete size={20} />} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top' }} />
-                                </div>
-                            </div>
-                        ))}
-                        <Button
-                            label="AGREGAR NUEVA DIRECCIÓN"
-                            severity="secondary"
-                            outlined
-                            onClick={(e) => {
-                                e.preventDefault();
-                                addAddress();
-                            }}
-                        />
-                        <Button
-                            label={'ACTUALIZAR'}
-                            onClick={(event) => {
-                                updateAddresses();
-                                event.preventDefault();
-                            }}
-                        />
-                    </form>
-                </div>
-
+                    <Button
+                        label={'ACTUALIZAR'}
+                        onClick={(event) => {
+                            event.preventDefault();
+                            updateRestaurant();
+                        }}
+                    />
+                </form>
             </div>
-            <div>
 
-                <div className="settings__panel">
-                    <p className="settings__title">Logo del restaurante</p>
-                    {logo && <Image width="200" src={logo} />}
+            <div className="settings__panel">
+                <p className="settings__title">Editar direcciones</p>
+                <form className="settings__form_container">
+                    {addresses.map((addressObj, index) => (
+                        <div className="settings__address-container">
+                            <div className="settings__address-container-form">
+                                <div key={addressObj.addressId} className="settings__input-container">
+                                    <label>Dirección {index + 1}</label>
+                                    <InputText
+                                        value={addressObj.address}
+                                        onChange={(e) => updateAddressField(index, 'address', e.target.value)}
+                                        placeholder="Ingresa la dirección"
+                                    />
+                                    <label>Detalles de la dirección {index + 1} (opcional)</label>
+                                    <InputText
+                                        value={addressObj.details}
+                                        onChange={(e) => updateAddressField(index, 'details', e.target.value)}
+                                        placeholder="Ingresa los detalles de la dirección"
+                                    />
+                                </div>
+                            </div>
+                            <div className="settings__address-container-delete-button">
+                                <Button
+                                    outlined
+                                    disabled={addresses.length > 1 ? false : true}
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        deleteAddress(toast, BASE_URL, token, addressObj.addressId);
+                                    }} label={<MdDelete size={20} />} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top' }} />
+                            </div>
+                        </div>
+                    ))}
                     <Button
-                        label={!logo ? 'SUBIR LOGO' : 'CAMBIAR LOGO'}
+                        label="AGREGAR NUEVA DIRECCIÓN"
+                        severity="secondary"
+                        outlined
+                        onClick={(e) => {
+                            e.preventDefault();
+                            addAddress();
+                        }}
+                    />
+                    <Button
+                        label={'ACTUALIZAR'}
                         onClick={(event) => {
+                            updateAddresses();
                             event.preventDefault();
                         }}
                     />
-                </div>
 
-                <div className="settings__panel">
-                    <p className="settings__title">Actualizar contraseña</p>
-                    <Button
-                        label={'ENVIAR CORREO *'}
-                        onClick={(event) => {
-                            event.preventDefault();
-                        }}
-                    />
-                    <small>(*) Recibirás un email con un link que te permitirá cambiar tu contraseña. </small>
-                </div>
+                </form>
+            </div>
 
+            <div className="settings__panel">
+                <p className="settings__title">Logo del restaurante</p>
+                {logo && <Image width="200" src={logo} />}
+                <Button
+                    label={!logo ? 'SUBIR LOGO' : 'CAMBIAR LOGO'}
+                    onClick={(event) => {
+                        event.preventDefault();
+                    }}
+                />
+            </div>
+
+            <div className="settings__panel">
+                <p className="settings__title">Actualizar contraseña</p>
+                <Button
+                    label={'ENVIAR CORREO *'}
+                    onClick={(event) => {
+                        event.preventDefault();
+                    }}
+                />
+                <small>(*) Recibirás un email con un link que te permitirá cambiar tu contraseña. </small>
             </div>
         </div>
     </>);
