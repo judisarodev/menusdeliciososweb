@@ -42,3 +42,15 @@
     flex-direction: column;
     gap: $base-box-spacig;
 }
+.settings__address-container{
+    display: flex;
+    flex-direction: row;
+}
+.settings__address-container-form {
+    flex-grow: 1;
+}
+.settings__address-container-delete-button{
+    margin-top: 28px;
+    margin-left: 12px;
+    height: 100%;
+}

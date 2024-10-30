@@ -109,7 +109,7 @@ const Table = () => {
         return <Button onClick={() => {
             setShowConfirmDialog(true);
             deleteDialog(rowData);
-        }} label={<MdDelete size={20}/>} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top'}}/>;;
+        }} label={<MdDelete size={20}/>} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top'}}/>;
     }
 
     const tableTitleTemplate = (text) => {
