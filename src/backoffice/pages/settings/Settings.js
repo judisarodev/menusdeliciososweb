@@ -1,12 +1,13 @@
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import './settings.scss';
 import { Image } from "primereact/image";
 import { MenuContext } from "../../context/restaurant/MenuContext";
 import { TokenContext } from "../../context/token/TokenContextProvider";
 import { MdDelete } from "react-icons/md";
+import { Toast } from 'primereact/toast';
 
 const useAddresses = () => {
     const [addresses, setAddresses] = useState([]);
@@ -31,7 +32,7 @@ const useAddresses = () => {
         }]);
     }
 
-    const deleteAddress = (BASE_URL, token, addressId) => {
+    const deleteAddress = (toast, BASE_URL, token, addressId) => {
         fetch(BASE_URL + '/address/delete/' + addressId, {
             method: 'DELETE',
             headers: {
@@ -49,6 +50,7 @@ const useAddresses = () => {
                     return address;
                 }
             }));
+            toast.current.show({ severity: 'info', summary: 'Dirección eliminada con éxito' });
         }).catch((error) => {
             console.log(error);
         });
@@ -80,6 +82,8 @@ const Settings = () => {
     const [email, setEmail] = useState('');
     const [logo, setLogo] = useState(null);
 
+    const toast = useRef(null);
+
     useEffect(() => {
         if (restaurant) {
             setName(restaurant.name);
@@ -107,7 +111,7 @@ const Settings = () => {
             }
             throw new Error(response.status);
         }).then((data) => {
-            console.log(data);
+            toast.current.show({ severity: 'info', summary: 'Direcciones actualizadas con éxito' });
         }).catch((error) => {
             console.log(error);
         });
@@ -133,13 +137,14 @@ const Settings = () => {
 
             throw new Error(response.status);
         }).then((data) => {
-
+            toast.current.show({ severity: 'info', summary: 'Información actualizada con éxito' });
         }).catch((error) => {
             console.log(error);
         });
     }
 
     return (<>
+        <Toast ref={toast}/>
         <div className="settings__container">
             <div>
                 <div className="settings__panel">
@@ -274,7 +279,7 @@ const Settings = () => {
                                     disabled={addresses.length > 1 ? false : true}
                                     onClick={(event) => {
                                         event.preventDefault();
-                                        deleteAddress(BASE_URL, token, addressObj.addressId);
+                                        deleteAddress(toast, BASE_URL, token, addressObj.addressId);
                                     }} label={<MdDelete size={20} />} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top' }} />
                                 </div>
                             </div>
