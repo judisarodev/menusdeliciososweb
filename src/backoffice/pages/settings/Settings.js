@@ -128,7 +128,8 @@ const Settings = () => {
                 name,
                 phoneNumber,
                 countryId: country.countryId,
-                restaurantTypeId: restaurantType.restaurantTypeId
+                restaurantTypeId: restaurantType.restaurantTypeId,
+                email
             }),
         }).then((response) => {
             if (response.ok) {
@@ -144,7 +145,7 @@ const Settings = () => {
     }
 
     return (<>
-        <Toast ref={toast}/>
+        <Toast ref={toast} />
         <div className="settings__container">
             <div>
                 <div className="settings__panel">
@@ -157,6 +158,14 @@ const Settings = () => {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Ingresa el nombre del restaurante" />
+                        </div>
+
+                        <div className="settings__input-container">
+                            <label>Correo electrónico *</label>
+                            <InputText
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Ingresa el correo electónico" />
                         </div>
 
                         <div className="settings__input-container">
@@ -193,62 +202,11 @@ const Settings = () => {
 
                         <Button
                             label={'ACTUALIZAR'}
-                            severity="secondary"
-                            outlined
                             onClick={(event) => {
                                 event.preventDefault();
                                 updateRestaurant();
                             }}
                         />
-                    </form>
-                </div>
-
-                <div className="settings__panel">
-                    <p className="settings__title">Logo del restaurante</p>
-                    {logo && <Image width="200" src={logo} />}
-                    <Button
-                        label={!logo ? 'SUBIR' : 'CAMBIAR'}
-                        outlined
-                        severity="secondary"
-                        onClick={(event) => {
-                            event.preventDefault();
-                        }}
-                    />
-                </div>
-
-                <div className="settings__panel">
-                    <p className="settings__title">Actualizar contraseña</p>
-                    <Button
-                        label={'ENVIAR CORREO *'}
-                        severity="secondary"
-                        outlined
-                        onClick={(event) => {
-                            event.preventDefault();
-                        }}
-                    />
-                    <small>(*) Recibirás un email con un link que te permitirá cambiar tu contraseña. </small>
-                </div>
-            </div>
-            <div>
-                <div className="settings__panel">
-                    <p className="settings__title">Editar correo electrónico</p>
-                    <form className="settings__form_container">
-                        <div className="settings__input-container">
-                            <label>Correo electrónico *</label>
-                            <InputText
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Ingresa el correo electónico" />
-                        </div>
-                        <Button
-                            label={'ACTUALIZAR *'}
-                            severity="secondary"
-                            outlined
-                            onClick={(event) => {
-                                event.preventDefault();
-                            }}
-                        />
-                        <small>(*) Recibirás un e-mail de confirmación, debes abirir el link de confirmación para que la actualización sea exitosa. </small>
                     </form>
                 </div>
 
@@ -274,18 +232,18 @@ const Settings = () => {
                                     </div>
                                 </div>
                                 <div className="settings__address-container-delete-button">
-                                    <Button 
-                                    outlined
-                                    disabled={addresses.length > 1 ? false : true}
-                                    onClick={(event) => {
-                                        event.preventDefault();
-                                        deleteAddress(toast, BASE_URL, token, addressObj.addressId);
-                                    }} label={<MdDelete size={20} />} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top' }} />
+                                    <Button
+                                        outlined
+                                        disabled={addresses.length > 1 ? false : true}
+                                        onClick={(event) => {
+                                            event.preventDefault();
+                                            deleteAddress(toast, BASE_URL, token, addressObj.addressId);
+                                        }} label={<MdDelete size={20} />} severity="danger" tooltip="Eliminar" tooltipOptions={{ position: 'top' }} />
                                 </div>
                             </div>
                         ))}
                         <Button
-                            label="AGREGAR"
+                            label="AGREGAR NUEVA DIRECCIÓN"
                             severity="secondary"
                             outlined
                             onClick={(e) => {
@@ -295,8 +253,6 @@ const Settings = () => {
                         />
                         <Button
                             label={'ACTUALIZAR'}
-                            severity="secondary"
-                            outlined
                             onClick={(event) => {
                                 updateAddresses();
                                 event.preventDefault();
@@ -304,6 +260,32 @@ const Settings = () => {
                         />
                     </form>
                 </div>
+
+            </div>
+            <div>
+
+                <div className="settings__panel">
+                    <p className="settings__title">Logo del restaurante</p>
+                    {logo && <Image width="200" src={logo} />}
+                    <Button
+                        label={!logo ? 'SUBIR LOGO' : 'CAMBIAR LOGO'}
+                        onClick={(event) => {
+                            event.preventDefault();
+                        }}
+                    />
+                </div>
+
+                <div className="settings__panel">
+                    <p className="settings__title">Actualizar contraseña</p>
+                    <Button
+                        label={'ENVIAR CORREO *'}
+                        onClick={(event) => {
+                            event.preventDefault();
+                        }}
+                    />
+                    <small>(*) Recibirás un email con un link que te permitirá cambiar tu contraseña. </small>
+                </div>
+
             </div>
         </div>
     </>);
